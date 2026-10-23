@@ -1146,3 +1146,4 @@ html[data-font=bebas] .hero-name{font-weight:600}
 #about .about-ph img{aspect-ratio:1000/1433;mix-blend-mode:normal;-webkit-mask-image:none;mask-image:none;filter:drop-shadow(0 30px 30px rgba(13,43,82,.18))}#about .about-ph{position:relative}#about .about-ph::before{content:'';display:block;position:absolute;left:4%;right:4%;top:18%;bottom:6%;z-index:-1;border-radius:50% 50% 24px 24px / 38% 38% 24px 24px;background:radial-gradient(80% 70% at 50% 35%,#cfe8f6,#8FCDEB)}
 #about .about-ph{isolation:isolate}
 #about .about-ph::before{display:none}#about .about-ph::after{content:'';display:block;position:absolute;left:18%;right:18%;bottom:1.5%;height:5%;z-index:-1;background:radial-gradient(closest-side,rgba(13,43,82,.28),transparent);filter:blur(6px)}#about .about-ph img{filter:none}
+.ftr img[src*=credit]{filter:brightness(0) saturate(100%);opacity:.7}
