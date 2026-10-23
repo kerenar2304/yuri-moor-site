@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@300..800&family=Source+Sans+3:wght@300..800&display=swap");
+:root{--dark:#0D2B52;--accent:#0D2B52;--accent-ink:#3B5878;--sky:#8FCDEB;--light:#F6F3EC}
+*{box-sizing:border-box}
+body{margin:0;background:var(--light);color:var(--dark);font:400 17px/1.7 "Assistant","Source Sans 3",Arial,sans-serif}
+header{background:var(--light);color:var(--dark);padding:22px 5vw;border-bottom:1px solid rgba(0,0,0,.1)}
+header a{font:700 20px "Assistant","Source Sans 3",Arial,sans-serif;text-transform:uppercase;color:inherit;text-decoration:none}
+main{width:min(760px,90vw);margin:0 auto;padding:60px 0 90px}
+h1{font:700 clamp(34px,5.5vw,56px)/.95 "Assistant","Source Sans 3",Arial,sans-serif;text-transform:uppercase;color:#002740;margin:0 0 30px}
+h2{font:700 22px/1.2 "Assistant","Source Sans 3",Arial,sans-serif;margin:36px 0 10px}
+a{color:var(--accent-ink)}
+.ph{border-bottom:1.5px dashed currentColor;font-size:14px}
+.back{display:inline-block;margin-top:40px;font-weight:500}
