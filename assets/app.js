@@ -505,11 +505,6 @@
   /* ---------- contact stickers ---------- */
   var field = $('#c2-field');
   if (field) {
-    var isPhone = matchMedia('(max-width:700px)').matches;
-    if (isPhone) { // a looser layout for the narrow field
-      var P = [[4,1,-6],[12,24,5],[4,44,4],[46,44,-8],[56,68,6],[66,-2,9],[4,68,-10]];
-      $$('.stk', field).forEach(function (s, k) { var p = P[k % P.length]; s.style.setProperty('--x', p[0] + '%'); s.style.setProperty('--y', p[1] + '%'); s.style.setProperty('--r', p[2] + 'deg'); });
-    }
     // still stickers: a click simply follows the link (no dragging, kinder for older readers)
     $$('.stk[data-todo]', field).forEach(function (s) {
       s.addEventListener('click', function (e) { e.preventDefault(); toast('Ссылка на Facebook скоро появится'); });

@@ -1718,3 +1718,16 @@ a.stk{cursor:pointer}
 a.stk.pill:hover{transform:rotate(var(--r)) translateY(-2px)}
 .stk.badge text{font-size:10px;letter-spacing:.06em}
 .c2-field{touch-action:auto}
+/* stickers in order, with a wink: one centred row, gentle alternating tilts and offsets */
+.c2-field{height:auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:22px 30px;padding:clamp(40px,4vw,64px) 20px clamp(34px,3.5vw,54px);margin:0}
+.c2-field .stk{position:relative;left:auto;top:auto}
+.c2-field .stk:nth-child(1){--r:-10deg;transform:rotate(var(--r)) translateY(-6px)}
+.c2-field .stk:nth-child(2){--r:-4deg;transform:rotate(var(--r)) translateY(10px)}
+.c2-field .stk:nth-child(3){--r:3deg;transform:rotate(var(--r)) translateY(-8px)}
+.c2-field .stk:nth-child(4){--r:8deg;transform:rotate(var(--r)) translateY(6px)}
+.c2-field .stk:nth-child(5){--r:-3deg;transform:rotate(var(--r)) translateY(-10px)}
+.c2-field .stk:nth-child(6){--r:5deg;transform:rotate(var(--r)) translateY(8px)}
+.c2-field .stk:nth-child(7){--r:-8deg;transform:rotate(var(--r)) translateY(-4px)}
+.c2-field a.stk.pill:hover{transform:rotate(0deg) translateY(-4px)}
+@media (max-width:700px){.c2-field{gap:16px 14px;padding:30px 12px 26px}.c2-field .stk.badge{width:104px}}
+.c2-field{max-width:880px;margin:0 auto}
