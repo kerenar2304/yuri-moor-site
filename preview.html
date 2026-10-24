@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Юрий Моор-Мурадов · превью</title>
+<link rel="icon" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--dark:#0D2B52;--sky:#8FCDEB;--light:#F6F3EC}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:#e9e4d8;color:var(--dark);font:400 15px/1.4 "Assistant","Source Sans 3",Arial,sans-serif;display:flex;flex-direction:column}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px}
+  header b{font-size:17px}
+  header a{color:var(--dark);font-weight:600;text-decoration:none;padding:8px 14px;border-radius:999px;background:#fff}
+  main{flex:1;min-height:0;display:flex;justify-content:center;align-items:flex-start;gap:36px;padding:6px 24px 24px}
+  .dev{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .dev span{font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+  /* desktop: a 1440×900 page scaled down to fit */
+  .desk{--s:.62;width:calc(1440px * var(--s));height:calc(900px * var(--s));border-radius:14px;overflow:hidden;background:#fff;
+    box-shadow:0 0 0 10px #1c2533,0 30px 60px -20px rgba(13,43,82,.5)}
+  .desk iframe{width:1440px;height:900px;border:0;transform:scale(var(--s));transform-origin:0 0}
+  /* phone: a 375×812 page in a phone frame */
+  .phone{width:399px;height:836px;padding:12px;border-radius:52px;background:#1c2533;box-shadow:0 30px 60px -20px rgba(13,43,82,.5);--s:.78;transform:scale(var(--s));transform-origin:top center;margin-bottom:calc(836px * (var(--s) - 1))}
+  .phone iframe{width:375px;height:812px;border:0;border-radius:40px;background:#fff}
+  @media (max-width:1300px){.desk{--s:.5}}
+  @media (max-width:1000px){main{flex-direction:column;align-items:center}.desk{--s:.42}}
+</style>
+</head>
+<body>
+<header><b>Юрий Моор-Мурадов · сайт</b><a href="./" target="_blank" rel="noopener">Открыть сайт →</a></header>
+<main>
+  <div class="dev"><span>Десктоп</span><div class="desk"><iframe src="./" title="Десктоп"></iframe></div></div>
+  <div class="dev"><span>Мобайл</span><div class="phone"><iframe src="./" title="Мобайл"></iframe></div></div>
+</main>
+</body>
+</html>
