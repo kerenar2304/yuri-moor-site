@@ -161,7 +161,7 @@
       var meta = b.vol ? 'Часть ' + b.vol : (b.isNew ? 'Новинка' : b.series === 'detective' ? 'Детектив' : b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : 'Книга');
       return '<article class="card r' + (b.wide ? ' wide' : '') + (fav.indexOf(b.id) > -1 ? ' faved' : '') + '" data-id="' + b.id + '" data-series="' + b.series + '" style="--tone:' + b.tone + '">' +
         '<div class="card-stage">' +
-        '<a class="card-cv" href="#books" data-book="' + b.id + '" aria-label="' + esc((b.ru || b.title) + ', подробнее') + '">' +
+        '<a class="card-cv" href="book.html?id=' + b.id + '" aria-label="' + esc((b.ru || b.title) + ', подробнее') + '">' +
           '<span class="cvi">' + coverHTML(b, true) +
             '<span class="cvb" aria-hidden="true"><b>' + esc(b.title) + '</b><span>' + esc(b.text[0]) + '</span><i>Юрий Моор-Мурадов</i></span>' +
           '</span></a>' +
@@ -169,7 +169,7 @@
           '<button type="button" data-fav="' + b.id + '" aria-pressed="' + (fav.indexOf(b.id) > -1) + '" aria-label="В избранное: ' + esc(b.title) + '">' + ICON_HEART + '<em>В избранное</em></button>' +
           '<button type="button" data-flip aria-pressed="false" aria-label="Обратная сторона обложки">' + ICON_GLASSES + '<em>Оборот книги</em></button>' +
         '</div></div>' +
-        '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="#books" data-book="' + b.id + '">' + esc(b.title) + '</a></h3>' +
+        '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="book.html?id=' + b.id + '">' + esc(b.title) + '</a></h3>' +
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
         '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>Цифровая копия ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
         '</article>';
@@ -212,7 +212,7 @@
         (b.pdf ? '<div class="qb-f"><span>' + ICON_PDF + 'Цифровая копия</span><b>' + pdfPrice + '</b><small>на e-mail</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|pdf">' + ICON_CART + 'В корзину</button></div>' : '') +
       '</div>' +
-      '<a class="qb-more" href="#books" data-book="' + b.id + '">Подробнее о книге</a>';
+      '<a class="qb-more" href="book.html?id=' + b.id + '">Подробнее о книге</a>';
     // one centred window (a bottom sheet on phones)
     var sheet = true; if (sheet) el.classList.add('sheet');
     (sheet ? document.body : $('.card-stage', card)).appendChild(el); qb = el; qbCard = card; card.classList.add('qb-on'); qbDim.classList.add('on');
@@ -287,6 +287,8 @@
     $('#rd-pos').textContent = (rp + 1) + (s > 1 && rp + 1 < n ? '-' + Math.min(rp + s, n) : '') + ' из ' + n;
     $('#rd-prev').disabled = rp === 0; $('#rd-next').disabled = rp + s >= n;
   }
+  // inner pages (book.html) open the excerpt reader through this
+  window.YM = { read: function (id) { cur = byId[id]; if (!cur || !cur.pages) return; rp = 0; drawSpread(); reader.showModal(); } };
   var rdBtn = $('#bd-read');
   if (rdBtn) rdBtn.addEventListener('click', function () { if (!cur || !cur.pages) return; rp = 0; drawSpread(); reader.showModal(); });
   if (reader) {
@@ -380,20 +382,7 @@
   });
 
   /* ---------- the word lens ---------- */
-  var WORDS = [
-    { he: 'עץ או פלי?', tr: 'эц о пали', ru: 'Орёл или решка?', book: 'z1', src: 'Из книги «Занимательный иврит»',
-      story: 'Когда решают подбросить монету, говорят: «Эц о пали?» В довоенной Палестине на одной стороне монеты было изображено дерево, «эц», а на другой по-английски написано «Палестайн». От него и взята часть: «пали».' },
-    { he: 'מי שם ג׳וחא בסוכתי?', tr: 'ми сам Джоха бе-сукати', ru: 'Незваный гость', book: 'z5', src: 'Из книги «Иврит на пятёрку»',
-      story: '«Кто поставил Джоху в моей сукке?» Так может процедить хозяин, заметив среди гостей нежелательную персону. Джоха: так на арабском величают знаменитого Ходжу Насреддина.' },
-    { he: 'כל מילה בסלע', tr: 'коль мила бе-села', ru: 'Каждое слово на вес золота', book: 'z5', src: 'Из книги «Иврит на пятёрку»',
-      story: 'Многие считают, что «села» здесь означает «скала», и понимают так: каждое слово выбито в камне. Но это ошибка. «Села» это название дорогой монеты.' },
-    { he: 'מילה בסלע, משתוקא בתרין', tr: 'мила бе-села, маштока би-трен', ru: 'Речь серебро, молчанье золото', book: 'z5', src: 'Из книги «Иврит на пятёрку»',
-      story: 'Арамейская пословица: «слово стоит одну селу, молчание две». «Трен» на арамейском значит «два», а в слове «маштока», молчание, легко узнать родственное ивритское «штика».' },
-    { he: 'עם סגולה', tr: 'ам сгула', ru: 'Народ-сокровище', book: 'z6', src: 'Из книги «Иврит в эфире»',
-      story: '«Сеголь» значит фиолетовый. Выходит, «сгула» фиолетовая? Не спешите вспоминать синих человечков из «Аватара». «Сгула» это сокровище, ценный клад. Переводчики ТАНАХа нашли изящный выход: «избранный народ».' },
-    { he: 'עשרים דקות הייתם פה!', tr: 'эсрим дакот хайитем по', ru: '«Двадцать минут вы были здесь!»', book: 'z6', src: 'Из книги «Иврит в эфире»',
-      story: 'Так говорит солдатам командир в израильской армии. Это явное влияние русского языка, где норма: «Чтобы через 20 минут вы были здесь!» Или коротко: «Встал! Пошёл!»' }
-  ];
+  var WORDS = window.WORDS || [];
   var board = $('#board'), heL = $('#board-he'), ruL = $('#board-ru');
   if (board && heL && ruL) {
     heL.innerHTML = WORDS.map(function (w, k) {
