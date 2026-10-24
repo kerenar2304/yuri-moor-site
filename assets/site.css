@@ -1534,3 +1534,34 @@ html[data-font=bebas] .bookdlg .bd-info h2[dir=rtl]{font:700 clamp(28px,2.5vw,40
 @media (max-width:700px){.bookdlg .bd-cover{height:30svh;max-height:none;display:grid;place-items:center;overflow:hidden;padding:12px 0}.bookdlg .bd-cover .bd-3d{transform:scale(.68);transform-origin:center}}
 /* one warm cream background everywhere */
 body,#about,.sec.about,.lens-banner-sec,.shelf-sec,#books,.sec.order,.hero{background:var(--light)}
+
+/* ============ HERO · MOBILE (Keren's Figma frame «Hero / Mobile 375», stage 359×776) ============ */
+@media (max-width:700px){
+  .stage{aspect-ratio:auto}
+  .stage-in{--m:calc((100vw - 16px) / 359);position:relative;display:block;inset:auto;padding:0;min-height:0;height:calc(776 * var(--m));container-type:normal}
+  .stage-in>*{order:initial}
+  html[data-font=bebas] .hero-h1,.hero-h1{position:absolute;left:calc(20 * var(--m));top:calc(24 * var(--m));width:calc(311 * var(--m));margin:0;
+    font-size:calc(40 * var(--m));line-height:1.06;z-index:4}
+  .hero-h1 br:nth-of-type(2){display:none}
+  .hero-h1 br:first-of-type{display:none}
+  .hero-side{position:absolute;left:calc(20 * var(--m));top:calc(134 * var(--m));width:calc(300 * var(--m));margin:0;display:block;z-index:4}
+  html[data-font=bebas] .hero-name,.hero-name{margin:0;font-size:calc(22 * var(--m));line-height:1.1}
+  .hero .lead{margin:calc(8 * var(--m)) 0 0;font-size:calc(15 * var(--m));line-height:1.5}
+  .hero-cta{position:absolute;left:calc(20 * var(--m));top:calc(230 * var(--m));width:calc(230 * var(--m));min-height:0;height:calc(54 * var(--m));margin:0;
+    padding:0 calc(6 * var(--m)) 0 calc(22 * var(--m));font-size:calc(15 * var(--m));justify-content:space-between;align-self:auto;z-index:4}
+  .hero-cta span[aria-hidden]{width:calc(42 * var(--m));height:calc(42 * var(--m))}
+  .hero-yuri{position:absolute;left:calc(2 * var(--m));top:calc(305 * var(--m));width:calc(441 * var(--m));max-width:none;margin:0;z-index:3}
+  .sig-hero-img,.sig-hero-img[class]{display:none}
+  /* books: a tilted cascade down the right edge */
+  .wave{position:absolute;inset:0;left:0;right:0;aspect-ratio:auto;container-type:normal;z-index:2}
+  .wave .w{position:absolute;width:calc(102 * var(--m));height:calc(144 * var(--m));object-fit:cover;left:calc(250 * var(--m));
+    transform:rotate(-14deg);transform-origin:top left;border-radius:2px;box-shadow:8px 10px 18px -8px rgba(5,24,48,.45)}
+  .wave .w4,.wave .w5,.wave .w6{display:none}
+  .wave .w8{top:calc(316 * var(--m))}
+  .wave .w2{top:calc(392 * var(--m))}
+  .wave .w7{top:calc(467 * var(--m))}
+  .wave .w3{top:calc(542 * var(--m))}
+  .wave .w1{top:calc(618 * var(--m))}
+  .wave .w9{top:calc(693 * var(--m))}
+}
+@media (max-width:700px){html[data-font=bebas] .hero-side,.hero-side{margin-top:0}}
