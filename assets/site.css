@@ -1593,3 +1593,12 @@ body,#about,.sec.about,.lens-banner-sec,.shelf-sec,#books,.sec.order,.hero{backg
 .route{display:none}
 #about .kicker{display:none}
 #about .about-txt>p.about-name{margin:-6px 0 0;font:700 clamp(19px,1.5vw,22px)/1.2 var(--fam);color:var(--dark)}
+/* press logos: one grey row, colour on hover */
+.press{gap:14px 30px;margin-top:8px}
+.press li{opacity:1;display:flex;align-items:center}
+.press li::after{content:none !important}
+.press img{display:block;width:auto;filter:grayscale(1) contrast(1.1);opacity:.62;transition:filter .3s,opacity .3s}
+.press li:hover img{filter:none;opacity:1}
+.press .wm{font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:-.01em;text-transform:none;color:#3d4450;opacity:.7;line-height:1}
+.press .wm-nn{font-size:19px;font-style:italic}
+.press .wm-7i{font-size:18px;font-variant:small-caps;letter-spacing:.02em}
