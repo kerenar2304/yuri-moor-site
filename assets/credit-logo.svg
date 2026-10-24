@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Keren Arlihman credit logo (footer: "עיצוב ופיתוח האתר:"). Copy to site/assets/credit-logo.svg.
-     Ships LIGHT (#f4f3f1) for dark footers. On a LIGHT footer, recolour in a copy: change the one
-     .cls-1 fill below to the site's --dark hex (an <img> cannot inherit currentColor or CSS variables).
-     Never recolour to the accent; never filter:invert() it (shifts the hue). Keep its height >= 22px. -->
 <svg id="_לוגו_5.8" data-name="לוגו 5.8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350.52 98.22">
   <defs>
     <style>

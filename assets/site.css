@@ -1731,3 +1731,13 @@ a.stk.pill:hover{transform:rotate(var(--r)) translateY(-2px)}
 .c2-field a.stk.pill:hover{transform:rotate(0deg) translateY(-4px)}
 @media (max-width:700px){.c2-field{gap:16px 14px;padding:30px 12px 26px}.c2-field .stk.badge{width:104px}}
 .c2-field{max-width:880px;margin:0 auto}
+/* the title is one whole word, sized to fit the panel at any width */
+.c2-marquee{padding:0 calc(36*var(--u)) calc(10*var(--u));white-space:nowrap}
+.c2-track{display:block}
+.c2-track span{display:block;font-size:min(170px,calc((100vw - 110px) / 4.3));padding:0}
+.c2-track i{font-style:normal;font-size:.55em;vertical-align:.32em;color:var(--sky)}
+@media (max-width:700px){.c2-marquee{padding:0 20px 8px}.c2-track span{font-size:calc((100vw - 56px) / 4.4)}}
+.c2-track span{display:flex;align-items:center;gap:.12em}
+.c2-loupe{width:.62em;height:.62em;color:var(--sky);flex:none;transform:translateY(-.02em)}
+@media (max-width:700px){.c2-track span{font-size:calc((100vw - 56px) / 5.1)}}
+.ftr img[src*=credit]{filter:none;opacity:1;height:26px;width:auto}
