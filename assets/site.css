@@ -1495,3 +1495,15 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 .loupe-shadow{display:none}
 @media (max-width:900px){.loupe-r{--W:240px;transform:translate(-40%,-36%)}}
 .loupe-r{--W:clamp(250px,23vw,350px)}.loupe-glass p{width:72%;font-size:clamp(12px,1.05vw,15px)}@media (max-width:900px){.loupe-r{--W:250px}.loupe-glass p{font-size:12.5px}}
+
+/* ABOUT v3: short headline, real story, a quote of his, facts as cards on demand */
+#about .about-txt h2,html[data-font=bebas] #about .about-txt h2{font-size:clamp(36px,3.4vw,54px)}
+#about .about-txt>p{max-width:56ch}
+.about-q{margin:4px 0 0;padding:14px 0 14px 20px;border-left:3px solid var(--sky)}
+.about-q p{margin:0;font:500 clamp(16px,1.3vw,19px)/1.5 var(--fam);color:var(--dark)}
+.about-q cite{display:block;margin-top:6px;font:500 12.5px/1 var(--fam);font-style:normal;color:var(--accent-ink)}
+.about-facts{list-style:none;margin:6px 0 4px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.about-facts li{display:grid;gap:6px;padding:16px 18px;border-radius:14px;background:#fff;box-shadow:0 1px 2px rgba(13,43,82,.06),0 10px 24px -18px rgba(13,43,82,.35)}
+.about-facts b{font:600 13px/1 var(--fam);letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+.about-facts span{font:400 14.5px/1.5 var(--fam);color:#1d3d63}
+@media (max-width:700px){.about-facts{grid-template-columns:1fr}}
