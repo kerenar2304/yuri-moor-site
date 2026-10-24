@@ -72,8 +72,8 @@
     var VIDEO = { id: 'HiTXXnRdmpU', t: 'Юрий Моор-Мурадов: писатель, драматург, публицист, переводчик', o: 'RTN · программа «Контакт»', d: 'Апрель 2025' };
     /* img: assets/press/<img>.webp; d only where the source shows a date */
     var PRESS = [
-      { k: 'Интервью', o: 'Zahav.ru', img: 'p-kolea', t: 'Своя колея Юрия Моор-Мурадова', u: 'https://mnenia.zahav.ru/Articles/3611742/%D1%81%D0%B2%D0%BE%D1%8F_%D0%BA%D0%BE%D0%BB%D0%B5%D1%8F_%D1%8E%D1%80%D0%B8%D1%8F_%D0%BC%D0%BE%D0%BE%D1%80%D0%BC%D1%83%D1%80%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0' },
-      { k: 'Интервью', o: 'Zahav.ru', img: 'p-narod', t: '«Без языка нельзя стать частью народа»', u: 'https://salat.zahav.ru/Articles/3386066/%D0%B1%D0%B5%D0%B7_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B0_%D0%BD%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F_%D1%81%D1%82%D0%B0%D1%82%D1%8C_%D1%87%D0%B0%D1%81%D1%82%D1%8C%D1%8E_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%B0' },
+      { k: 'Интервью', o: 'Zahav.ru', img: 'p-kolea', t: 'Своя колея Юрия Моор-Мурадова', d: '25 сентября 2023', u: 'https://mnenia.zahav.ru/Articles/3611742/%D1%81%D0%B2%D0%BE%D1%8F_%D0%BA%D0%BE%D0%BB%D0%B5%D1%8F_%D1%8E%D1%80%D0%B8%D1%8F_%D0%BC%D0%BE%D0%BE%D1%80%D0%BC%D1%83%D1%80%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0' },
+      { k: 'Интервью', o: 'Zahav.ru', img: 'p-narod', t: '«Без языка нельзя стать частью народа»', d: '10 сентября 2020', u: 'https://salat.zahav.ru/Articles/3386066/%D0%B1%D0%B5%D0%B7_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B0_%D0%BD%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F_%D1%81%D1%82%D0%B0%D1%82%D1%8C_%D1%87%D0%B0%D1%81%D1%82%D1%8C%D1%8E_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%B0' },
       { id: 'love', k: 'Эссе', o: 'Заметки по еврейской истории', img: 'p-love', t: 'Язык как первая любовь со школьных лет', u: 'https://club.berkovich-zametki.com/?p=20515' },
       { id: 'glup', k: 'Статья', o: 'Хайфаинфо', img: 'p-glup', t: 'Все оттенки человеческой глупости', u: 'http://haifainfo.com/?p=29499' },
       { id: 'ponaslyshke', k: 'Статья', o: '9 канал', img: 'p-queue', t: 'Иврит понаслышке, или Как пролезть без очереди' },
