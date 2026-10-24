@@ -1925,3 +1925,9 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 @media (max-width:900px){.ftr-top{grid-template-columns:1fr 1fr;gap:36px 24px}.ftr-brand{grid-column:1/-1}}
 @media (max-width:700px){.ftr{padding-bottom:90px}.ftr-bottom{flex-direction:column;align-items:flex-start}}
 .ftr-name span{text-align:left}
+/* footer in the site's sky blue, same light as the «Слово под лупой» banner */
+.ftr{background:radial-gradient(80% 140% at 50% 0%,#d9eef9 0%,#b9def2 55%,#9fd0ea 100%)}
+.ftr-about,.ftr-pay,.ftr-bottom,.ftr-bottom a{color:#1d3d63}
+.ftr-col h2,html[data-font=bebas] .ftr .ftr-col h2{color:#2c5580}
+.ftr-bottom{border-top-color:rgba(13,43,82,.2)}
+.ftr .credit{border-top-color:rgba(13,43,82,.2)}
