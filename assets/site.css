@@ -1932,3 +1932,10 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .ftr-bottom{border-top-color:rgba(13,43,82,.2)}
 .ftr .credit{border-top-color:rgba(13,43,82,.2)}
 .ftr .credit span{color:var(--dark)}
+/* order: two formats, print and digital */
+@media (min-width:901px){.sec.order .ord-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* button arrows: a drawn arrow, exactly centred in its circle (the font glyph sat low and to the side) */
+.btn>span[aria-hidden]{display:grid;place-items:center;font-size:0;line-height:0}
+.btn>span[aria-hidden]::before{content:"";width:46%;height:auto;aspect-ratio:1;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h15M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h15M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat}
