@@ -109,6 +109,7 @@
         var s = p.id && window.TEXTS && TEXTS[p.id];
         if (s) { p.u = 'article.html?id=' + p.id; p.local = true; p.d = s.d; }
         if (s && !p.t) p.t = s.t;
+        if (s && !p.img && s.img) p.img = s.img;
         p.media = p.img ? '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'
           : '<span class="pub-word"><b dir="rtl" lang="he">' + esc(s.word) + '</b><i>' + esc(s.wtr) + '</i></span>';
         return p; }));
