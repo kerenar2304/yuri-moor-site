@@ -1902,3 +1902,8 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .tx-word b{font:700 clamp(40px,5vw,72px)/1 "Assistant",var(--fam)}
 .tx-word i{font-size:16px}
 .tx-body p.tx-he{text-align:right;font-family:"Assistant",var(--fam);font-weight:600;color:var(--dark)}
+/* designer credit: centred and large enough to read */
+.ftr .credit{justify-content:center;gap:20px;margin-top:24px;padding-top:28px}
+.ftr .credit span{font:600 17px/1.2 "Assistant",var(--fam)}
+.ftr img[src*=credit]{height:72px}
+@media (max-width:700px){.ftr .credit{flex-direction:column;gap:10px}.ftr img[src*=credit]{height:60px}}
