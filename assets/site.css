@@ -1532,3 +1532,5 @@ html[data-font=bebas] .bookdlg .bd-info h2[dir=rtl]{font:700 clamp(28px,2.5vw,40
   .bookdlg .bd-text p{-webkit-line-clamp:3}.bookdlg .bd-text p+p{display:none}
 }
 @media (max-width:700px){.bookdlg .bd-cover{height:30svh;max-height:none;display:grid;place-items:center;overflow:hidden;padding:12px 0}.bookdlg .bd-cover .bd-3d{transform:scale(.68);transform-origin:center}}
+/* one warm cream background everywhere */
+body,#about,.sec.about,.lens-banner-sec,.shelf-sec,#books,.sec.order,.hero{background:var(--light)}
