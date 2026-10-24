@@ -54,12 +54,13 @@
     document.title = a.t + ' | Юрий Моор-Мурадов';
     txt.innerHTML =
       '<article class="tx">' +
-        '<header class="tx-head"><p class="tx-kind">Колонка «' + esc(a.col) + '» · ' + esc(a.o) + ' · ' + esc(a.d) + '</p>' +
+        '<header class="tx-head"><p class="tx-kind">' + esc(a.kind || (a.col ? 'Колонка «' + a.col + '»' : 'Статья')) + ' · ' + esc(a.o) + ' · ' + esc(a.d) + '</p>' +
           '<h1>' + esc(a.t) + '</h1><p class="tx-by">Юрий Моор-Мурадов</p></header>' +
         '<figure class="tx-img"><img src="assets/press/' + a.img + '.webp" alt=""></figure>' +
         '<div class="tx-body">' + a.paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
-        '<aside class="tx-words" aria-labelledby="tx-w"><h2 id="tx-w">Словарик колонки</h2><ul dir="rtl" lang="he">' +
-          a.he.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></aside>' +
+        (a.he ? '<aside class="tx-words" aria-labelledby="tx-w"><h2 id="tx-w">Словарик колонки</h2><ul dir="rtl" lang="he">' +
+          a.he.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></aside>' : '') +
+        '<p class="tx-src">' + (a.src ? 'Впервые опубликовано: ' + esc(a.o) + ', ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Оригинал публикации ↗</a>' : esc(a.note || '')) + '</p>' +
         (bk ? '<a class="tx-book" href="book.html?id=' + bk.id + '">' + (bk.cover ? '<img src="assets/covers/' + bk.cover + '.webp" alt="">' : '') +
           '<span><small>Колонка вошла в книгу</small><b>' + esc(bk.title) + '</b><em>' + esc(bk.or || '') + '</em><i>О книге →</i></span></a>' : '') +
       '</article>';
@@ -73,13 +74,13 @@
     var PRESS = [
       { k: 'Интервью', o: 'Zahav.ru', img: 'p-kolea', t: 'Своя колея Юрия Моор-Мурадова', u: 'https://mnenia.zahav.ru/Articles/3611742/%D1%81%D0%B2%D0%BE%D1%8F_%D0%BA%D0%BE%D0%BB%D0%B5%D1%8F_%D1%8E%D1%80%D0%B8%D1%8F_%D0%BC%D0%BE%D0%BE%D1%80%D0%BC%D1%83%D1%80%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0' },
       { k: 'Интервью', o: 'Zahav.ru', img: 'p-narod', t: '«Без языка нельзя стать частью народа»', u: 'https://salat.zahav.ru/Articles/3386066/%D0%B1%D0%B5%D0%B7_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B0_%D0%BD%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F_%D1%81%D1%82%D0%B0%D1%82%D1%8C_%D1%87%D0%B0%D1%81%D1%82%D1%8C%D1%8E_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%B0' },
-      { k: 'Эссе', o: 'Заметки по еврейской истории', img: 'p-love', t: 'Язык как первая любовь со школьных лет', u: 'https://club.berkovich-zametki.com/?p=20515' },
-      { k: 'Статья', o: 'Хайфаинфо', img: 'p-glup', t: 'Все оттенки человеческой глупости', u: 'http://haifainfo.com/?p=29499' },
-      { k: 'Статья', o: '9 канал', img: 'p-queue', t: 'Иврит понаслышке, или Как пролезть без очереди', u: 'article.html?id=ponaslyshke', d: '22 июня 2010', local: true },
-      { k: 'Статья', o: 'Хайфаинфо', img: 'p-un', t: 'Кража на Ассамблее ООН, или Русский язык министра Фуада', u: 'https://haifainfo.com/?p=18656' },
-      { k: 'Статья', o: '9 канал', img: 'p-buratino', t: 'Однокоренная организация, или Богатенький Буратино', u: 'https://web.archive.org/web/20200122093821/http://archive.9tv.co.il:80/news/2010/08/01/80381.html', d: '1 августа 2010' },
-      { k: 'Статья', o: 'Хайфаинфо', img: 'p-knesset', t: 'Виновник Нобелевской премии, или Приватизация Кнессета', u: 'https://haifainfo.com/?p=22428' },
-      { k: 'Статья', o: 'Хайфаинфо', img: 'p-eu', t: 'Наивен ли Европейский Союз, или Иврит депутата Тиби', u: 'https://haifainfo.com/?p=22426' }
+      { id: 'love', k: 'Эссе', o: 'Заметки по еврейской истории', img: 'p-love', t: 'Язык как первая любовь со школьных лет', u: 'https://club.berkovich-zametki.com/?p=20515' },
+      { id: 'glup', k: 'Статья', o: 'Хайфаинфо', img: 'p-glup', t: 'Все оттенки человеческой глупости', u: 'http://haifainfo.com/?p=29499' },
+      { id: 'ponaslyshke', k: 'Статья', o: '9 канал', img: 'p-queue', t: 'Иврит понаслышке, или Как пролезть без очереди' },
+      { id: 'un', k: 'Статья', o: 'Хайфаинфо', img: 'p-un', t: 'Кража на Ассамблее ООН, или Русский язык министра Фуада', u: 'https://haifainfo.com/?p=18656' },
+      { id: 'buratino', k: 'Статья', o: '9 канал', img: 'p-buratino', t: 'Однокоренная организация, или Богатенький Буратино', u: 'https://web.archive.org/web/20200122093821/http://archive.9tv.co.il:80/news/2010/08/01/80381.html', d: '1 августа 2010' },
+      { id: 'knesset', k: 'Статья', o: 'Хайфаинфо', img: 'p-knesset', t: 'Виновник Нобелевской премии, или Приватизация Кнессета', u: 'https://haifainfo.com/?p=22428' },
+      { id: 'eu', k: 'Статья', o: 'Хайфаинфо', img: 'p-eu', t: 'Наивен ли Европейский Союз, или Иврит депутата Тиби', u: 'https://haifainfo.com/?p=22426' }
     ];
     var KINDS = [['all', 'Все'], ['Интервью', 'Интервью'], ['Статья', 'Статьи'], ['Эссе', 'Эссе'], ['Эфир', 'ТВ и видео']];
     var pubCard = function (p) {
@@ -90,7 +91,11 @@
     };
     var pubs = [{ k: 'Эфир', o: 'RTN', t: VIDEO.t, d: VIDEO.d, u: 'https://www.youtube.com/watch?v=' + VIDEO.id,
       media: '<img src="https://i.ytimg.com/vi/' + VIDEO.id + '/maxresdefault.jpg" alt="" loading="lazy"><i class="pub-play" aria-hidden="true"></i>' }]
-      .concat(PRESS.map(function (p) { p.media = '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'; return p; }));
+      .concat(PRESS.map(function (p) {
+        // a saved copy exists: open it on the site; the original stays linked from that page
+        var s = p.id && window.TEXTS && TEXTS[p.id];
+        if (s) { p.u = 'article.html?id=' + p.id; p.local = true; p.d = s.d; }
+        p.media = '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'; return p; }));
     var html =
       '<div class="art-grid">' + WORDS.map(function (w) {
         var bk = byId[w.book];

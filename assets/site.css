@@ -1880,3 +1880,5 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .tx-book em{font:400 15px/1.3 var(--fam);font-style:normal;opacity:.8}
 .tx-book i{margin-top:6px;font:600 14px/1 var(--fam);font-style:normal;color:var(--sky)}
 @media (max-width:700px){.tx-words{padding:20px}.tx-book{gap:16px;padding:16px}.tx-book img{width:70px}.tx-book b{font-size:18px}}
+.tx-src{margin:calc(30*var(--u)) 0;padding-top:16px;border-top:1px solid rgba(13,43,82,.15);font:400 14.5px/1.6 var(--fam);color:#5b6b80}
+.tx-src a{color:var(--blue);font-weight:600}
