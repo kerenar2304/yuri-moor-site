@@ -171,7 +171,7 @@
         '</div></div>' +
         '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="#books" data-book="' + b.id + '">' + esc(b.title) + '</a></h3>' +
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
-        '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>PDF ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
+        '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>Цифровая копия ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
         '</article>';
     }).join('');
   }
@@ -209,7 +209,7 @@
       '<div class="qb-fmts' + (b.pdf ? '' : ' one') + '">' +
         '<div class="qb-f main"><span>' + ICON_BOOK + 'Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|print">' + ICON_CART + 'В корзину</button></div>' +
-        (b.pdf ? '<div class="qb-f"><span>' + ICON_PDF + 'PDF</span><b>' + pdfPrice + '</b><small>на e-mail</small>' +
+        (b.pdf ? '<div class="qb-f"><span>' + ICON_PDF + 'Цифровая копия</span><b>' + pdfPrice + '</b><small>на e-mail</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|pdf">' + ICON_CART + 'В корзину</button></div>' : '') +
       '</div>' +
       '<a class="qb-more" href="#books" data-book="' + b.id + '">Подробнее о книге</a>';
@@ -261,7 +261,7 @@
     $('#bd-text').innerHTML = b.text.map(function (p) { return '<p>' + esc(p).replace(/\[\[(.+?)\]\]/g, '<span class="ph">[[$1]]</span>') + '</p>'; }).join('');
     var pdf = $('input[name=fmt][value=pdf]', dlg); pdf.disabled = !b.pdf;
     $('input[name=fmt][value=print]', dlg).checked = true;
-    $('#bd-pdfprice').innerHTML = b.pdf ? (SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' ₪, на e-mail' : '<span class="ph">[[цена PDF]]</span>') : 'скоро';
+    $('#bd-pdfprice').innerHTML = b.pdf ? (SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' ₪, на e-mail' : '<span class="ph">[[цена]]</span>') : 'скоро';
     var rd = $('#bd-read'); rd.hidden = !b.pages;
     $('#bd-wa').href = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте, Юрий! Вопрос о книге «' + (b.ru || b.title) + '»: ');
     dlg.showModal();
@@ -310,14 +310,14 @@
     ul.innerHTML = cart.map(function (c, k) {
       var b = byId[c.id], p = priceOf(c);
       return '<li class="ci" style="--tone:' + b.tone + '"><div class="th">' + coverHTML(b, true) + '</div><div><b>' + esc(b.ru || b.title) + '</b><small>' +
-        (c.fmt === 'pdf' ? 'Электронная, PDF' : 'Печатная') + ' · ' + (p ? p * c.q + ' ₪' : '[[цена]]') + '</small></div>' +
+        (c.fmt === 'pdf' ? 'Цифровая копия' : 'Печатная') + ' · ' + (p ? p * c.q + ' ₪' : '[[цена]]') + '</small></div>' +
         '<div class="qty"><button type="button" data-q="-1" data-k="' + k + '" aria-label="Меньше">−</button><span>' + c.q + '</span><button type="button" data-q="1" data-k="' + k + '" aria-label="Больше">+</button></div></li>';
     }).join('');
     $('#cart-empty').hidden = !!cart.length; $('#cart-foot').hidden = !cart.length;
     var sum = 0, unknown = false, hasPrint = false, hasPdf = false;
     cart.forEach(function (c) { var p = priceOf(c); if (p) sum += p * c.q; else unknown = true; if (c.fmt === 'pdf') hasPdf = true; else hasPrint = true; });
-    $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + PDF' : '');
-    $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы. ' : '') + (hasPdf ? 'PDF придёт на e-mail после оплаты.' : '');
+    $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
+    $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы. ' : '') + (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты.' : '');
     $$('#checkout [data-need]').forEach(function (l) {
       var on = l.dataset.need === 'print' ? hasPrint : hasPdf; l.hidden = !on; $('input', l).required = on;
     });
@@ -360,7 +360,7 @@
   if (co) co.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!co.checkValidity()) { co.reportValidity(); return; }
-    var d = new FormData(co), lines = cart.map(function (c) { var b = byId[c.id]; return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'PDF' : 'печатная') + ') × ' + c.q; });
+    var d = new FormData(co), lines = cart.map(function (c) { var b = byId[c.id]; return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q; });
     var msg = 'Здравствуйте, Юрий! Хочу заказать:\n' + lines.join('\n') + '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
       (d.get('addr') ? '\nАдрес: ' + d.get('addr') : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
     window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');

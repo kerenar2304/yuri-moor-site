@@ -203,7 +203,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     <h2 id="ord-h" class="r">Как получить книгу</h2>
     <div class="ord-grid">
       <article class="fmt r"><h3>Печатная книга</h3><p class="price">50 ₪ <small>+ почтовые расходы</small></p><p>Мягкая обложка, 360 страниц. Отправляем почтой, оплата и детали доставки по телефону или в&nbsp;WhatsApp.</p></article>
-      <article class="fmt r"><h3>Электронная книга</h3><p class="price">40 ₪</p><p>Файл PDF приходит на ваш e-mail после оплаты. Читайте с телефона, планшета или компьютера.</p></article>
+      <article class="fmt r"><h3>Цифровая копия</h3><p class="price">40 ₪</p><p>Цифровая копия приходит на ваш e-mail после оплаты. Читайте с телефона, планшета или компьютера.</p></article>
       <article class="fmt r"><h3>Серия целиком</h3><p class="price"><span class="ph">[[цена комплекта]]</span></p><p>Все книги «Занимательного иврита» одним заказом. Хороший подарок тому, кто только начинает, и тому, кто уже всё знает.</p></article>
     </div>
   </div>
@@ -266,7 +266,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <fieldset class="fmt-pick">
         <legend class="sr">Формат</legend>
         <label><input type="radio" name="fmt" value="print" checked><span><b>Печатная</b><small>50 ₪ + доставка</small></span></label>
-        <label><input type="radio" name="fmt" value="pdf"><span><b>Электронная, PDF</b><small id="bd-pdfprice"></small></span></label>
+        <label><input type="radio" name="fmt" value="pdf"><span><b>Цифровая копия</b><small id="bd-pdfprice"></small></span></label>
       </fieldset>
       <div class="bd-buy">
         <button class="btn solid" type="button" id="bd-add">В корзину</button>
@@ -297,7 +297,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
         <label><span>Имя</span><input name="name" autocomplete="name" required></label>
         <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" dir="ltr" required></label>
         <label data-need="print"><span>Адрес доставки</span><input name="addr" autocomplete="street-address"></label>
-        <label data-need="pdf"><span>E-mail для PDF</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
         <p class="cart-legal">Заказ уходит автору в WhatsApp, он подтвердит наличие и способ оплаты. <span class="ph">[[подключить онлайн-оплату: Bit / PayBox / карта]]</span></p>
       </form>

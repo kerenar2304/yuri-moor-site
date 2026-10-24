@@ -1369,3 +1369,4 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
   .qb.sheet .qb-f{padding:18px 12px 16px}
   .qb.sheet .qb-f b{font-size:24px}
 }
+.qb-f>span{text-align:center}
