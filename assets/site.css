@@ -1147,3 +1147,4 @@ html[data-font=bebas] .hero-name{font-weight:600}
 #about .about-ph{isolation:isolate}
 #about .about-ph::before{display:none}#about .about-ph::after{content:'';display:block;position:absolute;left:18%;right:18%;bottom:1.5%;height:5%;z-index:-1;background:radial-gradient(closest-side,rgba(13,43,82,.28),transparent);filter:blur(6px)}#about .about-ph img{filter:none}
 .ftr img[src*=credit]{filter:brightness(0) saturate(100%);opacity:.7}
+.sig-img{display:block;width:clamp(96px,9vw,140px);height:auto;margin:calc(4*var(--u)) 0 calc(8*var(--u)) -6px}
