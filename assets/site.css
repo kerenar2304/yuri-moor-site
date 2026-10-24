@@ -1305,3 +1305,4 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
   .shelf-sec .plank{margin:0}
 }
 #books{background:var(--light)}
+@media (max-width:900px){.shelf-sec .shelf-wrap{grid-template-columns:1fr}.shelf-side{justify-content:flex-start}}
