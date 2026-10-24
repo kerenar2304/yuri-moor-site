@@ -500,3 +500,15 @@
     });
   }
 })();
+
+/* catalog covers keep their real proportions: pass each image's ratio to its card */
+(function () {
+  var grid = document.getElementById('grid');
+  if (!grid) return;
+  var fit = function (img) {
+    var card = img.closest('.card');
+    if (card && img.naturalWidth) card.style.setProperty('--r', (img.naturalWidth / img.naturalHeight).toFixed(4));
+  };
+  grid.addEventListener('load', function (e) { if (e.target.matches && e.target.matches('.cvi img')) fit(e.target); }, true);
+  grid.querySelectorAll('.cvi img').forEach(function (img) { if (img.complete) fit(img); });
+})();

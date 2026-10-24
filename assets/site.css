@@ -1853,3 +1853,9 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 @media (max-width:1200px){.pubs-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:900px){.pubs-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:700px){.pubs-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.pub-body{padding:12px 12px 14px}.pub-t{font-size:15px}.pub-kind{font-size:9.5px;letter-spacing:.1em}}
+/* catalog: every cover whole, at its own proportions (--r set from the image), sitting on the bottom of one shared slot */
+#grid .card-stage{aspect-ratio:.66;display:flex;align-items:flex-end}
+#grid .card-cv,#grid .card.wide .card-cv{display:block;width:100%;aspect-ratio:auto}
+#grid .card-cv .cvi,#grid .card.wide .card-cv .cvi{display:block;width:100%;aspect-ratio:var(--r,.7);background:none}
+#grid .card-cv .cvi img,#grid .card.wide .card-cv .cvi img{width:100%;height:100%;object-fit:cover;padding:0}
+#grid .card-acts,#grid .card.wide .card-acts{top:calc((1 - .66 / var(--r,.7)) * 100% + 8px);bottom:auto}
