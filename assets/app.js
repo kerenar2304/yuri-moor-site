@@ -165,14 +165,13 @@
           '<span class="cvi">' + coverHTML(b, true) +
             '<span class="cvb" aria-hidden="true"><b>' + esc(b.title) + '</b><span>' + esc(b.text[0]) + '</span><i>Юрий Моор-Мурадов</i></span>' +
           '</span></a>' +
-        '<button type="button" class="card-cart" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + '</button>' +
         '<div class="card-acts">' +
           '<button type="button" data-fav="' + b.id + '" aria-pressed="' + (fav.indexOf(b.id) > -1) + '" aria-label="В избранное: ' + esc(b.title) + '">' + ICON_HEART + '<em>В избранное</em></button>' +
           '<button type="button" data-flip aria-pressed="false" aria-label="Обратная сторона обложки">' + ICON_GLASSES + '<em>Оборот книги</em></button>' +
         '</div></div>' +
         '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="#books" data-book="' + b.id + '">' + esc(b.title) + '</a></h3>' +
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
-        '<p class="card-price"><b>' + SHOP.PRICE + ' шек.</b><span>' + (b.pdf ? 'печатная · есть PDF' : 'печатная') + '</span></p>' +
+        '<div class="card-foot"><b class="card-pr">' + SHOP.PRICE + ' шек.</b><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
         '</article>';
     }).join('');
   }
