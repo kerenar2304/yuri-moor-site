@@ -1507,3 +1507,28 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 .about-facts b{font:600 13px/1 var(--fam);letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
 .about-facts span{font:400 14.5px/1.5 var(--fam);color:#1d3d63}
 @media (max-width:700px){.about-facts{grid-template-columns:1fr}}
+
+/* BOOK DIALOG v2: everything fits in one screen, no scrolling */
+.bookdlg{max-height:min(640px,calc(100svh - 48px));overflow:hidden}
+.bookdlg .bd-grid{height:100%;max-height:inherit;align-items:stretch}
+.bookdlg .bd-info{overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:10px;padding-block:clamp(24px,3vw,40px)}
+.bookdlg .bd-info .kicker{margin:0}
+.bookdlg .bd-info h2,html[data-font=bebas] .bookdlg .bd-info h2{margin:0;font-size:clamp(26px,2.3vw,36px);line-height:1.05}
+html[data-font=bebas] .bookdlg .bd-info h2[dir=rtl]{font:700 clamp(28px,2.5vw,40px)/1 "Karantina",var(--fam)}
+.bookdlg .bd-sub{margin:0;font:400 15px/1.4 var(--fam);color:var(--accent-ink)}
+.bookdlg .bd-text{margin:2px 0 0}
+.bookdlg .bd-text p{margin:0 0 8px;font:400 14.5px/1.55 var(--fam);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.bookdlg .bd-text p+p{-webkit-line-clamp:2}
+.bookdlg .fmt-pick{margin:6px 0 0;gap:8px}
+.bookdlg .fmt-pick label span{padding:10px 14px}
+.bookdlg .bd-buy{margin-top:4px;gap:8px}
+.bookdlg .bd-buy .btn{min-height:46px}
+.bookdlg .bd-wa{margin-top:2px;font-size:13px}
+.bookdlg .bd-cover{min-height:0}
+@media (max-width:700px){
+  .bookdlg{max-height:calc(100svh - 16px)}
+  .bookdlg .bd-cover{max-height:30svh}
+  .bookdlg .bd-info{padding:18px 18px 20px;gap:8px;justify-content:flex-start}
+  .bookdlg .bd-text p{-webkit-line-clamp:3}.bookdlg .bd-text p+p{display:none}
+}
+@media (max-width:700px){.bookdlg .bd-cover{height:30svh;max-height:none;display:grid;place-items:center;overflow:hidden;padding:12px 0}.bookdlg .bd-cover .bd-3d{transform:scale(.68);transform-origin:center}}

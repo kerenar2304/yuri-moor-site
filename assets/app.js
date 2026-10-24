@@ -26,7 +26,7 @@
     return '<span class="box"><span class="f front">' + coverHTML(b) + '</span><span class="f back"></span>' +
       '<span class="f spine">' + spineHTML(b, num) + '</span><span class="f pages"></span><span class="f top"></span></span>';
   }
-  function kicker(b) { return b.vol ? 'Занимательный иврит · том ' + b.vol : (b.isNew ? 'Новая книга' : SERIES[b.series]); }
+  function kicker(b) { return b.vol ? 'Занимательный иврит · часть ' + b.vol : (b.isNew ? 'Новая книга' : SERIES[b.series]); }
 
   /* ---------- the shelf ---------- */
   var ORDER = ['z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7', 'z8', 'isr', 'razg', 'prig', 'debut', 'shp', 'nhd', 'heb'];
