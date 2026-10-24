@@ -1931,3 +1931,4 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .ftr-col h2,html[data-font=bebas] .ftr .ftr-col h2{color:#2c5580}
 .ftr-bottom{border-top-color:rgba(13,43,82,.2)}
 .ftr .credit{border-top-color:rgba(13,43,82,.2)}
+.ftr .credit span{color:var(--dark)}
