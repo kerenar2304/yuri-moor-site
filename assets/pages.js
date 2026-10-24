@@ -51,17 +51,28 @@
   var art = $('#art-root');
   if (art) {
     var VIDEO = { id: 'HiTXXnRdmpU', t: 'Юрий Моор-Мурадов: писатель, драматург, публицист, переводчик', o: 'RTN · программа «Контакт»', d: 'Апрель 2025' };
+    /* img: assets/press/<img>.webp; d only where the source shows a date */
     var PRESS = [
-      { k: 'Статья', o: 'Хайфаинфо', t: 'Все оттенки человеческой глупости', u: 'http://haifainfo.com/?p=29499', q: 'Почему «хатихат метумтемет» обиднее, чем просто «метумтемет»?' },
-      { k: 'Интервью', o: 'Zahav.ru', t: 'Своя колея Юрия Моор-Мурадова', u: 'https://mnenia.zahav.ru/Articles/3611742/%D1%81%D0%B2%D0%BE%D1%8F_%D0%BA%D0%BE%D0%BB%D0%B5%D1%8F_%D1%8E%D1%80%D0%B8%D1%8F_%D0%BC%D0%BE%D0%BE%D1%80%D0%BC%D1%83%D1%80%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0' },
-      { k: 'Статья', o: '9 канал', t: 'Иврит понаслышке, или Как пролезть без очереди', u: 'https://archive.9tv.co.il/news/2010/06/22/77359.html' },
-      { k: 'Интервью', o: 'Zahav.ru', t: '«Без языка нельзя стать частью народа»', u: 'https://salat.zahav.ru/Articles/3386066/%D0%B1%D0%B5%D0%B7_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B0_%D0%BD%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F_%D1%81%D1%82%D0%B0%D1%82%D1%8C_%D1%87%D0%B0%D1%81%D1%82%D1%8C%D1%8E_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%B0' },
-      { k: 'Статья', o: 'Хайфаинфо', t: 'Кража на Ассамблее ООН, или Русский язык министра Фуада', u: 'https://haifainfo.com/?p=18656' },
-      { k: 'Эссе', o: 'Заметки по еврейской истории', t: 'Язык как первая любовь со школьных лет', u: 'https://club.berkovich-zametki.com/?p=20515' },
-      { k: 'Статья', o: '9 канал', t: 'Однокоренная организация, или Богатенький Буратино', u: 'https://archive.9tv.co.il/news/2010/08/01/80381.html' },
-      { k: 'Статья', o: 'Хайфаинфо', t: 'Виновник Нобелевской премии, или Приватизация Кнессета', u: 'https://haifainfo.com/?p=22428' },
-      { k: 'Статья', o: 'Хайфаинфо', t: 'Наивен ли Европейский Союз, или Иврит депутата Тиби', u: 'https://haifainfo.com/?p=22426' }
+      { k: 'Интервью', o: 'Zahav.ru', img: 'p-kolea', t: 'Своя колея Юрия Моор-Мурадова', u: 'https://mnenia.zahav.ru/Articles/3611742/%D1%81%D0%B2%D0%BE%D1%8F_%D0%BA%D0%BE%D0%BB%D0%B5%D1%8F_%D1%8E%D1%80%D0%B8%D1%8F_%D0%BC%D0%BE%D0%BE%D1%80%D0%BC%D1%83%D1%80%D0%B0%D0%B4%D0%BE%D0%B2%D0%B0' },
+      { k: 'Интервью', o: 'Zahav.ru', img: 'p-narod', t: '«Без языка нельзя стать частью народа»', u: 'https://salat.zahav.ru/Articles/3386066/%D0%B1%D0%B5%D0%B7_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B0_%D0%BD%D0%B5%D0%BB%D1%8C%D0%B7%D1%8F_%D1%81%D1%82%D0%B0%D1%82%D1%8C_%D1%87%D0%B0%D1%81%D1%82%D1%8C%D1%8E_%D0%BD%D0%B0%D1%80%D0%BE%D0%B4%D0%B0' },
+      { k: 'Эссе', o: 'Заметки по еврейской истории', img: 'p-love', t: 'Язык как первая любовь со школьных лет', u: 'https://club.berkovich-zametki.com/?p=20515' },
+      { k: 'Статья', o: 'Хайфаинфо', img: 'p-glup', t: 'Все оттенки человеческой глупости', u: 'http://haifainfo.com/?p=29499' },
+      { k: 'Статья', o: '9 канал', img: 'p-queue', t: 'Иврит понаслышке, или Как пролезть без очереди', u: 'https://archive.9tv.co.il/news/2010/06/22/77359.html', d: '22 июня 2010' },
+      { k: 'Статья', o: 'Хайфаинфо', img: 'p-un', t: 'Кража на Ассамблее ООН, или Русский язык министра Фуада', u: 'https://haifainfo.com/?p=18656' },
+      { k: 'Статья', o: '9 канал', img: 'p-buratino', t: 'Однокоренная организация, или Богатенький Буратино', u: 'https://archive.9tv.co.il/news/2010/08/01/80381.html', d: '1 августа 2010' },
+      { k: 'Статья', o: 'Хайфаинфо', img: 'p-knesset', t: 'Виновник Нобелевской премии, или Приватизация Кнессета', u: 'https://haifainfo.com/?p=22428' },
+      { k: 'Статья', o: 'Хайфаинфо', img: 'p-eu', t: 'Наивен ли Европейский Союз, или Иврит депутата Тиби', u: 'https://haifainfo.com/?p=22426' }
     ];
+    var KINDS = [['all', 'Все'], ['Интервью', 'Интервью'], ['Статья', 'Статьи'], ['Эссе', 'Эссе'], ['Эфир', 'ТВ и видео']];
+    var pubCard = function (p) {
+      return '<a class="pub" data-k="' + p.k + '" href="' + p.u + '" target="_blank" rel="noopener">' +
+        '<span class="pub-img">' + p.media + '</span>' +
+        '<span class="pub-body"><span class="pub-kind">' + esc(p.k) + ' · ' + esc(p.o) + '</span>' +
+        '<b class="pub-t">' + esc(p.t) + '</b>' + (p.d ? '<span class="pub-d">' + esc(p.d) + '</span>' : '') + '</span></a>';
+    };
+    var pubs = [{ k: 'Эфир', o: 'RTN', t: VIDEO.t, d: VIDEO.d, u: 'https://www.youtube.com/watch?v=' + VIDEO.id,
+      media: '<img src="https://i.ytimg.com/vi/' + VIDEO.id + '/maxresdefault.jpg" alt="" loading="lazy"><i class="pub-play" aria-hidden="true"></i>' }]
+      .concat(PRESS.map(function (p) { p.media = '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'; return p; }));
     var html =
       '<div class="art-grid">' + WORDS.map(function (w) {
         var bk = byId[w.book];
@@ -73,29 +84,18 @@
           (bk ? '<a class="art-src" href="book.html?id=' + bk.id + '">' + esc(w.src) + ' →</a>' : '<span class="art-src">' + esc(w.src) + '</span>') +
         '</article>';
       }).join('') + '</div>' +
-      '<section class="np" aria-labelledby="np-h">' +
-        '<header class="np-mast"><p class="np-meta"><span>Израиль</span><span>Пресса · интервью · эфир</span><span>Yura Media</span></p>' +
-          '<h2 id="np-h">Вести о Моор-Мурадове</h2><p class="np-rule"></p></header>' +
-        '<div class="np-page">' +
-          '<figure class="np-video"><button type="button" class="np-play" data-yt="' + VIDEO.id + '" aria-label="Смотреть видео: ' + esc(VIDEO.t) + '">' +
-            '<img src="https://i.ytimg.com/vi/' + VIDEO.id + '/maxresdefault.jpg" alt=""><i aria-hidden="true"></i></button>' +
-            '<figcaption><span class="np-kind">Эфир</span><b>' + esc(VIDEO.t) + '</b><span>' + esc(VIDEO.o) + ' · ' + esc(VIDEO.d) + '</span>' +
-            '<a href="https://www.youtube.com/watch?v=' + VIDEO.id + '" target="_blank" rel="noopener">Открыть на YouTube ↗</a></figcaption></figure>' +
-          PRESS.map(function (p, k) {
-            return '<a class="np-clip' + (k === 0 ? ' lead' : '') + '" href="' + p.u + '" target="_blank" rel="noopener">' +
-              '<span class="np-head"><span class="np-src">' + esc(p.o) + '</span><span class="np-kind">' + esc(p.k) + '</span></span>' +
-              '<b class="np-t">' + esc(p.t) + '</b>' + (p.q ? '<q>' + esc(p.q) + '</q>' : '') +
-              '<span class="np-cols" aria-hidden="true"><i></i><i></i></span><span class="np-more">Читать ↗</span></a>';
-          }).join('') +
-        '</div>' +
+      '<section class="pubs" aria-labelledby="pubs-h">' +
+        '<div class="pubs-head"><h2 id="pubs-h">Публикации</h2><div class="tabs pubs-tabs" role="tablist" aria-label="Тип публикации">' +
+          KINDS.map(function (k, i) { return '<button type="button" data-pk="' + k[0] + '" aria-selected="' + !i + '">' + k[1] + '</button>'; }).join('') +
+        '</div></div>' +
+        '<div class="pubs-grid">' + pubs.map(pubCard).join('') + '</div>' +
       '</section>';
     art.innerHTML = html;
-    var play = $('.np-play', art);
-    if (play) play.addEventListener('click', function () {
-      var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + play.dataset.yt + '?autoplay=1&rel=0';
-      f.title = VIDEO.t; f.allow = 'autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen = true;
-      play.replaceWith(f);
+    art.querySelectorAll('[data-pk]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        art.querySelectorAll('[data-pk]').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
+        art.querySelectorAll('.pub').forEach(function (c) { c.hidden = b.dataset.pk !== 'all' && c.dataset.k !== b.dataset.pk; });
+      });
     });
   }
 })();
