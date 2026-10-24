@@ -1356,3 +1356,8 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 #grid .card-acts [data-fav][aria-pressed=true]{background:var(--dark);color:#fff}#grid .card.wide .card-acts{top:auto;bottom:calc(64.5% - 34px)}
 #grid .card.wide .card-acts{top:calc(48.4% + 8px);bottom:auto}
 @media (min-width:901px){.shelf-side{padding-top:calc(30*var(--u) + 40px - .16em)}.shelf-sec .shelf-h{margin-top:0}}
+/* catalog head: title and tabs on one line */
+#books .sec-head{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:calc(40*var(--u))}
+#books .sec-head h2{margin:0;font-size:clamp(34px,3.2vw,50px)}
+#books .sec-head .tabs{margin:0}
+@media (max-width:700px){#books .sec-head{align-items:flex-start}}

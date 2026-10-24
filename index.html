@@ -107,15 +107,14 @@ addEventListener('error',function(){d.classList.add('r-fail')});
   <div class="wrap">
     <header class="sec-head">
       <h2 id="books-h" class="r">Книжная полка</h2>
-
+      <div class="tabs r" role="tablist" aria-label="Серии">
+        <button role="tab" aria-selected="true" data-f="all">Все книги</button>
+        <button role="tab" aria-selected="false" data-f="hebrew">Занимательный иврит</button>
+        <button role="tab" aria-selected="false" data-f="detective">Детективы</button>
+        <button role="tab" aria-selected="false" data-f="other">Израиль и разговорник</button>
+        <button role="tab" aria-selected="false" data-f="fav" class="tab-fav" hidden>Избранное <b>0</b></button>
+      </div>
     </header>
-    <div class="tabs r" role="tablist" aria-label="Серии">
-      <button role="tab" aria-selected="true" data-f="all">Все книги</button>
-      <button role="tab" aria-selected="false" data-f="hebrew">Занимательный иврит</button>
-      <button role="tab" aria-selected="false" data-f="detective">Детективы</button>
-      <button role="tab" aria-selected="false" data-f="other">Израиль и разговорник</button>
-      <button role="tab" aria-selected="false" data-f="fav" class="tab-fav" hidden>Избранное <b>0</b></button>
-    </div>
     <div class="grid" id="grid"></div>
   </div>
 </section>
