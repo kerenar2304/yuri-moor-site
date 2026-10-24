@@ -1420,3 +1420,22 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 .lb-lens{right:auto;left:50%;transform:translate(-50%,-50%)}
 .lb-handle{right:auto;left:calc(50% + clamp(52px,5vw,74px));top:calc(50% + clamp(52px,5vw,74px))}
 @media (max-width:900px){.lb-lens{transform:translate(-50%,-50%)}.lb-handle{left:calc(50% + 46px);top:calc(50% + 46px)}.lb-words{font-size:15px}}
+
+/* the magnifier now reads a newspaper clipping: Yuri's column, one real line of his under the glass */
+.lb-words{display:none}
+.lb-paper{position:absolute;left:4%;right:2%;top:12%;bottom:-8%;transform:rotate(-4deg);padding:18px 18px 0;border-radius:2px;
+  background:linear-gradient(180deg,#fbf8f1,#f1ece0);box-shadow:0 18px 30px -18px rgba(13,43,82,.45),0 1px 2px rgba(13,43,82,.12)}
+.lb-paper::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .25 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.lb-col-t{margin:0 0 10px;padding-bottom:8px;border-bottom:1.5px solid rgba(13,43,82,.7);font:800 clamp(14px,1.2vw,18px)/1 "Oswald",var(--fam);letter-spacing:.04em;text-transform:uppercase;color:var(--dark)}
+.lb-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;height:calc(100% - 40px)}
+/* columns of small print, drawn as grey lines (no invented words) */
+.lb-cols i{position:relative;display:block;background:repeating-linear-gradient(180deg,rgba(13,43,82,.32) 0 3px,transparent 3px 8px);
+  -webkit-mask-image:linear-gradient(90deg,#000 0 92%,transparent);mask-image:linear-gradient(90deg,#000 0 92%,transparent)}
+.lb-cols i.hl span{position:absolute;left:-2px;right:-6px;top:38%;padding:1px 2px;background:#f6f2e8;font:600 8.5px/1.25 var(--fam);color:var(--dark)}
+.lb-lens{left:50%;top:52%;transform:translate(-50%,-50%) rotate(-4deg);width:clamp(160px,15vw,220px);
+  background:radial-gradient(70% 70% at 35% 30%,rgba(255,255,255,.95),rgba(251,248,241,.94) 60%,rgba(236,230,214,.94))}
+.lb-lens span{max-width:78%;text-align:center;font:700 clamp(17px,1.55vw,23px)/1.15 "Assistant",var(--fam);letter-spacing:0;color:var(--dark)}
+.lb-handle{left:calc(50% + clamp(56px,5.3vw,78px));top:calc(52% + clamp(56px,5.3vw,78px));transform:rotate(-49deg)}
+@media (max-width:900px){.lb-paper{left:10%;right:10%;top:6%;bottom:-10%;padding:12px 12px 0}.lb-lens{width:150px}.lb-lens span{font-size:16px}
+  .lb-handle{left:calc(50% + 50px);top:calc(52% + 50px)}}
