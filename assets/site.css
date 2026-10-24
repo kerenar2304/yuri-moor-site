@@ -1882,3 +1882,7 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 @media (max-width:700px){.tx-words{padding:20px}.tx-book{gap:16px;padding:16px}.tx-book img{width:70px}.tx-book b{font-size:18px}}
 .tx-src{margin:calc(30*var(--u)) 0;padding-top:16px;border-top:1px solid rgba(13,43,82,.15);font:400 14.5px/1.6 var(--fam);color:#5b6b80}
 .tx-src a{color:var(--blue);font-weight:600}
+/* detective panel: tighter, the tape only needs its own band above the content */
+#detective.det{padding-top:calc(150*var(--u));padding-bottom:calc(60*var(--u))}
+#detective .det-books{height:calc(440*var(--u))}
+@media (max-width:900px){#detective.det{padding-top:110px;padding-bottom:40px}#detective .det-books{height:92vw}}
