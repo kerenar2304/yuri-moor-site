@@ -1602,3 +1602,51 @@ body,#about,.sec.about,.lens-banner-sec,.shelf-sec,#books,.sec.order,.hero{backg
 .press .wm{font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:-.01em;text-transform:none;color:#3d4450;opacity:.7;line-height:1}
 .press .wm-nn{font-size:19px;font-style:italic}
 .press .wm-7i{font-size:18px;font-variant:small-caps;letter-spacing:.02em}
+
+/* ============ LOWER SECTIONS in the language of the top: cream page, hero-width rounded panels, white cards, pill buttons ============ */
+/* detectives: a navy panel as wide as the hero, the crime tape crossing it */
+#detective{margin:calc(30*var(--u)) 20px 0;border-radius:32px;overflow:hidden;isolation:isolate;
+  background:radial-gradient(90% 120% at 80% 10%,#1b4577 0%,#0d2b52 55%,#0a2140 100%);color:#fff;padding-bottom:calc(70*var(--u))}
+#detective h2,#detective p,#detective .kicker,#detective cite,#detective blockquote p{color:#fff}
+#detective h2 em{color:var(--sky)}
+#detective .kicker{color:var(--sky)}
+#detective blockquote{border-color:var(--sky)}
+#detective blockquote cite{color:rgba(255,255,255,.7)}
+#detective .tape{background:var(--sky);color:var(--dark)}
+#detective .btn.solid{background:var(--sky);border-color:var(--sky);color:var(--dark)}
+#detective .btn.solid span[aria-hidden]{background:var(--dark);color:#fff}
+#detective .btn.solid:hover{background:#fff;border-color:#fff}
+#detective .btn.ghost{border-color:rgba(255,255,255,.45);color:#fff}
+#detective .btn.ghost span[aria-hidden]{background:#fff;color:var(--dark)}
+/* letters: white cards on cream, like the catalog and the about facts */
+#letters{background:var(--light);color:var(--dark);padding:calc(90*var(--u)) 0}
+#letters .sec-head h2{font-size:var(--h2)}
+#letters h2 em{color:var(--blue)}
+#letters .let-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+#letters .letter{position:relative;margin:0;padding:30px 30px 24px 64px;border-radius:18px;background:#fff;border:0;
+  box-shadow:0 1px 2px rgba(13,43,82,.06),0 16px 34px -24px rgba(13,43,82,.35)}
+#letters .letter::before{content:"“";position:absolute;left:22px;top:14px;font:700 56px/1 Georgia,serif;color:var(--sky)}
+#letters .letter blockquote{margin:0;font:400 clamp(16px,1.2vw,18px)/1.6 var(--fam);color:var(--dark)}
+#letters .letter figcaption{margin-top:14px;font:600 13px/1 var(--fam);letter-spacing:.04em;color:var(--blue)}
+#letters .letter:nth-child(n){margin-top:0}
+/* how to get a book: three white cards */
+.sec.order{padding:calc(40*var(--u)) 0 calc(90*var(--u))}
+.sec.order .ord-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;border:0}
+.sec.order .fmt{padding:28px 26px;border-radius:18px;background:#fff;border:0 !important;
+  box-shadow:0 1px 2px rgba(13,43,82,.06),0 16px 34px -24px rgba(13,43,82,.35)}
+.sec.order .fmt:first-child{background:linear-gradient(160deg,#dff0fa,#bfe1f3)}
+.sec.order .fmt h3{margin:0 0 10px;font-size:clamp(20px,1.6vw,24px)}
+.sec.order .fmt .price{margin:0 0 12px;font:700 clamp(26px,2.2vw,34px)/1 var(--fam);color:var(--dark)}
+.sec.order .fmt .price small{font:500 13px/1 var(--fam);color:var(--accent-ink)}
+.sec.order .fmt p{font:400 15px/1.55 var(--fam);color:#1d3d63}
+/* contact: a navy panel as wide as the hero, soft rounded fields */
+#contact{margin:0 20px;border-radius:32px;overflow:hidden;background:radial-gradient(90% 120% at 15% 0%,#1b4577 0%,#0d2b52 55%,#0a2140 100%)}
+#contact .form input,#contact .form textarea{border:0;border-radius:12px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);padding:12px 14px;color:#fff}
+#contact .form input:focus,#contact .form textarea:focus{box-shadow:inset 0 0 0 1.5px var(--sky);outline:0}
+#contact .form label>span{color:rgba(255,255,255,.75)}
+.ftr{background:var(--light);margin-top:calc(30*var(--u))}
+@media (max-width:900px){
+  #detective,#contact{margin-left:8px;margin-right:8px;border-radius:22px}
+  #letters .let-grid,.sec.order .ord-grid{grid-template-columns:1fr}
+  #letters .letter{padding:26px 22px 20px 54px}
+}
