@@ -1741,3 +1741,15 @@ a.stk.pill:hover{transform:rotate(var(--r)) translateY(-2px)}
 .c2-loupe{width:.62em;height:.62em;color:var(--sky);flex:none;transform:translateY(-.02em)}
 @media (max-width:700px){.c2-track span{font-size:calc((100vw - 56px) / 5.1)}}
 .ftr img[src*=credit]{filter:none;opacity:1;height:26px;width:auto}
+/* «КОНТАКТЫ ⌕ КОНТАКТЫ»: two whole words with the loupe between them, never cut */
+.c2-track span{justify-content:space-between;gap:.18em;font-size:calc((100vw - 120px) / 14.6)}
+.c2-track b{font-weight:inherit}
+.c2-loupe{width:.7em;height:.7em}
+@media (max-width:700px){
+  .c2-track span{flex-wrap:wrap;justify-content:flex-start;column-gap:.14em;row-gap:0;font-size:calc((100vw - 56px) / 7.3)}
+  .c2-track b:last-child{flex-basis:100%}
+}
+/* exact fit: word = 4.42em, loupe .7em, two gaps .3em → 10.15em per line on desktop; 5.3em (word + loupe) on phones */
+.c2-track span{justify-content:center;gap:.3em;font-size:calc((100vw - 40px - 72 * var(--u)) / 10.35)}
+@media (max-width:700px){.c2-track span{justify-content:flex-start;column-gap:.14em;font-size:calc((100vw - 56px) / 5.4)}}
+@media (max-width:700px){.c2-track span{font-size:calc((100vw - 56px) / 5.75);column-gap:.12em}.c2-loupe{width:.6em;height:.6em}}
