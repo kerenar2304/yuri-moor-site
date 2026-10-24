@@ -1710,3 +1710,11 @@ html[data-font=bebas] .sec.order .fmt h3{font-size:clamp(20px,1.5vw,24px)}
   .stk.badge{width:112px}
   .c2-mail{margin:0 20px;font-size:28px}
 }
+/* calm version: nothing moves on its own, no dragging */
+.c2-track{animation:none}
+.stk.badge svg{animation:none}
+.stk{cursor:default;touch-action:auto}
+a.stk{cursor:pointer}
+a.stk.pill:hover{transform:rotate(var(--r)) translateY(-2px)}
+.stk.badge text{font-size:10px;letter-spacing:.06em}
+.c2-field{touch-action:auto}
