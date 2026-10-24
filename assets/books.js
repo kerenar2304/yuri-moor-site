@@ -1,7 +1,7 @@
-/* Catalog. price: printed copy in шек.. PDF_PRICE = null until the author sets it (shown as a visible placeholder). */
+/* Catalog. Prices in shekels: printed copy PRICE, digital PDF copy PDF_PRICE. */
 window.SHOP = {
   PRICE: 50,
-  PDF_PRICE: null,
+  PDF_PRICE: 40,
   PHONE: '972547923229',
   PHONE_TXT: '054-792-32-29'
 };

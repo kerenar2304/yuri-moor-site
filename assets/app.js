@@ -171,7 +171,7 @@
         '</div></div>' +
         '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="#books" data-book="' + b.id + '">' + esc(b.title) + '</a></h3>' +
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
-        '<div class="card-foot"><b class="card-pr">' + SHOP.PRICE + ' шек.</b><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
+        '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>PDF ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
         '</article>';
     }).join('');
   }
@@ -200,20 +200,21 @@
   }
   function qbOpen(card, b) {
     qbClose();
-    var pdfPrice = SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' шек.' : '<i class="ph">[[цена]]</i>';
+    var pdfPrice = SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' ₪' : '<i class="ph">[[цена]]</i>';
     var el = document.createElement('div'); el.className = 'qb'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Купить: ' + b.title);
     el.innerHTML = '<button type="button" class="qb-x" data-qb-close aria-label="Закрыть">×</button>' +
       '<h4' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(b.title) + '</h4>' +
       '<p class="qb-by">Юрий Моор-Мурадов</p>' +
       (b.pages ? '<button type="button" class="qb-link" data-read="' + b.id + '">Читать отрывок</button>' : '') +
       '<div class="qb-fmts' + (b.pdf ? '' : ' one') + '">' +
-        '<div class="qb-f main"><span>' + ICON_BOOK + 'Печатная книга</span><b>' + SHOP.PRICE + ' шек.</b><small>+ доставка</small>' +
+        '<div class="qb-f main"><span>' + ICON_BOOK + 'Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|print">' + ICON_CART + 'В корзину</button></div>' +
         (b.pdf ? '<div class="qb-f"><span>' + ICON_PDF + 'PDF</span><b>' + pdfPrice + '</b><small>на e-mail</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|pdf">' + ICON_CART + 'В корзину</button></div>' : '') +
       '</div>' +
       '<a class="qb-more" href="#books" data-book="' + b.id + '">Подробнее о книге</a>';
-    var sheet = matchMedia('(max-width:700px)').matches; if (sheet) el.classList.add('sheet');
+    // one centred window (a bottom sheet on phones)
+    var sheet = true; if (sheet) el.classList.add('sheet');
     (sheet ? document.body : $('.card-stage', card)).appendChild(el); qb = el; qbCard = card; card.classList.add('qb-on'); qbDim.classList.add('on');
     requestAnimationFrame(function () { el.classList.add('on'); $('.qb-add', el).focus({ preventScroll: true }); });
   }
@@ -260,7 +261,7 @@
     $('#bd-text').innerHTML = b.text.map(function (p) { return '<p>' + esc(p).replace(/\[\[(.+?)\]\]/g, '<span class="ph">[[$1]]</span>') + '</p>'; }).join('');
     var pdf = $('input[name=fmt][value=pdf]', dlg); pdf.disabled = !b.pdf;
     $('input[name=fmt][value=print]', dlg).checked = true;
-    $('#bd-pdfprice').innerHTML = b.pdf ? (SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' шек., на e-mail' : '<span class="ph">[[цена PDF]]</span>') : 'скоро';
+    $('#bd-pdfprice').innerHTML = b.pdf ? (SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' ₪, на e-mail' : '<span class="ph">[[цена PDF]]</span>') : 'скоро';
     var rd = $('#bd-read'); rd.hidden = !b.pages;
     $('#bd-wa').href = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте, Юрий! Вопрос о книге «' + (b.ru || b.title) + '»: ');
     dlg.showModal();
@@ -309,13 +310,13 @@
     ul.innerHTML = cart.map(function (c, k) {
       var b = byId[c.id], p = priceOf(c);
       return '<li class="ci" style="--tone:' + b.tone + '"><div class="th">' + coverHTML(b, true) + '</div><div><b>' + esc(b.ru || b.title) + '</b><small>' +
-        (c.fmt === 'pdf' ? 'Электронная, PDF' : 'Печатная') + ' · ' + (p ? p * c.q + ' шек.' : '[[цена]]') + '</small></div>' +
+        (c.fmt === 'pdf' ? 'Электронная, PDF' : 'Печатная') + ' · ' + (p ? p * c.q + ' ₪' : '[[цена]]') + '</small></div>' +
         '<div class="qty"><button type="button" data-q="-1" data-k="' + k + '" aria-label="Меньше">−</button><span>' + c.q + '</span><button type="button" data-q="1" data-k="' + k + '" aria-label="Больше">+</button></div></li>';
     }).join('');
     $('#cart-empty').hidden = !!cart.length; $('#cart-foot').hidden = !cart.length;
     var sum = 0, unknown = false, hasPrint = false, hasPdf = false;
     cart.forEach(function (c) { var p = priceOf(c); if (p) sum += p * c.q; else unknown = true; if (c.fmt === 'pdf') hasPdf = true; else hasPrint = true; });
-    $('#cart-sum').textContent = sum + ' шек.' + (unknown ? ' + PDF' : '');
+    $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + PDF' : '');
     $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы. ' : '') + (hasPdf ? 'PDF придёт на e-mail после оплаты.' : '');
     $$('#checkout [data-need]').forEach(function (l) {
       var on = l.dataset.need === 'print' ? hasPrint : hasPdf; l.hidden = !on; $('input', l).required = on;
