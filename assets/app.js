@@ -48,7 +48,7 @@
     var LEAN = { 3: -5, 7: 4, 12: -6 };                                               // degrees, books that lean
     function dims() {
       var w = shelf.clientWidth, phone = innerWidth <= 700;
-      var H = phone ? Math.min(300, innerHeight * .48) : Math.min((w - 14 * G) / 2.4, innerHeight * .46);
+      var H = phone ? Math.min(300, innerHeight * .48) : Math.min((w - 14 * G) / 2.6, innerHeight * .5);
       return bks.map(function (bk, j) {
         var wide = bk.classList.contains('wide');
         var h = wide ? H * .49 : H * HF[j % HF.length];
