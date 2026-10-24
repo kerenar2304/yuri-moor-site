@@ -1439,3 +1439,20 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 .lb-handle{left:calc(50% + clamp(56px,5.3vw,78px));top:calc(52% + clamp(56px,5.3vw,78px));transform:rotate(-49deg)}
 @media (max-width:900px){.lb-paper{left:10%;right:10%;top:6%;bottom:-10%;padding:12px 12px 0}.lb-lens{width:150px}.lb-lens span{font-size:16px}
   .lb-handle{left:calc(50% + 50px);top:calc(52% + 50px)}}
+
+/* realistic loupe: chrome rim, lacquered handle, glass glare and a lifted shadow; the glass shows the line magnified */
+.lb-lens,.lb-handle{display:none}
+.loupe-r{position:absolute;left:50%;top:50%;width:clamp(210px,19vw,290px);aspect-ratio:1;transform:translate(-44%,-46%) rotate(-6deg);z-index:3}
+.loupe-frame{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.loupe-glass{position:absolute;left:6.67%;top:6.67%;width:60%;height:60%;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:linear-gradient(180deg,#fbf8f1,#f2ede1);box-shadow:inset 0 0 18px 6px rgba(13,43,82,.16),inset 0 0 2px 1px rgba(255,255,255,.6)}
+.loupe-glass::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(closest-side,transparent 72%,rgba(13,43,82,.12) 92%,rgba(13,43,82,.22))}
+.loupe-glass p{margin:0;width:82%;text-align:center;font:600 clamp(12.5px,1.12vw,16px)/1.22 var(--fam);color:#1b2b40;transform:scale(1.04);
+  text-shadow:.4px 0 0 rgba(200,40,40,.25),-.4px 0 0 rgba(30,90,200,.25)}
+.loupe-glass b{font-weight:800;color:var(--dark)}
+/* the shadow the loupe casts on the paper: the rim ring and the handle, offset down-right */
+.loupe-shadow{position:absolute;left:14%;top:16%;width:60%;height:60%;border-radius:50%;border:14px solid rgba(25,30,40,.22);filter:blur(7px)}
+.loupe-shadow::after{content:"";position:absolute;left:84%;top:84%;width:22%;height:10%;border-radius:20px;background:rgba(25,30,40,.22);transform:rotate(45deg);transform-origin:left center;width:70%}
+.lb-cols i.hl span{font-size:7.5px;line-height:1.25;top:40%}
+.lb-col-t{font-size:clamp(11px,.95vw,14px);letter-spacing:.02em}
+@media (max-width:900px){.loupe-r{width:220px;transform:translate(-46%,-48%) rotate(-6deg)}.loupe-glass p{font-size:13px}}
