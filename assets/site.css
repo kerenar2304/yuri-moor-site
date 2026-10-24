@@ -1282,3 +1282,26 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
   .shelf-stage{padding-top:10px}
   .shelf-sec .plank{margin:0 0 18px}
 }
+
+/* SHELF v11: no frame. The area reads through light (a soft lamp glow on the wall, a long shadow under the ledge),
+   placement (text column top-aligned to the books, arrows on the ledge line) and type, all on the site's beige */
+.shelf-sec{padding:calc(90*var(--u)) 0 calc(70*var(--u));background:var(--light)}
+.shelf-sec .shelf-wrap{width:var(--wrap);margin:0 auto;padding:0;border-radius:0;overflow:visible;background:none;box-shadow:none;
+  grid-template-columns:minmax(200px,270px) minmax(0,1fr);gap:calc(48*var(--u));align-items:stretch}
+.shelf-stage{position:relative;padding-top:calc(30*var(--u));background:none;isolation:isolate}
+.shelf-stage::before{content:"";position:absolute;z-index:-1;left:-6%;right:-6%;top:-12%;bottom:8%;pointer-events:none;
+  background:radial-gradient(55% 60% at 50% 55%,rgba(255,255,255,.85),rgba(255,255,255,.35) 45%,rgba(246,243,236,0) 75%)}
+.shelf-stage::after{content:"";position:absolute;z-index:-1;left:4%;right:4%;bottom:-22px;height:60px;pointer-events:none;
+  background:radial-gradient(50% 50% at 50% 0%,rgba(60,44,28,.16),rgba(60,44,28,0) 100%);filter:blur(4px)}
+.shelf-sec .plank{margin:0 -20px}
+.shelf-side{padding:calc(30*var(--u)) 0 0;justify-content:space-between}
+.shelf-side .shelf-ctrl{margin-bottom:-24px}
+.shelf-sec .shelf-h{font-size:clamp(32px,2.8vw,46px)}
+@media (max-width:900px){
+  .shelf-sec{padding:50px 0 40px}
+  .shelf-sec .shelf-wrap{width:auto;gap:22px}
+  .shelf-side{padding:0 var(--gut)}
+  .shelf-side .shelf-ctrl{margin:6px 0 0}
+  .shelf-sec .plank{margin:0}
+}
+#books{background:var(--light)}
