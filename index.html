@@ -120,7 +120,26 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 </section>
 
 <!-- ============ SIGNATURE: the word under the lens ============ -->
-<section class="sec lensx on-dark" id="lens" aria-labelledby="lens-h">
+<section class="lens-banner-sec" aria-labelledby="lensb-h">
+  <div class="lens-banner r">
+    <div class="lb-books" aria-hidden="true">
+      <img class="lb1" src="assets/covers/z3.webp" alt="" loading="lazy">
+      <img class="lb2" src="assets/covers/z5.webp" alt="" loading="lazy">
+      <img class="lb3" src="assets/covers/z1.webp" alt="" loading="lazy">
+    </div>
+    <div class="lb-txt">
+      <h2 id="lensb-h">Слово под лупой</h2>
+      <p>Короткие истории о словах и выражениях иврита: что они значат на самом деле и откуда взялись. Из книг серии «Занимательный иврит».</p>
+      <button type="button" class="btn solid lb-open" aria-expanded="false" aria-controls="lens">Читать <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="lb-mag" aria-hidden="true">
+      <div class="lb-words" dir="rtl" lang="he"><span>מילה בסלע</span><span>עץ או פלי</span><span>מה נשמע</span></div>
+      <div class="lb-lens"><span dir="rtl" lang="he">מה נשמע?</span></div>
+      <i class="lb-handle"></i>
+    </div>
+  </div>
+</section>
+<section class="sec lensx on-dark lens-closed" id="lens" aria-labelledby="lens-h">
   <div class="wrap lensx-grid">
     <header class="lensx-head">
       <p class="kicker r">Слово под лупой</p>

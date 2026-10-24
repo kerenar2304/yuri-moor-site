@@ -483,4 +483,17 @@
     }, { rootMargin: '0px 0px -8% 0px' });
     rv.forEach(function (el) { io.observe(el); });
   } else rv.forEach(function (el) { el.classList.add('in'); });
+  /* ---------- lens banner: «Читать» opens the interactive board under it ---------- */
+  var lensSec = $('#lens'), lensBtn = $('.lb-open');
+  function openLens(scroll) {
+    if (!lensSec) return;
+    lensSec.classList.remove('lens-closed');
+    if (lensBtn) lensBtn.setAttribute('aria-expanded', 'true');
+    setTimeout(function () { dispatchEvent(new Event('resize')); if (scroll) lensSec.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }, reduce ? 0 : 620);
+  }
+  if (lensBtn) lensBtn.addEventListener('click', function () {
+    if (lensSec.classList.contains('lens-closed')) openLens(true);
+    else { lensSec.classList.add('lens-closed'); lensBtn.setAttribute('aria-expanded', 'false'); }
+  });
+  $$('a[href="#lens"]').forEach(function (a) { a.addEventListener('click', function () { openLens(false); }); });
 })();
