@@ -56,11 +56,16 @@
       '<article class="tx">' +
         '<header class="tx-head"><p class="tx-kind">' + esc(a.kind || (a.col ? 'Колонка «' + a.col + '»' : 'Статья')) + ' · ' + esc(a.o) + ' · ' + esc(a.d) + '</p>' +
           '<h1>' + esc(a.t) + '</h1><p class="tx-by">Юрий Моор-Мурадов</p></header>' +
-        '<figure class="tx-img"><img src="assets/press/' + a.img + '.webp" alt=""></figure>' +
-        '<div class="tx-body">' + a.paras.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
+        (a.img ? '<figure class="tx-img"><img src="assets/press/' + a.img + '.webp" alt=""></figure>'
+          : '<figure class="tx-img tx-word"><b dir="rtl" lang="he">' + esc(a.word) + '</b><i>' + esc(a.wtr) + '</i></figure>') +
+        '<div class="tx-body">' + a.paras.map(function (p) {
+          // a line written only in Hebrew reads right to left
+          return /[֐-׿]/.test(p) && !/[A-Za-zА-Яа-яЁё]/.test(p) ? '<p class="tx-he" dir="rtl" lang="he">' + esc(p) + '</p>' : '<p>' + esc(p) + '</p>';
+        }).join('') + '</div>' +
         (a.he ? '<aside class="tx-words" aria-labelledby="tx-w"><h2 id="tx-w">Словарик колонки</h2><ul dir="rtl" lang="he">' +
           a.he.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></aside>' : '') +
-        '<p class="tx-src">' + (a.src ? 'Впервые опубликовано: ' + esc(a.o) + ', ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Оригинал публикации ↗</a>' : esc(a.note || '')) + '</p>' +
+        '<p class="tx-src">' + (a.src ? (a.o === 'Facebook' ? 'Пост на странице автора в Facebook, ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Открыть в Facebook ↗</a>'
+          : 'Впервые опубликовано: ' + esc(a.o) + ', ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Оригинал публикации ↗</a>') : esc(a.note || '')) + '</p>' +
         (bk ? '<a class="tx-book" href="book.html?id=' + bk.id + '">' + (bk.cover ? '<img src="assets/covers/' + bk.cover + '.webp" alt="">' : '') +
           '<span><small>Колонка вошла в книгу</small><b>' + esc(bk.title) + '</b><em>' + esc(bk.or || '') + '</em><i>О книге →</i></span></a>' : '') +
       '</article>';
@@ -80,9 +85,17 @@
       { id: 'un', k: 'Статья', o: 'Хайфаинфо', img: 'p-un', t: 'Кража на Ассамблее ООН, или Русский язык министра Фуада', u: 'https://haifainfo.com/?p=18656' },
       { id: 'buratino', k: 'Статья', o: '9 канал', img: 'p-buratino', t: 'Однокоренная организация, или Богатенький Буратино', u: 'https://web.archive.org/web/20200122093821/http://archive.9tv.co.il:80/news/2010/08/01/80381.html', d: '1 августа 2010' },
       { id: 'knesset', k: 'Статья', o: 'Хайфаинфо', img: 'p-knesset', t: 'Виновник Нобелевской премии, или Приватизация Кнессета', u: 'https://haifainfo.com/?p=22428' },
-      { id: 'eu', k: 'Статья', o: 'Хайфаинфо', img: 'p-eu', t: 'Наивен ли Европейский Союз, или Иврит депутата Тиби', u: 'https://haifainfo.com/?p=22426' }
+      { id: 'eu', k: 'Статья', o: 'Хайфаинфо', img: 'p-eu', t: 'Наивен ли Европейский Союз, или Иврит депутата Тиби', u: 'https://haifainfo.com/?p=22426' },
+      // standout posts from his Facebook page; full text saved in texts.js
+      { id: 'fb-kantselyarit', k: 'Пост', o: 'Facebook' },
+      { id: 'fb-kolesnitsa', k: 'Пост', o: 'Facebook' },
+      { id: 'fb-nit', k: 'Пост', o: 'Facebook' },
+      { id: 'fb-likhora', k: 'Пост', o: 'Facebook' },
+      { id: 'fb-nenavist', k: 'Пост', o: 'Facebook' },
+      { id: 'fb-dyuzhina', k: 'Пост', o: 'Facebook' },
+      { id: 'fb-idish', k: 'Пост', o: 'Facebook' }
     ];
-    var KINDS = [['all', 'Все'], ['Интервью', 'Интервью'], ['Статья', 'Статьи'], ['Эссе', 'Эссе'], ['Эфир', 'ТВ и видео']];
+    var KINDS = [['all', 'Все'], ['Интервью', 'Интервью'], ['Статья', 'Статьи'], ['Эссе', 'Эссе'], ['Пост', 'Facebook'], ['Эфир', 'ТВ и видео']];
     var pubCard = function (p) {
       return '<a class="pub" data-k="' + p.k + '" href="' + p.u + '"' + (p.local ? '' : ' target="_blank" rel="noopener"') + '>' +
         '<span class="pub-img">' + p.media + '</span>' +
@@ -95,7 +108,10 @@
         // a saved copy exists: open it on the site; the original stays linked from that page
         var s = p.id && window.TEXTS && TEXTS[p.id];
         if (s) { p.u = 'article.html?id=' + p.id; p.local = true; p.d = s.d; }
-        p.media = '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'; return p; }));
+        if (s && !p.t) p.t = s.t;
+        p.media = p.img ? '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'
+          : '<span class="pub-word"><b dir="rtl" lang="he">' + esc(s.word) + '</b><i>' + esc(s.wtr) + '</i></span>';
+        return p; }));
     if (pressRoot) {
       pressRoot.innerHTML =
         '<section class="pubs" aria-label="Публикации">' +

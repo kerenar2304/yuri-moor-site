@@ -1893,3 +1893,12 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .hpress-head h2{margin:0}
 .hpress-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:900px){.hpress-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Facebook posts: the key Hebrew word stands in for a photo */
+.pub-word,.tx-word{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:100%;padding:12px;text-align:center;
+  background:radial-gradient(120% 90% at 30% 20%,#dceefa 0,#b9dcf1 60%,#9fcbe8 100%);color:var(--dark)}
+.pub-word b{font:700 clamp(26px,2.4vw,36px)/1.1 "Assistant",var(--fam)}
+.pub-word i,.tx-word i{font:italic 400 14px/1.2 var(--fam);color:#2c5580}
+.tx-word{aspect-ratio:3/1}
+.tx-word b{font:700 clamp(40px,5vw,72px)/1 "Assistant",var(--fam)}
+.tx-word i{font-size:16px}
+.tx-body p.tx-he{text-align:right;font-family:"Assistant",var(--fam);font-weight:600;color:var(--dark)}
