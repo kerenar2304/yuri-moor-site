@@ -496,4 +496,10 @@
     else { lensSec.classList.add('lens-closed'); lensBtn.setAttribute('aria-expanded', 'false'); }
   });
   $$('a[href="#lens"]').forEach(function (a) { a.addEventListener('click', function () { openLens(false); }); });
+  /* ---------- about: «Подробнее об авторе» ---------- */
+  var abBtn = $('.about-toggle'), abMore = $('#about-more');
+  if (abBtn && abMore) abBtn.addEventListener('click', function () {
+    var open = abMore.classList.toggle('open'); abBtn.setAttribute('aria-expanded', String(open));
+    abBtn.firstChild.textContent = open ? 'Свернуть ' : 'Подробнее об авторе ';
+  });
 })();

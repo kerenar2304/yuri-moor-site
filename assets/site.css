@@ -1456,3 +1456,42 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 .lb-cols i.hl span{font-size:7.5px;line-height:1.25;top:40%}
 .lb-col-t{font-size:clamp(11px,.95vw,14px);letter-spacing:.02em}
 @media (max-width:900px){.loupe-r{width:220px;transform:translate(-46%,-48%) rotate(-6deg)}.loupe-glass p{font-size:13px}}
+
+/* ABOUT v2: compact, photo left, route Ташкент → Москва → Израиль, the rest opens on demand */
+#about{padding:calc(90*var(--u)) 0}
+#about .about-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:calc(70*var(--u));align-items:center}
+#about .about-ph{max-width:440px;justify-self:center;margin:0}
+#about .about-txt{position:static;display:grid;gap:18px;justify-items:start}
+#about .about-txt h2{margin:0}
+#about .about-txt>p{margin:0;font:400 var(--t4)/1.6 var(--fam);color:#1d3d63;max-width:46ch}
+.route{list-style:none;margin:4px 0;padding:0;display:flex;align-items:flex-start;gap:0}
+.route li{position:relative;display:grid;gap:3px;padding-right:46px}
+.route li:not(:last-child)::after{content:"";position:absolute;right:10px;top:.62em;width:26px;height:1.5px;background:var(--blue)}
+.route li:not(:last-child)::before{content:"";position:absolute;right:8px;top:calc(.62em - 3.5px);width:8px;height:8px;border-top:1.5px solid var(--blue);border-right:1.5px solid var(--blue);transform:rotate(45deg)}
+.route b{font:600 clamp(20px,1.7vw,26px)/1 "Oswald",var(--fam);letter-spacing:.01em;text-transform:uppercase;color:var(--dark)}
+.route span{font:500 12.5px/1.2 var(--fam);color:var(--accent-ink)}
+.about-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease);width:100%}
+.about-more>div{overflow:hidden;min-height:0}
+.about-more.open{grid-template-rows:1fr}
+.about-more p{margin:0 0 18px;font:400 var(--t4)/1.6 var(--fam);color:#1d3d63;max-width:52ch}
+#about .facts{margin:0 0 6px}
+.about-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.about-toggle span[aria-hidden]{transition:transform .35s var(--ease)}
+.about-toggle[aria-expanded=true] span[aria-hidden]{transform:rotate(180deg)}
+.about-toggle:hover span[aria-hidden]{transform:none}
+.about-toggle[aria-expanded=true]:hover span[aria-hidden]{transform:rotate(180deg)}
+@media (max-width:900px){#about .about-grid{grid-template-columns:1fr;gap:28px}#about .about-ph{max-width:300px}.route li{padding-right:38px}}
+
+/* the loupe is now a real photo; the glass is cut out so the magnified line shows through it */
+.loupe-r{--W:clamp(230px,21vw,320px);width:var(--W);transform:translate(-38%,-34%) rotate(0deg)}
+.loupe-photo{position:absolute;inset:0;width:100%;height:100%;z-index:2;
+  -webkit-mask-image:radial-gradient(circle at 37.8% 31.9%,transparent calc(var(--W)*.236),#000 calc(var(--W)*.24));
+  mask-image:radial-gradient(circle at 37.8% 31.9%,transparent calc(var(--W)*.236),#000 calc(var(--W)*.24));
+  filter:drop-shadow(10px 14px 10px rgba(20,25,35,.28))}
+.loupe-glass{left:calc(37.8% - 24.2%);top:calc(31.9% - 24.2%);width:48.4%;height:48.4%;z-index:1;
+  box-shadow:inset 0 0 16px 4px rgba(13,43,82,.14)}
+.loupe-glass::before{content:"";position:absolute;inset:0;border-radius:50%;z-index:2;pointer-events:none;
+  background:radial-gradient(60% 45% at 30% 22%,rgba(255,255,255,.55),rgba(255,255,255,0) 70%)}
+.loupe-shadow{display:none}
+@media (max-width:900px){.loupe-r{--W:240px;transform:translate(-40%,-36%)}}
+.loupe-r{--W:clamp(250px,23vw,350px)}.loupe-glass p{width:72%;font-size:clamp(12px,1.05vw,15px)}@media (max-width:900px){.loupe-r{--W:250px}.loupe-glass p{font-size:12.5px}}

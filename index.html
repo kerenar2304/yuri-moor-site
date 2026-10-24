@@ -138,37 +138,9 @@ addEventListener('error',function(){d.classList.add('r-fail')});
         <div class="lb-cols"><i></i><i class="hl"><span>Почему «хатихат метумтемет» обиднее, чем просто «метумтемет»?</span></i><i></i></div>
       </div>
       <div class="loupe-r">
-        <div class="loupe-shadow"></div>
+        
         <div class="loupe-glass"><p>Почему <b>«хатихат метумтемет»</b> обиднее, чем просто <b>«метумтемет»</b>?</p></div>
-        <svg class="loupe-frame" viewBox="0 0 300 300">
-          <defs>
-            <linearGradient id="lpChrome" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#f4f6f8"/><stop offset=".18" stop-color="#9aa3ad"/><stop offset=".36" stop-color="#e9edf1"/>
-              <stop offset=".55" stop-color="#6c7682"/><stop offset=".72" stop-color="#d7dde3"/><stop offset="1" stop-color="#59626d"/>
-            </linearGradient>
-            <linearGradient id="lpHandle" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#05101f"/><stop offset=".28" stop-color="#1d3a63"/><stop offset=".42" stop-color="#4f6f99"/>
-              <stop offset=".55" stop-color="#16304f"/><stop offset="1" stop-color="#040c18"/>
-            </linearGradient>
-            <linearGradient id="lpFerrule" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#5d6670"/><stop offset=".35" stop-color="#eef1f4"/><stop offset=".6" stop-color="#8d969f"/><stop offset="1" stop-color="#4a525b"/>
-            </linearGradient>
-            <radialGradient id="lpGlare" cx=".32" cy=".26" r=".7">
-              <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".35" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <g transform="rotate(45 110 110)">
-            <rect x="99" y="200" width="22" height="20" rx="3" fill="url(#lpFerrule)"/>
-            <rect x="96" y="217" width="28" height="78" rx="13" fill="url(#lpHandle)"/>
-            <rect x="103" y="222" width="5" height="64" rx="2.5" fill="#fff" opacity=".22"/>
-          </g>
-          <circle cx="110" cy="110" r="90" fill="url(#lpGlare)"/>
-          <circle cx="110" cy="110" r="96" fill="none" stroke="url(#lpChrome)" stroke-width="13"/>
-          <circle cx="110" cy="110" r="102.5" fill="none" stroke="#3b434c" stroke-opacity=".55" stroke-width="1.2"/>
-          <circle cx="110" cy="110" r="89.5" fill="none" stroke="#2a3038" stroke-opacity=".6" stroke-width="1.5"/>
-          <path d="M44 74 A74 74 0 0 1 98 38" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>
-          <path d="M168 168 A82 82 0 0 1 140 186" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"/>
-        </svg>
+        <img class="loupe-photo" src="assets/loupe.webp" alt="" width="720" height="720" loading="lazy">
       </div>
     </div>
   </div>
@@ -193,6 +165,39 @@ addEventListener('error',function(){d.classList.add('r-fail')});
   </div>
 </section>
 
+<section class="sec about" id="about" aria-labelledby="about-h">
+  <div class="wrap about-grid">
+    <figure class="about-ph r"><img src="assets/yuri-books.webp?v=2" alt="Юрий Моор-Мурадов сидит на стопке своих книг" width="1000" height="1433" loading="lazy"></figure>
+    <div class="about-txt">
+      <p class="kicker r">Об авторе</p>
+      <h2 id="about-h" class="r">Из Ташкента в&nbsp;Израиль, <em>со словарём</em> и чувством юмора</h2>
+      <ol class="route r" aria-label="Путь автора">
+        <li><b>Ташкент</b></li>
+        <li><b>Москва</b><span>Литинститут</span></li>
+        <li><b>1992</b><span>Израиль</span></li>
+      </ol>
+      <p class="r">Драматург, прозаик и публицист. Пишет об иврите так, что язык вдруг становится своим: легко, смешно и без назидательности учебника.</p>
+      <div class="about-more" id="about-more">
+        <div>
+          <p>Пишет на русском и на иврите. Автор множества пьес, сотен статей, литературоведческих и театральных рецензий. Его книги читают и новые репатрианты, и те, кто живёт в Израиле много лет.</p>
+          <ol class="facts">
+            <li><b>Москва</b><span>Выпускник Литературного института им.&nbsp;М.&nbsp;Горького</span></li>
+            <li><b>1984</b><span>Член Союза писателей СССР</span></li>
+            <li><b>1992</b><span>Репатриация в Израиль</span></li>
+            <li><b>Газета</b><span>Рубрика «Прогулки с ивритом» в «Новостях недели»</span></li>
+            <li><b>Радио</b><span>Многолетняя рубрика «Занимательный иврит» на радио РЭКА</span></li>
+            <li><b>Сегодня</b><span>Член Союза писателей Израиля, колонки на 9 канале и в журнале «Семь искусств», издательство Yura Media</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="about-btns r">
+        <button type="button" class="btn solid about-toggle" aria-expanded="false" aria-controls="about-more">Подробнее об авторе <span aria-hidden="true">↓</span></button>
+        <a class="btn ghost" href="#contact">Пригласить на встречу <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ DETECTIVE: crime scene tape, the Russian accent ============ -->
 <section class="sec det" id="detective" aria-labelledby="det-h">
   <div class="tape" aria-hidden="true"><span>НЕ ПЕРЕСЕКАТЬ · ДЕТЕКТИВНЫЕ ПОВЕСТИ · НЕ ПЕРЕСЕКАТЬ · ДЕТЕКТИВНЫЕ ПОВЕСТИ · НЕ ПЕРЕСЕКАТЬ · ДЕТЕКТИВНЫЕ ПОВЕСТИ · НЕ ПЕРЕСЕКАТЬ · ДЕТЕКТИВНЫЕ ПОВЕСТИ ·</span></div>
@@ -212,28 +217,6 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 </section>
 
 <!-- ============ ABOUT ============ -->
-<section class="sec about" id="about" aria-labelledby="about-h">
-  <div class="wrap about-grid">
-    <div class="about-txt">
-      <p class="kicker r">Об авторе</p>
-      <h2 id="about-h" class="r">Из Москвы в&nbsp;Израиль, <em>со словарём</em> и чувством юмора</h2>
-      <p class="r">Драматург, прозаик, публицист и переводчик. Пишет на русском и на иврите. Автор множества пьес, сотен статей, литературоведческих и театральных рецензий.</p>
-      <p class="r">Его книги об иврите лишены назидательности учебника: это лёгкое и смешное чтение, после которого язык вдруг становится своим. Поэтому их читают и новые репатрианты, и те, кто живёт в Израиле много лет.</p>
-      <a class="btn ghost r" href="#contact">Пригласить на встречу с читателями <span aria-hidden="true">→</span></a>
-    </div>
-    <div>
-    <figure class="about-ph r"><img src="assets/yuri-books.webp?v=2" alt="Юрий Моор-Мурадов сидит на стопке своих книг" width="1000" height="1433" loading="lazy"></figure>
-    <ol class="facts">
-      <li class="r"><b>Москва</b><span>Выпускник Литературного института им.&nbsp;М.&nbsp;Горького</span></li>
-      <li class="r"><b>1984</b><span>Член Союза писателей СССР</span></li>
-      <li class="r"><b>1992</b><span>Репатриация в Израиль</span></li>
-      <li class="r"><b>Газета</b><span>Рубрика «Прогулки с ивритом» в «Новостях недели»</span></li>
-      <li class="r"><b>Радио</b><span>Многолетняя рубрика «Занимательный иврит» на радио РЭКА</span></li>
-      <li class="r"><b>Сегодня</b><span>Член Союза писателей Израиля, колонки на 9 канале и в журнале «Семь искусств», издательство Yura Media</span></li>
-    </ol>
-    </div>
-  </div>
-</section>
 
 <!-- ============ LETTERS (real, from the back cover of «Прогулки с ивритом») ============ -->
 <section class="sec letters on-dark" id="letters" aria-labelledby="let-h">
