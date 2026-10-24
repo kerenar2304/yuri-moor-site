@@ -1317,3 +1317,4 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
   background:radial-gradient(50% 60% at 50% 0%,rgba(60,44,28,.16),rgba(60,44,28,0));filter:blur(4px)}
 @media (max-width:900px){.shelf-sec .shelf-wrap>.plank{margin:0}.shelf-side{padding:0 var(--gut) 8px}}
 #grid .card .card-t[dir=rtl]{font:600 clamp(17px,1.35vw,20px)/1.25 'Assistant',var(--fam);letter-spacing:0}
+#grid .card.wide .card-cv{display:flex;align-items:flex-end;aspect-ratio:.72}#grid .card.wide .card-cv .cvi{aspect-ratio:1.55;background:none;width:100%}#grid .card.wide .card-cv .cvi img{object-fit:cover;padding:0}
