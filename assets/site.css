@@ -1753,3 +1753,4 @@ a.stk.pill:hover{transform:rotate(var(--r)) translateY(-2px)}
 .c2-track span{justify-content:center;gap:.3em;font-size:calc((100vw - 40px - 72 * var(--u)) / 10.35)}
 @media (max-width:700px){.c2-track span{justify-content:flex-start;column-gap:.14em;font-size:calc((100vw - 56px) / 5.4)}}
 @media (max-width:700px){.c2-track span{font-size:calc((100vw - 56px) / 5.75);column-gap:.12em}.c2-loupe{width:.6em;height:.6em}}
+.c2-marquee{overflow:visible}.c2-track span{line-height:1.18;padding-top:.04em}
