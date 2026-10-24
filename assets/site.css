@@ -1667,3 +1667,46 @@ main .kicker,#lens .kicker,#detective .kicker{display:none}
 html[data-font=bebas] .sec.order .fmt h3{font-size:clamp(20px,1.5vw,24px)}
 .sec.order .fmt .price{font-size:clamp(26px,2vw,32px)}
 #contact .con-links .tel{font:600 var(--fs-body)/1 var(--fam)}
+
+/* ============ CONTACT v2: moving title + draggable stickers (Keren's reference, in the site's palette) ============ */
+.contact2{padding:calc(40*var(--u)) 20px 0;background:var(--light)}
+.c2-panel{position:relative;border-radius:32px;overflow:hidden;color:var(--light);padding:calc(26*var(--u)) 0 calc(18*var(--u));
+  background:radial-gradient(90% 120% at 20% 0%,#1b4577 0%,#0d2b52 55%,#0a2140 100%)}
+.c2-marquee{overflow:hidden;white-space:nowrap;border-bottom:1px solid rgba(246,243,236,.25);padding-bottom:calc(10*var(--u))}
+.c2-track{display:inline-flex;animation:c2scroll 38s linear infinite}
+.c2-track span{font:500 clamp(70px,11vw,170px)/1 "Bebas Neue","Oswald",var(--fam);text-transform:uppercase;letter-spacing:.01em;padding-right:.25em;color:var(--light)}
+@keyframes c2scroll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.c2-track{animation:none}}
+.c2-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:14px calc(36*var(--u)) 0}
+.c2-meta p{margin:0;font:600 11.5px/1.45 var(--fam);letter-spacing:.12em;text-transform:uppercase;color:rgba(246,243,236,.75)}
+.c2-meta p:nth-child(2){text-align:center}.c2-meta p:nth-child(3){text-align:right}
+.c2-field{position:relative;height:clamp(300px,30vw,420px);margin:6px calc(20*var(--u)) 0;touch-action:none}
+.stk{position:absolute;left:var(--x);top:var(--y);transform:rotate(var(--r));user-select:none;-webkit-user-select:none;cursor:grab;touch-action:none;
+  transition:box-shadow .2s,transform .25s cubic-bezier(.2,.8,.2,1);z-index:1}
+.stk.drag{cursor:grabbing;transition:box-shadow .2s;box-shadow:0 26px 40px -16px rgba(0,0,0,.55);z-index:5}
+.stk img{pointer-events:none;-webkit-user-drag:none}
+.stk.pill{display:inline-flex;align-items:center;padding:14px 30px;border-radius:999px;background:var(--light);color:var(--dark);
+  font:500 clamp(22px,2.2vw,34px)/1 "Bebas Neue","Oswald",var(--fam);letter-spacing:.03em;text-transform:uppercase;text-decoration:none;
+  box-shadow:inset 0 0 0 2px var(--dark),inset 0 0 0 4px var(--light),inset 0 0 0 5.5px rgba(13,43,82,.5),0 10px 22px -12px rgba(0,0,0,.5)}
+.stk.pill:hover{background:#fff}
+.stk.badge{display:grid;place-items:center;width:clamp(120px,10.5vw,150px);aspect-ratio:1;border-radius:50%;background:var(--light);color:var(--dark);
+  box-shadow:0 0 0 6px var(--light),0 0 0 7.5px rgba(246,243,236,.5),0 12px 26px -12px rgba(0,0,0,.55)}
+.stk.badge::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px dashed rgba(13,43,82,.25);pointer-events:none}
+.stk.badge svg{position:absolute;inset:0;width:100%;height:100%;animation:c2spin 18s linear infinite}
+.stk.badge text{font:700 10.5px/1 var(--fam);letter-spacing:.18em;text-transform:uppercase;fill:var(--dark)}
+@keyframes c2spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.stk.badge svg{animation:none}}
+.b-loupe img{width:52%;height:auto}
+.b-book img{width:40%;height:auto;border-radius:3px;box-shadow:0 6px 12px -6px rgba(0,0,0,.5);transform:rotate(-6deg)}
+.b-heb b{font:800 clamp(24px,2.2vw,32px)/1 "Assistant",var(--fam);color:var(--blue)}
+.c2-mail{display:block;margin:0 calc(36*var(--u));padding-top:6px;font:300 clamp(34px,5.6vw,86px)/1.1 var(--fam);color:rgba(246,243,236,.32);
+  text-decoration:none;letter-spacing:-.01em;transition:color .3s;overflow-wrap:anywhere}
+.c2-mail:hover{color:var(--light)}
+@media (max-width:700px){
+  .contact2{padding:30px 8px 0}.c2-panel{border-radius:22px}
+  .c2-meta{grid-template-columns:1fr;gap:8px;padding:12px 20px 0}.c2-meta p,.c2-meta p:nth-child(n){text-align:left}
+  .c2-field{height:440px;margin:6px 10px 0}
+  .stk.pill{padding:12px 22px;font-size:24px}
+  .stk.badge{width:112px}
+  .c2-mail{margin:0 20px;font-size:28px}
+}

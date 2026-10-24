@@ -241,32 +241,33 @@ addEventListener('error',function(){d.classList.add('r-fail')});
   <div class="wrap">
     <h2 id="ord-h" class="r">Как получить книгу</h2>
     <div class="ord-grid">
-      <article class="fmt r"><h3>Печатная книга</h3><p class="price">50 ₪ <small>+ почтовые расходы</small></p><p>Мягкая обложка, 360 страниц. Отправляем почтой, оплата и детали доставки по телефону или в&nbsp;WhatsApp.</p></article>
+      <article class="fmt r"><h3>Печатная книга</h3><p class="price">50 ₪ <small>+ почтовые расходы</small></p><p>Мягкая обложка, 360 страниц. Отправляем почтой. Оплата через Bit или банковским переводом, детали в&nbsp;WhatsApp.</p></article>
       <article class="fmt r"><h3>Цифровая копия</h3><p class="price">40 ₪</p><p>Цифровая копия приходит на ваш e-mail после оплаты. Читайте с телефона, планшета или компьютера.</p></article>
       <article class="fmt r"><h3>Серия целиком</h3><p class="price"><span class="ph">[[цена комплекта]]</span></p><p>Все книги «Занимательного иврита» одним заказом. Хороший подарок тому, кто только начинает, и тому, кто уже всё знает.</p></article>
     </div>
   </div>
 </section>
 
-<!-- ============ CONTACT ============ -->
-<section class="sec contact on-dark" id="contact" aria-labelledby="con-h">
-  <div class="wrap con-grid">
-    <div>
-      <h2 id="con-h" class="r">Напишите <em>автору</em></h2>
-      <p class="r">Заказать книгу, задать вопрос об иврите или просто поделиться впечатлением. Юрий отвечает лично.</p>
-      <p class="con-links r">
-        <a class="btn solid" href="https://wa.me/972547923229" target="_blank" rel="noopener">WhatsApp</a>
-        <a class="tel" href="tel:+972547923229" dir="ltr">054-792-32-29</a>
-      </p>
+<!-- ============ CONTACT: big moving title + stickers you can drag ============ -->
+<section class="contact2" id="contact" aria-labelledby="con-h">
+  <div class="c2-panel">
+    <h2 id="con-h" class="sr">Контакты</h2>
+    <div class="c2-marquee" aria-hidden="true"><div class="c2-track"><span>Контакты ✦ Контакты ✦ Контакты ✦ Контакты ✦ </span><span>Контакты ✦ Контакты ✦ Контакты ✦ Контакты ✦ </span></div></div>
+    <div class="c2-meta">
+      <p>Заказать книгу, задать вопрос<br>об иврите или поделиться впечатлением</p>
+      <p>Юрий отвечает<br>лично</p>
+      <p>Оплата через Bit<br>или банковским переводом</p>
     </div>
-    <form class="form r" id="cform" novalidate>
-      <label><span>Имя</span><input name="name" autocomplete="name" required></label>
-      <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required></label>
-      <label><span>Сообщение</span><textarea name="msg" rows="3"></textarea></label>
-      <label class="chk"><input type="checkbox" name="ok" required><span>Согласен с <a href="privacy.html">политикой конфиденциальности</a></span></label>
-      <button class="btn solid" type="submit">Отправить <span aria-hidden="true">›</span></button>
-      <p class="form-msg" role="status" aria-live="polite"></p>
-    </form>
+    <div class="c2-field" id="c2-field">
+      <a class="stk pill" href="https://wa.me/972547923229" target="_blank" rel="noopener" style="--x:6%;--y:30%;--r:-8deg">WhatsApp</a>
+      <a class="stk pill" href="tel:+972547923229" dir="ltr" style="--x:30%;--y:12%;--r:6deg">054-792-32-29</a>
+      <a class="stk pill" href="mailto:yuramedia@gmail.com" style="--x:52%;--y:44%;--r:-5deg">E-mail</a>
+      <a class="stk pill" href="#" data-todo="facebook" style="--x:70%;--y:16%;--r:9deg">Facebook</a>
+      <span class="stk badge b-loupe" style="--x:24%;--y:52%;--r:-12deg"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="rg1" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#rg1">потяни меня ✦ потяни меня ✦ </textPath></text></svg><img src="assets/yura-media.png" alt=""></span>
+      <span class="stk badge b-heb" style="--x:84%;--y:46%;--r:10deg"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="rg2" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#rg2">потяни меня ✦ потяни меня ✦ </textPath></text></svg><b lang="he" dir="rtl">שלום</b></span>
+      <span class="stk badge b-book" style="--x:42%;--y:66%;--r:4deg"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="rg3" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#rg3">потяни меня ✦ потяни меня ✦ </textPath></text></svg><img src="assets/covers/z1.webp" alt=""></span>
+    </div>
+    <a class="c2-mail" href="mailto:yuramedia@gmail.com">yuramedia@gmail.com</a>
   </div>
 </section>
 </main>
@@ -338,7 +339,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
         <label data-need="print"><span>Адрес доставки</span><input name="addr" autocomplete="street-address"></label>
         <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
-        <p class="cart-legal">Заказ уходит автору в WhatsApp, он подтвердит наличие и способ оплаты. <span class="ph">[[подключить онлайн-оплату: Bit / PayBox / карта]]</span></p>
+        <p class="cart-legal">Заказ уходит автору в WhatsApp. Оплата через Bit или банковским переводом, Юрий пришлёт реквизиты.</p>
       </form>
     </div>
   </div>

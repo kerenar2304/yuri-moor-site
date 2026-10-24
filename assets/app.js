@@ -502,4 +502,34 @@
     var open = abMore.classList.toggle('open'); abBtn.setAttribute('aria-expanded', String(open));
     abBtn.firstChild.textContent = open ? 'Свернуть ' : 'Подробнее об авторе ';
   });
+  /* ---------- contact stickers: drag them around; a click without dragging follows the link ---------- */
+  var field = $('#c2-field');
+  if (field) {
+    var isPhone = matchMedia('(max-width:700px)').matches;
+    if (isPhone) { // a looser layout for the narrow field
+      var P = [[4,1,-6],[12,24,5],[4,44,4],[46,44,-8],[56,68,6],[66,-2,9],[4,68,-10]];
+      $$('.stk', field).forEach(function (s, k) { var p = P[k % P.length]; s.style.setProperty('--x', p[0] + '%'); s.style.setProperty('--y', p[1] + '%'); s.style.setProperty('--r', p[2] + 'deg'); });
+    }
+    var z = 10;
+    $$('.stk', field).forEach(function (s) {
+      var sx, sy, ox, oy, moved = false, on = false;
+      s.addEventListener('pointerdown', function (e) {
+        on = true; moved = false; sx = e.clientX; sy = e.clientY; ox = s.offsetLeft; oy = s.offsetTop;
+        s.setPointerCapture(e.pointerId); s.classList.add('drag'); s.style.zIndex = ++z;
+      });
+      s.addEventListener('pointermove', function (e) {
+        if (!on) return; var dx = e.clientX - sx, dy = e.clientY - sy;
+        if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+        var fw = field.clientWidth - s.offsetWidth, fh = field.clientHeight - s.offsetHeight;
+        s.style.left = Math.max(-20, Math.min(fw + 20, ox + dx)) + 'px'; s.style.top = Math.max(-20, Math.min(fh + 20, oy + dy)) + 'px';
+      });
+      function end() { on = false; s.classList.remove('drag'); }
+      s.addEventListener('pointerup', end); s.addEventListener('pointercancel', end);
+      s.addEventListener('click', function (e) {
+        if (moved) { e.preventDefault(); return; }
+        if (s.dataset.todo) { e.preventDefault(); toast('Ссылка на Facebook скоро появится'); }
+      });
+      s.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    });
+  }
 })();
