@@ -1,4 +1,4 @@
-/* Юрий Моор-Мурадов: shelf, catalog, book dialog, excerpt reader, cart, word lens */
+/* Юрий Моор-Мурадов: shelf, catalog, book dialog, excerpt reader, cart */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -381,59 +381,6 @@
     $('.form-msg', cf).textContent = 'Спасибо! Юрий ответит вам лично.'; cf.reset();
   });
 
-  /* ---------- the word lens ---------- */
-  var WORDS = window.WORDS || [];
-  var board = $('#board'), heL = $('#board-he'), ruL = $('#board-ru');
-  if (board && heL && ruL) {
-    heL.innerHTML = WORDS.map(function (w, k) {
-      return '<button type="button" class="cell" data-w="' + k + '" aria-label="' + esc(w.he + ': ' + w.ru) + '"><span class="he" lang="he">' + esc(w.he) + '</span><span class="tr">' + esc(w.tr) + '</span></button>';
-    }).join('');
-    ruL.innerHTML = WORDS.map(function (w) { return '<div class="cell"><span class="ru">' + esc(w.ru) + '<small>' + esc(w.tr) + '</small></span></div>'; }).join('');
-    var cells = $$('.cell', heL), lx = 0, ly = 0, tx = 0, ty = 0, lr = 120, active = -1, raf = 0, hovering = false, touched = false;
-    board.addEventListener('pointerdown', function () { touched = true; });
-    board.addEventListener('pointermove', function () { touched = true; });
-    board.addEventListener('focusin', function () { touched = true; });
-    function center(k) { var c = cells[k], br = board.getBoundingClientRect(), r = c.getBoundingClientRect(); return [r.left - br.left + r.width / 2, r.top - br.top + r.height / 2]; }
-    function measure() {
-      ruL.style.gridTemplateRows = getComputedStyle(heL).gridTemplateRows; // keep both layers cell-for-cell
-      var r = cells[0].getBoundingClientRect(); lr = Math.round(Math.min(r.width * .5, r.height * .62)); board.style.setProperty('--lr', lr); }
-    function setStory(k) {
-      if (k === active || k < 0) return; active = k; var w = WORDS[k];
-      $('#story-src').textContent = w.src; $('#story-t').textContent = w.story; $('#story-book').dataset.book = w.book;
-    }
-    function nearest() {
-      var best = -1, bd = 1e9; cells.forEach(function (c, k) { var p = center(k), d = (p[0] - lx) * (p[0] - lx) + (p[1] - ly) * (p[1] - ly); if (d < bd) { bd = d; best = k; } });
-      return best;
-    }
-    function loop() {
-      lx += (tx - lx) * (reduce ? 1 : .16); ly += (ty - ly) * (reduce ? 1 : .16);
-      board.style.setProperty('--lx', lx.toFixed(1)); board.style.setProperty('--ly', ly.toFixed(1));
-      setStory(nearest());
-      if (Math.abs(tx - lx) > .3 || Math.abs(ty - ly) > .3) raf = requestAnimationFrame(loop); else raf = 0;
-    }
-    function go(x, y) { tx = x; ty = y; if (!raf) raf = requestAnimationFrame(loop); }
-    function goCell(k) { var p = center(k); go(p[0], p[1]); }
-    board.addEventListener('pointermove', function (e) {
-      if (e.pointerType !== 'mouse') return; hovering = true;
-      var br = board.getBoundingClientRect(); go(e.clientX - br.left, e.clientY - br.top);
-    });
-    board.addEventListener('pointerleave', function () { hovering = false; if (active >= 0) goCell(active); });
-    cells.forEach(function (c, k) {
-      c.addEventListener('click', function () { active = -1; goCell(k); });
-      c.addEventListener('focus', function () { goCell(k); });
-    });
-    var relayout = function () { measure(); if (!hovering) goCell(Math.max(active, 0)); };
-    if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(board); else addEventListener('resize', relayout);
-    measure(); var p0 = center(0); lx = tx = p0[0]; ly = ty = p0[1]; loop();
-    // a short demo pass when the section comes into view, so the device explains itself
-    if (!reduce && 'IntersectionObserver' in window) {
-      var demo = new IntersectionObserver(function (en) {
-        if (!en[0].isIntersecting) return; demo.disconnect();
-        setTimeout(function () { if (!touched) goCell(1); }, 900);
-        setTimeout(function () { if (!touched) goCell(0); }, 2300);
-      }, { threshold: .5 }); demo.observe(board);
-    }
-  }
 
   /* ---------- ticker pause ---------- */
   var tp = $('.ticker-pause');
@@ -472,19 +419,6 @@
     }, { rootMargin: '0px 0px -8% 0px' });
     rv.forEach(function (el) { io.observe(el); });
   } else rv.forEach(function (el) { el.classList.add('in'); });
-  /* ---------- lens banner: «Читать» opens the interactive board under it ---------- */
-  var lensSec = $('#lens'), lensBtn = $('.lb-open');
-  function openLens(scroll) {
-    if (!lensSec) return;
-    lensSec.classList.remove('lens-closed');
-    if (lensBtn) lensBtn.setAttribute('aria-expanded', 'true');
-    setTimeout(function () { dispatchEvent(new Event('resize')); if (scroll) lensSec.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }, reduce ? 0 : 620);
-  }
-  if (lensBtn) lensBtn.addEventListener('click', function () {
-    if (lensSec.classList.contains('lens-closed')) openLens(true);
-    else { lensSec.classList.add('lens-closed'); lensBtn.setAttribute('aria-expanded', 'false'); }
-  });
-  $$('a[href="#lens"]').forEach(function (a) { a.addEventListener('click', function () { openLens(false); }); });
   /* ---------- about: «Подробнее об авторе» ---------- */
   var abBtn = $('.about-toggle'), abMore = $('#about-more');
   if (abBtn && abMore) abBtn.addEventListener('click', function () {
