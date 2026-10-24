@@ -1575,3 +1575,21 @@ body,#about,.sec.about,.lens-banner-sec,.shelf-sec,#books,.sec.order,.hero{backg
   .wave .w{transform:rotate(-14deg)}
   .wave .w8{z-index:1}.wave .w2{z-index:2}.wave .w7{z-index:3}.wave .w3{z-index:4}.wave .w1{z-index:5}.wave .w9{z-index:6}
 }
+
+/* ABOUT v4 (Keren's reference tone): name, warm summary, the outlets he worked with, a real quote with his signature */
+#about .about-txt h2,html[data-font=bebas] #about .about-txt h2{font-size:clamp(34px,3vw,46px)}
+.about-name{margin:-6px 0 0;font:700 clamp(19px,1.5vw,22px)/1.2 var(--fam);color:var(--dark)}
+.press{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}
+.press li{font:700 clamp(14px,1.1vw,16px)/1 "Oswald",var(--fam);letter-spacing:.04em;text-transform:uppercase;color:var(--dark);opacity:.72}
+.press li:not(:last-child)::after{content:"·";margin-left:22px;opacity:.5}
+.about-qcard{position:relative;margin:6px 0 0;padding:22px 24px 16px 54px;border-radius:16px;background:#ece6da;max-width:520px}
+.about-qcard::before{content:"“";position:absolute;left:18px;top:6px;font:700 54px/1 Georgia,serif;color:var(--blue);opacity:.55}
+.about-qcard blockquote{margin:0}
+.about-qcard p{margin:0;font:500 clamp(16px,1.25vw,18px)/1.5 var(--fam);color:var(--dark)}
+.about-qcard figcaption{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
+.about-qcard figcaption img{width:58px;height:auto}
+.about-qcard figcaption span{font:500 12.5px/1 var(--fam);color:var(--accent-ink)}
+.about-q{display:none}
+.route{display:none}
+#about .kicker{display:none}
+#about .about-txt>p.about-name{margin:-6px 0 0;font:700 clamp(19px,1.5vw,22px)/1.2 var(--fam);color:var(--dark)}
