@@ -1888,3 +1888,8 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 @media (max-width:900px){#detective.det{padding-top:110px;padding-bottom:40px}#detective .det-books{height:92vw}}
 /* phone: price above, buy button full width under it, so the foot never overflows the card */
 @media (max-width:700px){#grid .card-foot{flex-wrap:wrap;gap:10px}#grid .card-buy-btn{width:100%;justify-content:center}}
+/* HOME · publications row */
+.hpress-head{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.hpress-head h2{margin:0}
+.hpress-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.hpress-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

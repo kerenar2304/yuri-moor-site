@@ -66,9 +66,9 @@
       '</article>';
   }
 
-  /* ---------- articles page ---------- */
-  var art = $('#art-root');
-  if (art) {
+  /* ---------- publications: press.html (all, with filters) and a short row on the home page ---------- */
+  var pressRoot = $('#press-root'), homePress = $('#home-press');
+  if (pressRoot || homePress) {
     var VIDEO = { id: 'HiTXXnRdmpU', t: 'Юрий Моор-Мурадов: писатель, драматург, публицист, переводчик', o: 'RTN · программа «Контакт»', d: 'Апрель 2025' };
     /* img: assets/press/<img>.webp; d only where the source shows a date */
     var PRESS = [
@@ -96,29 +96,38 @@
         var s = p.id && window.TEXTS && TEXTS[p.id];
         if (s) { p.u = 'article.html?id=' + p.id; p.local = true; p.d = s.d; }
         p.media = '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'; return p; }));
-    var html =
-      '<div class="art-grid">' + WORDS.map(function (w) {
-        var bk = byId[w.book];
-        return '<article class="art-card">' +
-          '<p class="art-he" dir="rtl" lang="he">' + esc(w.he) + '</p>' +
-          '<p class="art-tr">' + esc(w.tr) + '</p>' +
-          '<h3>' + esc(w.ru) + '</h3>' +
-          '<p class="art-story">' + esc(w.story) + '</p>' +
-          (bk ? '<a class="art-src" href="book.html?id=' + bk.id + '">' + esc(w.src) + ' →</a>' : '<span class="art-src">' + esc(w.src) + '</span>') +
-        '</article>';
-      }).join('') + '</div>' +
-      '<section class="pubs" aria-labelledby="pubs-h">' +
-        '<div class="pubs-head"><h2 id="pubs-h">Публикации</h2><div class="tabs pubs-tabs" role="tablist" aria-label="Тип публикации">' +
-          KINDS.map(function (k, i) { return '<button type="button" data-pk="' + k[0] + '" aria-selected="' + !i + '">' + k[1] + '</button>'; }).join('') +
-        '</div></div>' +
-        '<div class="pubs-grid">' + pubs.map(pubCard).join('') + '</div>' +
-      '</section>';
-    art.innerHTML = html;
-    art.querySelectorAll('[data-pk]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        art.querySelectorAll('[data-pk]').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
-        art.querySelectorAll('.pub').forEach(function (c) { c.hidden = b.dataset.pk !== 'all' && c.dataset.k !== b.dataset.pk; });
+    if (pressRoot) {
+      pressRoot.innerHTML =
+        '<section class="pubs" aria-label="Публикации">' +
+          '<div class="pubs-head"><div class="tabs pubs-tabs" role="tablist" aria-label="Тип публикации">' +
+            KINDS.map(function (k, i) { return '<button type="button" data-pk="' + k[0] + '" aria-selected="' + !i + '">' + k[1] + '</button>'; }).join('') +
+          '</div></div>' +
+          '<div class="pubs-grid">' + pubs.map(pubCard).join('') + '</div>' +
+        '</section>';
+      pressRoot.querySelectorAll('[data-pk]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          pressRoot.querySelectorAll('[data-pk]').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
+          pressRoot.querySelectorAll('.pub').forEach(function (c) { c.hidden = b.dataset.pk !== 'all' && c.dataset.k !== b.dataset.pk; });
+        });
       });
-    });
+    }
+    // home: the broadcast, one interview, one column, the essay
+    if (homePress) homePress.innerHTML = ['Эфир', 'Своя колея Юрия Моор-Мурадова', 'Все оттенки человеческой глупости', 'Язык как первая любовь со школьных лет']
+      .map(function (key) { return pubs.filter(function (p) { return p.k === key || p.t === key; })[0]; }).map(pubCard).join('');
+  }
+
+  /* ---------- words page: articles.html ---------- */
+  var art = $('#art-root');
+  if (art) {
+    art.innerHTML = '<div class="art-grid">' + WORDS.map(function (w) {
+      var bk = byId[w.book];
+      return '<article class="art-card">' +
+        '<p class="art-he" dir="rtl" lang="he">' + esc(w.he) + '</p>' +
+        '<p class="art-tr">' + esc(w.tr) + '</p>' +
+        '<h3>' + esc(w.ru) + '</h3>' +
+        '<p class="art-story">' + esc(w.story) + '</p>' +
+        (bk ? '<a class="art-src" href="book.html?id=' + bk.id + '">' + esc(w.src) + ' →</a>' : '<span class="art-src">' + esc(w.src) + '</span>') +
+      '</article>';
+    }).join('') + '</div>';
   }
 })();
