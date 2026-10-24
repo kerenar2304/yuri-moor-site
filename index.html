@@ -76,22 +76,29 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <div class="hero-side">
         <p class="hero-name r">Юрий Моор-Мурадов</p>
         <p class="lead r">Живой иврит, объяснённый по-русски и с&nbsp;юмором. Восемь книг с&nbsp;ответами.</p>
+        <img class="sig-hero-img" src="assets/signature.png" alt="Подпись Юрия Моор-Мурадова" width="460" height="490">
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ THE SHELF (from the inspiration video): spines out, hover pulls a book, click opens it ============ -->
-<section class="shelf-sec" aria-label="Книжная полка">
+<section class="shelf-sec" aria-labelledby="shelf-h">
   <div class="shelf-wrap">
-    <div class="shelf" id="shelf" role="list" aria-label="Все книги автора"></div>
-    <div class="plank" aria-hidden="true"></div>
-    <div class="shelf-ctrl" id="shelf-ctrl">
-      <button type="button" class="sc-btn" data-prev aria-label="Предыдущая книга"><span aria-hidden="true">‹</span></button>
-      <div class="shelf-cap" id="shelf-cap" aria-live="polite"><span class="sc-meta"></span><b class="sc-title"></b><span class="sc-count"></span><span class="sc-dots" role="group" aria-label="Книги на полке"></span></div>
-      <button type="button" class="sc-btn" data-next aria-label="Следующая книга"><span aria-hidden="true">›</span></button>
+    <div class="shelf-side">
+      <h2 id="shelf-h" class="shelf-h">Все книги <em>на одной полке</em></h2>
+      <p class="shelf-hint">Наведите на книгу, чтобы узнать больше</p>
+      <div class="shelf-cap" id="shelf-cap" aria-live="polite"><span class="sc-meta"></span><b class="sc-title"></b><span class="sc-count"></span></div>
+      <div class="shelf-ctrl" id="shelf-ctrl">
+        <button type="button" class="sc-btn" data-prev aria-label="Предыдущая книга"><span aria-hidden="true">←</span></button>
+        <button type="button" class="sc-btn" data-next aria-label="Следующая книга"><span aria-hidden="true">→</span></button>
+        <button type="button" class="sc-btn sc-pause" data-pause aria-pressed="false" aria-label="Пауза"><span aria-hidden="true">❚❚</span></button>
+      </div>
     </div>
-    <button type="button" class="sc-pause" data-pause aria-pressed="false">Пауза</button>
+    <div class="shelf-stage">
+      <div class="shelf" id="shelf" role="list" aria-label="Все книги автора"></div>
+      <div class="plank" aria-hidden="true"></div>
+    </div>
   </div>
 </section>
 
@@ -160,7 +167,6 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <h2 id="about-h" class="r">Из Москвы в&nbsp;Израиль, <em>со словарём</em> и чувством юмора</h2>
       <p class="r">Драматург, прозаик, публицист и переводчик. Пишет на русском и на иврите. Автор множества пьес, сотен статей, литературоведческих и театральных рецензий.</p>
       <p class="r">Его книги об иврите лишены назидательности учебника: это лёгкое и смешное чтение, после которого язык вдруг становится своим. Поэтому их читают и новые репатрианты, и те, кто живёт в Израиле много лет.</p>
-      <img class="sig-img r" src="assets/signature.png" alt="Подпись Юрия Моор-Мурадова" width="460" height="490" loading="lazy">
       <a class="btn ghost r" href="#contact">Пригласить на встречу с читателями <span aria-hidden="true">→</span></a>
     </div>
     <div>

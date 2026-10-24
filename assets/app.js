@@ -48,7 +48,7 @@
     var LEAN = { 3: -5, 7: 4, 12: -6 };                                               // degrees, books that lean
     function dims() {
       var w = shelf.clientWidth, phone = innerWidth <= 700;
-      var H = phone ? Math.min(300, innerHeight * .48) : Math.min((w - 14 * G) / 2.4, innerHeight * .62);
+      var H = phone ? Math.min(300, innerHeight * .48) : Math.min((w - 14 * G) / 2.4, innerHeight * .46);
       return bks.map(function (bk, j) {
         var wide = bk.classList.contains('wide');
         var h = wide ? H * .49 : H * HF[j % HF.length];
@@ -90,7 +90,7 @@
       cap.classList.add('swap');
       setTimeout(function () {
         $('.sc-title', cap).textContent = b.ru || b.title;
-        $('.sc-meta', cap).textContent = b.vol ? 'Занимательный иврит · том ' + b.vol : (b.isNew ? 'Новая книга' : SERIES[b.series]);
+        $('.sc-meta', cap).textContent = b.vol ? 'Занимательный иврит · часть ' + b.vol : (b.isNew ? 'Новая книга' : SERIES[b.series]);
         $('.sc-count', cap).textContent = (sel + 1) + ' из ' + n;
         cap.style.setProperty('--tone', b.tone);
         $$('.sc-dots button', cap).forEach(function (d, k) { d.classList.toggle('on', k === sel); d.setAttribute('aria-current', k === sel ? 'true' : 'false'); });
@@ -129,10 +129,10 @@
       var pp = $('[data-pause]');
       pp.addEventListener('click', function () {
         var stop = pp.getAttribute('aria-pressed') !== 'true'; pp.setAttribute('aria-pressed', String(stop));
-        pp.textContent = stop ? 'Продолжить' : 'Пауза';
+        pp.setAttribute('aria-label', stop ? 'Продолжить' : 'Пауза'); pp.firstChild.textContent = stop ? '▶' : '❚❚';
         stopped = stop; if (stop) clearInterval(timer); else play();
       });
-      if (reduce) { stopped = true; pp.setAttribute('aria-pressed', 'true'); pp.textContent = 'Продолжить'; }
+      if (reduce) { stopped = true; pp.setAttribute('aria-pressed', 'true'); pp.setAttribute('aria-label', 'Продолжить'); pp.firstChild.textContent = '▶'; }
     }
     // run only while the shelf is on screen
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) {
@@ -148,6 +148,7 @@
   var ICON_CART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.3 11h10.2l2-8H6.4"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="16.5" cy="19.5" r="1.3"/></svg>';
   var ICON_HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg>';
   var ICON_GLASSES = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 14c1.2-1 2.8-1 4 0M3 14 4.5 7.5M21 14l-1.5-6.5"/></svg>';
+  var SERIES_TAG = { hebrew: 'Иврит', detective: 'Детективы', other: 'Израиль' };
   var fav = []; try { fav = JSON.parse(localStorage.getItem('ymm-fav') || '[]'); } catch (e) {}
   if (grid) {
     var list = BOOKS.slice().sort(function (a, b) {
@@ -164,19 +165,15 @@
           '<span class="cvi">' + coverHTML(b, true) +
             '<span class="cvb" aria-hidden="true"><b>' + esc(b.title) + '</b><span>' + esc(b.text[0]) + '</span><i>Юрий Моор-Мурадов</i></span>' +
           '</span></a>' +
+        '<button type="button" class="card-cart" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + '</button>' +
         '<div class="card-acts">' +
-          '<button type="button" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + '<em>В корзину</em></button>' +
           '<button type="button" data-fav="' + b.id + '" aria-pressed="' + (fav.indexOf(b.id) > -1) + '" aria-label="В избранное: ' + esc(b.title) + '">' + ICON_HEART + '<em>В избранное</em></button>' +
           '<button type="button" data-flip aria-pressed="false" aria-label="Обратная сторона обложки">' + ICON_GLASSES + '<em>Оборот книги</em></button>' +
         '</div></div>' +
         '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="#books" data-book="' + b.id + '">' + esc(b.title) + '</a></h3>' +
-        '<p class="card-k">' + esc(meta) + '</p>' +
-        '<div class="card-buy' + (b.pdf ? '' : ' one') + '">' +
-          '<button type="button" class="buy buy-print" data-add="' + b.id + '|print" aria-label="Печатная книга, ' + SHOP.PRICE + ' шекелей, в корзину">' +
-            '<span>' + ICON_BOOK + 'Печатная</span><b>' + SHOP.PRICE + ' шек.</b></button>' +
-          (b.pdf ? '<button type="button" class="buy buy-pdf" data-add="' + b.id + '|pdf" aria-label="Электронная книга PDF, в корзину">' +
-            '<span>' + ICON_PDF + 'PDF</span><b>' + (SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' шек.' : '<i class="ph">[[цена]]</i>') + '</b></button>' : '') +
-        '</div></article>';
+        '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
+        '<p class="card-price"><b>' + SHOP.PRICE + ' шек.</b><span>' + (b.pdf ? 'печатная · есть PDF' : 'печатная') + '</span></p>' +
+        '</article>';
     }).join('');
   }
   function filter(f) {

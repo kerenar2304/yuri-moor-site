@@ -1148,3 +1148,112 @@ html[data-font=bebas] .hero-name{font-weight:600}
 #about .about-ph::before{display:none}#about .about-ph::after{content:'';display:block;position:absolute;left:18%;right:18%;bottom:1.5%;height:5%;z-index:-1;background:radial-gradient(closest-side,rgba(13,43,82,.28),transparent);filter:blur(6px)}#about .about-ph img{filter:none}
 .ftr img[src*=credit]{filter:brightness(0) saturate(100%);opacity:.7}
 .sig-img{display:block;width:clamp(96px,9vw,140px);height:auto;margin:calc(4*var(--u)) 0 calc(8*var(--u)) -6px}
+
+/* ================= SHELF v8: Keren's favourite look — side column + a quiet bookcase ================= */
+.shelf-sec{padding:calc(110*var(--u)) 0 calc(100*var(--u))}
+.shelf-sec .shelf-wrap{width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:calc(40*var(--u));align-items:end}
+.shelf-side{display:grid;gap:14px;align-content:end;padding-bottom:calc(40*var(--u))}
+.shelf-sec .shelf-h{margin:0;font-size:clamp(34px,3.2vw,50px);line-height:1.05}
+.shelf-sec .shelf-h em{display:block}
+.shelf-hint{margin:0;font:400 var(--t4)/1.5 var(--fam);color:var(--accent-ink);max-width:24ch}
+.shelf-sec .shelf-cap{display:grid;gap:6px;justify-items:start;text-align:left;margin-top:14px;min-height:5.2em}
+.shelf-sec .shelf-cap .sc-meta{font:600 12px/1.2 var(--fam);letter-spacing:.14em;text-transform:uppercase}
+.shelf-sec .shelf-cap .sc-title{font:600 clamp(18px,1.5vw,22px)/1.2 var(--fam);letter-spacing:0;text-transform:none}
+.shelf-sec .shelf-cap .sc-count{font:500 12.5px/1 var(--fam);margin-top:2px}
+.shelf-sec .shelf-ctrl{display:flex;align-items:center;gap:12px;width:auto;margin:10px 0 0;padding:0;grid-template-columns:none}
+.shelf-sec .shelf-ctrl .sc-btn{width:48px;height:48px;margin:0;border-radius:50%;background:#fff;color:var(--dark);font-size:0;
+  box-shadow:0 8px 20px -10px rgba(13,43,82,.35),0 1px 2px rgba(13,43,82,.1)}
+.shelf-sec .shelf-ctrl .sc-btn span{font:400 20px/1 var(--fam);transform:none}
+.shelf-sec .shelf-ctrl .sc-btn:hover{background:var(--dark);color:#fff;transform:translateY(-2px)}
+.shelf-sec .sc-pause{margin:0 0 0 6px;padding:8px 4px;font:600 11px/1 var(--fam);letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);background:none;border:0}
+.shelf-sec .sc-pause::before{display:none}
+/* the bookcase: a soft light back wall, a white ledge */
+.shelf-stage{position:relative;border-radius:18px 18px 0 0;
+  background:radial-gradient(90% 120% at 30% 0%,#fbf9f4 0%,#f1ece2 70%,#ebe5d9 100%);
+  box-shadow:inset 0 30px 40px -34px rgba(60,44,28,.18)}
+.shelf-sec .shelf{height:calc(var(--shelf-h,380px) + 70px);background:none;box-shadow:none;padding:0}
+.shelf-sec .shelf::before{opacity:.18}
+.shelf-sec .plank{margin:0 -14px;border-radius:3px;height:16px;
+  background:linear-gradient(180deg,#fff 0%,#faf8f3 60%,#ece6da 100%);
+  box-shadow:0 1px 0 rgba(60,44,28,.06),0 14px 20px -10px rgba(60,44,28,.26),0 30px 50px -26px rgba(60,44,28,.2)}
+@media (max-width:900px){
+  .shelf-sec .shelf-wrap{grid-template-columns:1fr;gap:18px;width:auto}
+  .shelf-side{padding:0 var(--gut);gap:10px}
+  .shelf-sec .shelf-cap{min-height:0;margin-top:6px}
+  .shelf-stage{border-radius:0}
+  .shelf-sec .plank{margin:0}
+}
+
+/* author's signature in the hero, right after the line about him */
+.sig-hero-img{display:block;width:calc(96*var(--k));height:auto;margin:calc(10*var(--k)) 0 0 calc(-4*var(--k))}
+@media (max-width:700px){.sig-hero-img{width:76px;margin:8px 0 0 -2px}}
+
+/* CATALOG v4 (Keren's reference): flat covers with rounded corners, cart on the cover corner, title / tag / price below */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;border:0}
+.tabs button{padding:11px 20px;border-radius:999px;background:#fff;color:var(--dark);border:0;font:600 14.5px/1 var(--fam);letter-spacing:0;text-transform:none;
+  box-shadow:0 1px 2px rgba(13,43,82,.08);transition:background .25s,color .25s}
+.tabs button::after{display:none}
+.tabs button:hover{background:#fff;box-shadow:0 6px 16px -8px rgba(13,43,82,.35)}
+.tabs button[aria-selected=true]{background:var(--dark);color:#fff}
+.tabs .tab-fav b{background:var(--sky);color:var(--dark)}
+.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(56*var(--u)) calc(28*var(--u))}
+.card{text-align:left}
+.card-stage{position:relative}
+.card-cv,.card.wide .card-cv{display:block;aspect-ratio:auto;padding:0;background:none;perspective:1600px}
+.card-cv::after{display:none}
+.card-cv .cvi,.card.wide .card-cv .cvi{width:100%;aspect-ratio:.72;border-radius:10px;transform:none;overflow:visible;
+  box-shadow:0 18px 30px -18px rgba(13,43,82,.45),0 2px 6px rgba(13,43,82,.08)}
+.card.wide .card-cv .cvi{aspect-ratio:.72;background:#fff}
+.card.wide .card-cv .cvi img{object-fit:contain;padding:18% 6%}
+.card-cv .cvi img,.card-cv .cvi .cv{border-radius:10px}
+.card-cv .cvi::before{display:none}
+.card-cv .cvi::after{border-radius:10px;background:linear-gradient(90deg,rgba(0,0,0,.16),transparent 3%,rgba(255,255,255,.1) 4%,transparent 9%)}
+.card:hover .card-cv .cvi,.card:focus-within .card-cv .cvi{transform:translateY(-6px);box-shadow:0 28px 40px -22px rgba(13,43,82,.5),0 2px 6px rgba(13,43,82,.08)}
+.card.flip .card-cv .cvi,.card.flip:hover .card-cv .cvi{transform:rotateY(180deg) translateY(-6px)}
+.cvb{border-radius:10px}
+.card-cart{all:unset;box-sizing:border-box;position:absolute;right:12px;bottom:12px;z-index:4;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+  background:#fff;color:var(--dark);cursor:pointer;box-shadow:0 8px 18px -8px rgba(13,43,82,.45);transition:background .25s,color .25s,transform .25s}
+.card-cart svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.card-cart:hover{background:var(--dark);color:#fff;transform:translateY(-2px)}
+.card-cart:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+.card:hover .card-cart,.card:focus-within .card-cart{transform:translateY(-6px)}
+.card-cart:hover{transform:translateY(-8px)}
+/* favourites + back of the book: small round buttons top-right, on hover */
+.card-acts{top:12px;right:12px;left:auto;bottom:auto;flex-direction:column;gap:8px}
+.card-acts button{width:38px;height:38px;background:rgba(255,255,255,.92);color:var(--dark)}
+.card-acts button:first-child{background:rgba(255,255,255,.92);color:var(--dark)}
+.card-acts [data-fav][aria-pressed=true]{background:var(--dark);color:#fff}
+.card-acts em{bottom:auto;top:50%;left:auto;right:calc(100% + 8px);transform:translate(4px,-50%)}
+.card-acts button:hover em,.card-acts button:focus-visible em{transform:translate(0,-50%)}
+.card.faved .card-stage::before{display:none}
+.card.faved .card-acts{opacity:1;transform:none;pointer-events:auto}
+.card.faved .card-acts [data-flip]{opacity:0}
+.card.faved:hover .card-acts [data-flip],.card.faved:focus-within .card-acts [data-flip]{opacity:1}
+.card-t,html[data-font=bebas] .card-t{margin-top:16px;min-height:0;font:600 clamp(17px,1.35vw,20px)/1.25 var(--fam);letter-spacing:0;text-transform:none;color:var(--ink)}
+html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Karantina",var(--fam);text-align:left}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.tag{display:inline-block;padding:6px 11px;border-radius:999px;background:rgba(13,43,82,.07);color:var(--dark);font:600 12px/1 var(--fam)}
+.tag.soft{background:transparent;box-shadow:inset 0 0 0 1px rgba(13,43,82,.15);color:var(--accent-ink)}
+.card-price{display:flex;align-items:baseline;gap:8px;margin:12px 0 0;align-self:end}
+.card-price b{font:700 18px/1 var(--fam);color:var(--dark)}
+.card-price span{font:400 12.5px/1 var(--fam);color:var(--accent-ink)}
+.card{grid-template-rows:auto auto auto 1fr}
+@media (max-width:1024px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 14px}.card-cart{width:38px;height:38px;right:8px;bottom:8px;border-radius:10px}
+  .card-acts{top:8px;right:8px}.card-acts button{width:32px;height:32px}.card-price span{display:none}.tabs button{padding:10px 14px;font-size:13.5px}}
+#grid .card .card-t{font:600 clamp(17px,1.35vw,20px)/1.25 var(--fam);letter-spacing:0;text-transform:none}#grid .card .card-t[dir=rtl]{font:700 clamp(21px,1.7vw,25px)/1.05 'Karantina',var(--fam)}.sig-hero-img{width:calc(118*var(--k))}
+@media (max-width:700px){.sig-hero-img{width:84px;margin:10px 0 0 -2px}}
+@media (min-width:701px){.sig-hero-img{width:calc(92*var(--k));margin-top:calc(6*var(--k))}}
+
+/* SHELF v9: less text, side column as tall as the shelf, no box edge */
+.shelf-sec .shelf-wrap{align-items:stretch}
+.shelf-side{display:flex;flex-direction:column;justify-content:space-between;gap:16px;padding:calc(60*var(--u)) 0 calc(34*var(--u))}
+.shelf-sec .shelf-cap{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;min-height:0}
+.shelf-sec .shelf-hint{margin-top:12px}
+.shelf-sec .shelf-ctrl{margin:0}
+.shelf-sec .shelf-ctrl .sc-pause{width:40px;height:40px;margin-left:4px;background:transparent;box-shadow:inset 0 0 0 1.5px rgba(13,43,82,.18);color:var(--dark)}
+.shelf-sec .shelf-ctrl .sc-pause span{font-size:11px;letter-spacing:-1px}
+.shelf-sec .shelf-ctrl .sc-pause:hover{background:var(--dark);color:#fff;box-shadow:none}
+.shelf-stage{border-radius:0;box-shadow:none;background:radial-gradient(70% 90% at 50% 100%,#ece6da 0%,rgba(236,230,218,.55) 45%,rgba(246,243,236,0) 80%)}
+@media (max-width:900px){.shelf-side{padding:0 var(--gut)}.shelf-sec .shelf-hint{margin-top:8px}}
+.shelf-sec{padding-bottom:calc(40*var(--u))}
