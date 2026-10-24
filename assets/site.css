@@ -1306,3 +1306,14 @@ html[data-font=bebas] .card-t[dir=rtl]{font:700 clamp(20px,1.6vw,24px)/1.1 "Kara
 }
 #books{background:var(--light)}
 @media (max-width:900px){.shelf-sec .shelf-wrap{grid-template-columns:1fr}.shelf-side{justify-content:flex-start}}
+
+/* SHELF v12: one ledge runs under the whole section; the title, hint and arrows stand on it like the books */
+.shelf-sec .shelf-wrap{grid-template-rows:1fr auto;row-gap:0;align-items:end}
+.shelf-sec .shelf-wrap>.plank{grid-column:1/-1;margin:0 -24px;position:relative;z-index:2}
+.shelf-side{align-self:stretch;padding:calc(30*var(--u)) 0 calc(18*var(--u))}
+.shelf-side .shelf-ctrl{margin:0}
+.shelf-stage::after{display:none}
+.shelf-sec .shelf-wrap>.plank::after{content:"";position:absolute;left:3%;right:3%;top:100%;height:50px;pointer-events:none;
+  background:radial-gradient(50% 60% at 50% 0%,rgba(60,44,28,.16),rgba(60,44,28,0));filter:blur(4px)}
+@media (max-width:900px){.shelf-sec .shelf-wrap>.plank{margin:0}.shelf-side{padding:0 var(--gut) 8px}}
+#grid .card .card-t[dir=rtl]{font:600 clamp(17px,1.35vw,20px)/1.25 'Assistant',var(--fam);letter-spacing:0}
