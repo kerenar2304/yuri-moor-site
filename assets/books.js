@@ -7,7 +7,7 @@ window.SHOP = {
   AUTHOR_PHONE: '972547923229',   // messages for Yuri himself (he answers when he can; orders go to PHONE)
   AUTHOR_PHONE_TXT: '054-792-32-29',
   ORDER_EMAIL_KEY: '',     // Web3Forms access key (backup route for orders)
-  TURNSTILE_SITEKEY: ''    // Cloudflare Turnstile site key: empty = no bot check on the checkout
+  TURNSTILE_SITEKEY: '0x4AAAAAAFlRkbH4IslsdMUK'    // Cloudflare Turnstile site key (public): the bot check on the checkout
 };
 
 /* series: hebrew | detective | other. vol = number in the «Занимательный иврит» series.
