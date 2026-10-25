@@ -2103,3 +2103,19 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .cart-err a{color:inherit;text-decoration:underline}
 #checkout .co-row label,#checkout .co-row input,#checkout .co-zip input{min-width:0;width:100%;box-sizing:border-box}
 #checkout .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+/* phone hero, v2: the frame always runs the full width (8px gutters); on short screens it gets shorter instead of narrower.
+   Yuri is anchored to the bottom edge and the book stack is cropped there, so the text block at the top keeps its place */
+@media (max-width:700px){
+  .hero .stage-in{--m:min(calc((100vw - 16px) / 359), calc((100svh - 80px) / 776 * 1.18));height:min(calc(776 * var(--m)), calc(100svh - 80px))}
+  .hero .stage{width:calc(100vw - 16px)}
+  .hero .stage-in{width:100%}
+}
+/* short phone screens (wide aspect, e.g. Android with address and nav bars): Yuri follows the frame height, the text sits higher */
+@media (max-width:700px) and (min-aspect-ratio:10/19){
+  .hero .stage-in{--mh:calc((100svh - 80px) / 776)}
+  .hero .hero-yuri{width:calc(441 * min(var(--m), var(--mh) * 1.02));left:calc(2 * var(--m));bottom:calc(-46 * var(--mh))}
+  html[data-font=bebas] .hero .hero-h1,.hero .hero-h1{top:calc(30 * var(--m))}
+  .hero .hero-side{top:calc(138 * var(--m))}
+  .hero .hero-cta{top:calc(232 * var(--m))}
+}
+#shelf.dragging .bk{transition:none}

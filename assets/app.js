@@ -67,6 +67,9 @@
       // the row is centred; if it is wider than the shelf (phones) it slides to keep the open book in view
       var off = total <= W ? (W - total) / 2 : Math.min(0, Math.max(W - total, W / 2 - pos[sel]));
       for (j = 0; j < n; j++) pos[j] += off;
+      // how far a finger may slide the row: until its first or last spine reaches the shelf edge
+      var rowL = pos[0] - slotW(0) / 2, rowR = pos[n - 1] + slotW(n - 1) / 2;
+      panMin = Math.min(0, W - 12 - rowR); panMax = Math.max(0, 12 - rowL);
       shelf.style.setProperty('--shelf-h', Math.max.apply(null, D.map(function (s) { return s.h; })) + 'px');
       bks.forEach(function (bk, j) {
         var s = D[j], r = rel(j), prev = parseFloat(bk.dataset.x || 'NaN'), nx = pos[j] - (r === 0 ? s.w : s.d) / 2;
@@ -78,7 +81,7 @@
         st.setProperty('--h', s.h + 'px'); st.setProperty('--d', s.d + 'px'); st.setProperty('--w', s.w + 'px');
         st.setProperty('--lean', (r === 0 ? 0 : s.lean) + 'deg');
         st.setProperty('--slot', (r === 0 ? s.w : s.d) + 'px');
-        st.width = '0px'; st.transform = 'translateX(' + pos[j].toFixed(1) + 'px)';
+        st.width = '0px'; bk.dataset.px = pos[j]; st.transform = 'translateX(' + (pos[j] + pan).toFixed(1) + 'px)';
         bk.dataset.x = nx; bk.classList.toggle('open', r === 0);
         var a = $('.bk-btn', bk); a.tabIndex = r === 0 ? 0 : -1;
         if (wrap) { void bk.offsetWidth; bk.classList.remove('jump'); }
@@ -97,9 +100,14 @@
         cap.classList.remove('swap');
       }, 260);
     }
-    var stopped = false;
-    function go(j, user) { sel = (j + n) % n; layout(false); caption(); if (user && !stopped) play(); }
-    function tick() { if (!paused && !document.hidden) go(sel + 1); }
+    var stopped = false, browsing = false, pan = 0, panMin = 0, panMax = 0;
+    // the books slide inside the shelf (the shelf itself clips, so it must stay put)
+    function setPan(v) {
+      pan = Math.min(panMax, Math.max(panMin, v));
+      bks.forEach(function (bk) { if (bk.dataset.px) bk.style.transform = 'translateX(' + (+bk.dataset.px + pan).toFixed(1) + 'px)'; });
+    }
+    function go(j, user) { sel = (j + n) % n; browsing = false; setPan(0); layout(false); caption(); if (user && !stopped) play(); }
+    function tick() { if (!paused && !browsing && !document.hidden) go(sel + 1); }
     function play() { clearInterval(timer); if (!reduce && !stopped) timer = setInterval(tick, 5500); }
     var dots = cap && $('.sc-dots', cap);
     if (dots) {
@@ -118,26 +126,27 @@
     shelf.addEventListener('pointerleave', function () { paused = false; play(); }); // a full pause after you leave
     shelf.addEventListener('focusin', function () { paused = true; });
     shelf.addEventListener('focusout', function () { paused = false; play(); });
-    // drag on touch: the row follows the finger, on release it settles on the book that came to the middle
+    // drag on touch: the row slides under the finger and stays where it is left, so you can read the spines;
+    // nothing opens and the conveyor waits; a tap on a spine turns that book to face you
     // (the shelf has touch-action: pan-y, so a sideways drag is ours and a vertical one still scrolls the page)
-    var sx = null, sy = 0, dx = 0, dragging = false;
+    var sx = null, sy = 0, dx = 0, dragging = false, pan0 = 0;
     shelf.addEventListener('pointerdown', function (e) {
       if (e.pointerType === 'mouse') return;
-      sx = e.clientX; sy = e.clientY; dx = 0; dragging = false; paused = true;
+      sx = e.clientX; sy = e.clientY; dx = 0; dragging = false; paused = true; pan0 = pan;
     });
     shelf.addEventListener('pointermove', function (e) {
       if (sx == null) return;
       dx = e.clientX - sx;
-      if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - sy)) { dragging = true; shelf.classList.add('dragging'); shelf.setPointerCapture(e.pointerId); }
-      if (dragging) shelf.style.translate = dx + 'px 0';
+      if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - sy)) {
+        dragging = true; browsing = true; clearInterval(timer); shelf.classList.add('dragging'); shelf.setPointerCapture(e.pointerId);
+      }
+      if (dragging) setPan(pan0 + dx);
     });
     function endDrag() {
       if (sx == null) return;
       sx = null; paused = false;
       if (!dragging) return;
-      dragging = false; shelf.classList.remove('dragging'); shelf.style.translate = '';
-      var step = Math.max(1, Math.round(Math.abs(dx) / 56)); // about one spine per 56px of drag
-      if (Math.abs(dx) > 30) go(Math.min(n - 1, Math.max(0, sel + (dx < 0 ? step : -step))), true);
+      dragging = false; shelf.classList.remove('dragging');
     }
     shelf.addEventListener('pointerup', endDrag);
     shelf.addEventListener('pointercancel', endDrag);
