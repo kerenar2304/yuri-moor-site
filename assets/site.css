@@ -1980,3 +1980,20 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 #shelf.dragging{transition:none;cursor:grabbing}
 /* phone: the tabs wrap onto rows, so the pill-shaped container must not clip them */
 @media (max-width:700px){.tabs{border-radius:0;overflow:visible}}
+/* excerpt reader: a clear round close button and round arrows, like every other button on the site */
+.reader .x{position:absolute;top:10px;right:10px;z-index:5;width:48px;height:48px;border-radius:50%;border:0;padding:0;font-size:0;cursor:pointer;
+  background:var(--light);color:var(--dark);box-shadow:0 10px 24px -8px rgba(0,0,0,.55);display:grid;place-items:center;transition:transform .2s,background .2s}
+.reader .x::before,.reader .x::after{content:"";position:absolute;width:20px;height:2.5px;border-radius:2px;background:currentColor;transform:rotate(45deg)}
+.reader .x::after{transform:rotate(-45deg)}
+.reader .x:hover{background:#fff;transform:scale(1.06)}
+.reader .x:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.reader-nav button{position:relative;width:52px;height:52px;border-radius:50%;border:0;padding:0;font-size:0;cursor:pointer;background:var(--light);color:var(--dark);
+  box-shadow:0 10px 24px -10px rgba(0,0,0,.55);transition:transform .2s,background .2s}
+.reader-nav button::before{content:"";position:absolute;inset:0;margin:auto;width:22px;height:22px;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h15M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h15M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat}
+#rd-prev::before{transform:scaleX(-1)}
+.reader-nav button:hover:not(:disabled){background:#fff;transform:scale(1.06)}
+.reader-nav button:disabled{opacity:.35;cursor:default}
+.reader-nav button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.reader-nav span{font:600 16px/1 var(--fam);color:var(--light)}
