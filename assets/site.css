@@ -2066,3 +2066,21 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .pg-cover{display:flex;flex-direction:column;align-items:center;gap:18px}
 .pg-flip{margin:0}
 .pg-back-cv[hidden],.pg-cover>.pg-cv[hidden]{display:none}
+/* book page: enlarge the cover */
+.pg-cover{position:relative}
+.pg-cover>.pg-cv{cursor:zoom-in}
+.pg-zoom{position:absolute;top:10px;right:10px;z-index:2;width:44px;height:44px;border-radius:50%;border:0;padding:0;cursor:zoom-in;
+  background:rgba(246,243,236,.95);color:var(--dark);box-shadow:0 8px 20px -8px rgba(0,0,0,.45);transition:transform .2s}
+.pg-zoom::before{content:"";position:absolute;inset:0;margin:auto;width:20px;height:20px;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E") center/contain no-repeat}
+.pg-zoom:hover{transform:scale(1.06)}
+.pg-zoom:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.cvz{width:min(96vw,980px);max-height:96svh;padding:56px 16px 18px;border:0;border-radius:18px;background:transparent;overflow:visible}
+.cvz::backdrop{background:rgba(13,43,82,.82);backdrop-filter:blur(4px)}
+.cvz[open]{display:flex;flex-direction:column;align-items:center;gap:16px}
+.cvz-img{display:block;max-width:100%;max-height:calc(96svh - 150px);width:auto;height:auto;border-radius:6px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.cvz .x{position:absolute;top:0;right:8px;width:48px;height:48px;border-radius:50%;border:0;padding:0;font-size:0;cursor:pointer;background:var(--light);color:var(--dark);box-shadow:0 10px 24px -8px rgba(0,0,0,.55)}
+.cvz .x::before,.cvz .x::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:2.5px;margin:-1.25px 0 0 -10px;border-radius:2px;background:currentColor;transform:rotate(45deg)}
+.cvz .x::after{transform:rotate(-45deg)}
+.cvz-flip{background:rgba(246,243,236,.92)}

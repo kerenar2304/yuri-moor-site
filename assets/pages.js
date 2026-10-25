@@ -55,6 +55,31 @@
         root.querySelectorAll('.pg-flip [data-side]').forEach(function (x) { x.setAttribute('aria-selected', x === btn); });
       });
     });
+    // enlarge the cover: a full-screen view with the same front / back switch
+    var cov = root.querySelector('.pg-cover');
+    if (cov && b.cover) {
+      cov.insertAdjacentHTML('afterbegin', '<button type="button" class="pg-zoom" aria-label="Увеличить обложку"></button>');
+      document.body.insertAdjacentHTML('beforeend',
+        '<dialog class="cvz" id="cvz" aria-label="Обложка: ' + esc(b.title) + '">' +
+          '<button class="x" type="button" data-cvz-close aria-label="Закрыть">×</button>' +
+          '<img class="cvz-img" src="assets/covers/' + b.cover + '.webp" alt="Обложка: ' + esc(b.title) + '">' +
+          '<div class="tabs cvz-flip" role="tablist" aria-label="Сторона обложки"><button type="button" data-zside="front" aria-selected="true">Обложка</button><button type="button" data-zside="back" aria-selected="false">Оборот</button></div>' +
+        '</dialog>');
+      var dz = document.getElementById('cvz'), zimg = dz.querySelector('.cvz-img');
+      var showSide = function (side) {
+        zimg.src = 'assets/covers/' + b.cover + (side === 'back' ? '-back' : '') + '.webp';
+        zimg.alt = (side === 'back' ? 'Оборот: ' : 'Обложка: ') + b.title;
+        dz.querySelectorAll('[data-zside]').forEach(function (x) { x.setAttribute('aria-selected', x.dataset.zside === side); });
+      };
+      var openZoom = function () {
+        var side = root.querySelector('.pg-back-cv').hidden ? 'front' : 'back';
+        showSide(side); dz.showModal();
+      };
+      root.querySelector('.pg-zoom').addEventListener('click', openZoom);
+      root.querySelectorAll('.pg-cover > .pg-cv').forEach(function (im) { im.addEventListener('click', openZoom); });
+      dz.querySelectorAll('[data-zside]').forEach(function (x) { x.addEventListener('click', function () { showSide(x.dataset.zside); }); });
+      dz.addEventListener('click', function (e) { if (e.target === dz || e.target.closest('[data-cvz-close]')) dz.close(); });
+    }
     var rd = $('[data-read-page]', root);
     if (rd) rd.addEventListener('click', function () { if (window.YM) YM.read(b.id); });
   }
