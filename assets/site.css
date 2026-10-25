@@ -1969,3 +1969,14 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .shelf-side .shelf-ctrl{justify-content:flex-start}
 /* phone hero: the photo runs past the bottom of the frame, so its cut edge and the book stack under Yuri stay hidden */
 @media (max-width:700px){.hero .hero-yuri{top:auto;bottom:calc(-46 * var(--m))}}
+/* phone hero: text block sits a little lower, off the top edge */
+@media (max-width:700px){
+  html[data-font=bebas] .hero .hero-h1,.hero .hero-h1{top:calc(46 * var(--m))}
+  .hero .hero-side{top:calc(156 * var(--m))}
+  .hero .hero-cta{top:calc(252 * var(--m))}
+}
+/* shelf drag on phones: sideways gestures belong to the shelf, vertical ones still scroll the page */
+#shelf{touch-action:pan-y;transition:translate .45s cubic-bezier(.2,.7,.2,1)}
+#shelf.dragging{transition:none;cursor:grabbing}
+/* phone: the tabs wrap onto rows, so the pill-shaped container must not clip them */
+@media (max-width:700px){.tabs{border-radius:0;overflow:visible}}

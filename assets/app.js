@@ -110,6 +110,7 @@
     addEventListener('resize', function () { layout(true); });
     // a spine brings its book to the middle; the book in the middle opens
     shelf.addEventListener('click', function (e) {
+      if (Math.abs(dx) > 8) { e.preventDefault(); e.stopPropagation(); dx = 0; return; } // that was a drag, not a tap
       var bk = e.target.closest('.bk'); if (!bk) return;
       var j = bks.indexOf(bk); if (j !== sel) { e.preventDefault(); e.stopPropagation(); go(j, true); }
     }, true);
@@ -117,10 +118,29 @@
     shelf.addEventListener('pointerleave', function () { paused = false; play(); }); // a full pause after you leave
     shelf.addEventListener('focusin', function () { paused = true; });
     shelf.addEventListener('focusout', function () { paused = false; play(); });
-    // swipe on touch
-    var sx = null;
-    shelf.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') sx = e.clientX; });
-    shelf.addEventListener('pointerup', function (e) { if (sx == null) return; var dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 40) go(sel + (dx < 0 ? 1 : -1), true); });
+    // drag on touch: the row follows the finger, on release it settles on the book that came to the middle
+    // (the shelf has touch-action: pan-y, so a sideways drag is ours and a vertical one still scrolls the page)
+    var sx = null, sy = 0, dx = 0, dragging = false;
+    shelf.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') return;
+      sx = e.clientX; sy = e.clientY; dx = 0; dragging = false; paused = true;
+    });
+    shelf.addEventListener('pointermove', function (e) {
+      if (sx == null) return;
+      dx = e.clientX - sx;
+      if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - sy)) { dragging = true; shelf.classList.add('dragging'); shelf.setPointerCapture(e.pointerId); }
+      if (dragging) shelf.style.translate = dx + 'px 0';
+    });
+    function endDrag() {
+      if (sx == null) return;
+      sx = null; paused = false;
+      if (!dragging) return;
+      dragging = false; shelf.classList.remove('dragging'); shelf.style.translate = '';
+      var step = Math.max(1, Math.round(Math.abs(dx) / 56)); // about one spine per 56px of drag
+      if (Math.abs(dx) > 30) go(Math.min(n - 1, Math.max(0, sel + (dx < 0 ? step : -step))), true);
+    }
+    shelf.addEventListener('pointerup', endDrag);
+    shelf.addEventListener('pointercancel', endDrag);
     // controls (also the WCAG pause for moving content)
     var ctr = $('#shelf-ctrl');
     if (ctr) {
