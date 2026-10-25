@@ -1997,3 +1997,5 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .reader-nav button:disabled{opacity:.35;cursor:default}
 .reader-nav button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
 .reader-nav span{font:600 16px/1 var(--fam);color:var(--light)}
+/* phone: compact filters so they pack two to a row even on narrow phones */
+@media (max-width:700px){#books .tabs{gap:6px}#books .tabs button{padding:8px 13px;font-size:13px}}
