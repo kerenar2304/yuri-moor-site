@@ -65,7 +65,7 @@
       for (var j = 0; j < n; j++) { pos[j] = x + slotW(j) / 2; x += slotW(j) + G; }
       var total = x - G;
       // the row is centred; if it is wider than the shelf (phones) it slides to keep the open book in view
-      var off = total <= W ? (W - total) / 2 : Math.min(0, Math.max(W - total, W / 2 - pos[sel]));
+      var off = total <= W ? (W - total) / 2 : sel < 0 ? 12 : Math.min(0, Math.max(W - total, W / 2 - pos[sel]));
       for (j = 0; j < n; j++) pos[j] += off;
       // how far a finger may slide the row: until its first or last spine reaches the shelf edge
       var rowL = pos[0] - slotW(0) / 2, rowR = pos[n - 1] + slotW(n - 1) / 2;
@@ -92,6 +92,8 @@
       if (!cap) return; var b = byId[ORDER[sel]];
       cap.classList.add('swap');
       setTimeout(function () {
+        // phones start with every book closed: the caption invites a tap instead of naming a book
+        if (!b) { $('.sc-title', cap).textContent = 'Все книги на одной полке'; $('.sc-meta', cap).textContent = 'Нажмите на корешок, чтобы открыть книгу'; $('.sc-count', cap).textContent = n + ' книг'; $$('.sc-dots button', cap).forEach(function (d) { d.classList.remove('on'); }); cap.classList.remove('swap'); return; }
         $('.sc-title', cap).textContent = b.ru || b.title;
         $('.sc-meta', cap).textContent = b.vol ? 'Занимательный иврит · часть ' + b.vol : (b.isNew ? 'Новая книга' : SERIES[b.series]);
         $('.sc-count', cap).textContent = (sel + 1) + ' из ' + n;
@@ -108,14 +110,17 @@
     }
     function go(j, user) { sel = (j + n) % n; browsing = false; setPan(0); layout(false); caption(); if (user && !stopped) play(); }
     function tick() { if (!paused && !browsing && !document.hidden) go(sel + 1); }
-    function play() { clearInterval(timer); if (!reduce && !stopped) timer = setInterval(tick, 5500); }
+    function play() { clearInterval(timer); if (!reduce && !stopped && !isPhone()) timer = setInterval(tick, 5500); }
     var dots = cap && $('.sc-dots', cap);
     if (dots) {
       dots.innerHTML = ORDER.map(function (id, k) { return '<button type="button" aria-label="' + esc((byId[id].ru || byId[id].title)) + '"></button>'; }).join('');
       $$('button', dots).forEach(function (d, k) { d.addEventListener('click', function () { go(k, true); }); });
     }
+    // on a phone the shelf is for browsing: no book is open and nothing moves until you tap a spine
+    function isPhone() { return innerWidth <= 700; }
+    if (isPhone()) sel = -1;
     layout(true); caption(); requestAnimationFrame(function () { bks.forEach(function (bk) { bk.classList.remove('jump'); }); });
-    addEventListener('resize', function () { layout(true); });
+    addEventListener('resize', function () { if (sel < 0 && !isPhone()) { sel = 0; caption(); } layout(true); });
     // a spine brings its book to the middle; the book in the middle opens
     shelf.addEventListener('click', function (e) {
       if (Math.abs(dx) > 8) { e.preventDefault(); e.stopPropagation(); dx = 0; return; } // that was a drag, not a tap
@@ -138,7 +143,13 @@
       if (sx == null) return;
       dx = e.clientX - sx;
       if (!dragging && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(e.clientY - sy)) {
-        dragging = true; browsing = true; clearInterval(timer); shelf.classList.add('dragging'); shelf.setPointerCapture(e.pointerId);
+        dragging = true; browsing = true; clearInterval(timer); shelf.classList.add('dragging'); try { shelf.setPointerCapture(e.pointerId); } catch (er) {}
+        // an open book turns back into its spine, and the row stays where it is under the finger
+        if (sel >= 0 && isPhone()) {
+          var was = bks[sel], x0 = +was.dataset.px;
+          sel = -1; shelf.classList.remove('dragging'); layout(false); caption(); shelf.classList.add('dragging');
+          pan0 += x0 - +was.dataset.px;
+        }
       }
       if (dragging) setPan(pan0 + dx);
     });

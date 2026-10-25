@@ -2119,3 +2119,5 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
   .hero .hero-cta{top:calc(232 * var(--m))}
 }
 #shelf.dragging .bk{transition:none}
+.shelf-hint .hint-touch{display:none}
+@media (max-width:700px){.shelf-hint .hint-hover{display:none}.shelf-hint .hint-touch{display:inline}}
