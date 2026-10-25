@@ -418,7 +418,7 @@
   if (co) { co.addEventListener('input', coCheck); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
   // Cloudflare Turnstile (bot check) runs only once its site key is set in SHOP
   if (co && SHOP.TURNSTILE_SITEKEY) {
-    var ts = document.createElement('div'); ts.className = 'cf-turnstile'; ts.dataset.sitekey = SHOP.TURNSTILE_SITEKEY; ts.dataset.language = 'ru';
+    var ts = document.createElement('div'); ts.className = 'cf-turnstile'; ts.dataset.sitekey = SHOP.TURNSTILE_SITEKEY; ts.dataset.language = 'ru'; ts.dataset.theme = 'light';
     coBtn.parentNode.insertBefore(ts, coBtn);
     var tsj = document.createElement('script'); tsj.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'; tsj.async = true; tsj.defer = true; document.head.appendChild(tsj);
   }
