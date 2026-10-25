@@ -31,23 +31,31 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 <body>
 <!-- ============ LOADER: the Yura Media loupe searches, finds its words and becomes the logo (once per visit) ============ -->
 <div class="ldr" id="ldr" aria-hidden="true">
-  <!-- every layer is cut from the logo file itself (ring centre 119.5,125.5 · outer r 86 · inner r 68), so the last frame is the logo exactly -->
+  <!-- cut from the logo file itself: the loupe (ring, white glass, highlight arc, handle) moves as one piece; only the words «Yura Media» are separate -->
   <svg class="ldr-logo" viewBox="0 0 360 228">
     <defs>
-      <filter id="ldr-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2"/></filter>
-      <clipPath id="ldr-in"><circle cx="119.5" cy="125.5" r="68"/></clipPath>
+      <!-- the letters only: white paper becomes transparent, the ink stays logo navy -->
+      <filter id="ldr-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 .051  0 0 0 0 .169  0 0 0 0 .322  -1.1 0 0 0 1.1"/></filter>
+      <filter id="ldr-ink-blur" color-interpolation-filters="sRGB" x="-20%" y="-30%" width="140%" height="160%"><feColorMatrix type="matrix" values="0 0 0 0 .051  0 0 0 0 .169  0 0 0 0 .322  -1.1 0 0 0 1.1"/><feGaussianBlur stdDeviation="3.2"/></filter>
+      <!-- the two words, measured from the file: Yura 64-132 x 101-120, Media 82-170 x 125-144 -->
+      <clipPath id="ldr-wbox"><rect x="62" y="99" width="72" height="23"/><rect x="80" y="123" width="92" height="23"/></clipPath>
       <clipPath id="ldr-glass"><circle id="ldr-glass-c" cx="-60" cy="140" r="68"/></clipPath>
-      <mask id="ldr-ring" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="228">
+      <mask id="ldr-loupe" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="228">
         <circle cx="119.5" cy="125.5" r="88" fill="#fff"/><polygon points="178,128 360,128 360,228 178,228" fill="#fff"/>
-        <circle cx="119.5" cy="125.5" r="68.5" fill="#000"/>
       </mask>
       <mask id="ldr-arc" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="228">
         <rect width="360" height="108" fill="#fff"/><circle cx="119.5" cy="125.5" r="88" fill="#000"/>
       </mask>
     </defs>
-    <g class="ldr-words-blur"><image href="assets/yura-media.png" width="360" height="228" clip-path="url(#ldr-in)" filter="url(#ldr-blur)"/></g>
-    <g clip-path="url(#ldr-glass)"><image href="assets/yura-media.png" width="360" height="228" clip-path="url(#ldr-in)"/></g>
-    <g id="ldr-lens" transform="translate(-180 15)"><image href="assets/yura-media.png" width="360" height="228" mask="url(#ldr-ring)"/></g>
+    <!-- the words, blurred, waiting to be found -->
+    <g class="ldr-words-blur"><image href="assets/yura-media.png" width="360" height="228" clip-path="url(#ldr-wbox)" filter="url(#ldr-ink-blur)"/></g>
+    <!-- the loupe in one piece; its glass keeps the paper white where the words were -->
+    <g id="ldr-lens" transform="translate(-180 15)">
+      <image href="assets/yura-media.png" width="360" height="228" mask="url(#ldr-loupe)"/>
+      <g clip-path="url(#ldr-wbox)"><rect width="360" height="228" fill="#fff"/></g>
+    </g>
+    <!-- the words seen sharp through the glass -->
+    <g clip-path="url(#ldr-glass)"><image href="assets/yura-media.png" width="360" height="228" clip-path="url(#ldr-wbox)" filter="url(#ldr-ink)"/></g>
     <g class="ldr-arc"><image href="assets/yura-media.png" width="360" height="228" mask="url(#ldr-arc)"/></g>
   </svg>
 </div>
