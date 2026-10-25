@@ -341,7 +341,7 @@
     $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
     $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы. ' : '') + (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты.' : '');
     $$('#checkout [data-need]').forEach(function (l) {
-      var on = l.dataset.need === 'print' ? hasPrint : hasPdf; l.hidden = !on; $('input', l).required = on;
+      var on = l.dataset.need === 'print' ? hasPrint : hasPdf; l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
     });
   }
   function add(id, fmt) {
@@ -380,42 +380,40 @@
     var c = cart[+q.dataset.k]; c.q += +q.dataset.q; if (c.q < 1) cart.splice(+q.dataset.k, 1); save(); renderCart();
   });
   var co = $('#checkout');
+  // the button stays dimmed until every required field is filled in
+  var coBtn = co && $('button[type=submit]', co), coErr = $('#cart-err');
+  function coCheck() { if (coBtn) coBtn.classList.toggle('off', !co.checkValidity()); }
+  if (co) { co.addEventListener('input', coCheck); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
   if (co) co.addEventListener('submit', function (e) {
-    e.preventDefault();
+    e.preventDefault(); coErr.hidden = true;
     if (!co.checkValidity()) { co.reportValidity(); return; }
     var d = new FormData(co), total = 0, hasPrint = false;
     var lines = cart.map(function (c) {
       var b = byId[c.id], p = priceOf(c) * c.q; total += p; if (c.fmt !== 'pdf') hasPrint = true;
       return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' = ' + p + ' ₪';
     });
+    var addr = hasPrint ? d.get('street') + ' ' + d.get('house') + ', кв. ' + d.get('apt') + ', ' + d.get('city') + ', ' + d.get('zip') : '';
     var msg = 'Новый заказ с сайта:\n' + lines.join('\n') + '\nИтого: ' + total + ' ₪' + (hasPrint ? ' + доставка' : '') +
       '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
-      (d.get('addr') ? '\nАдрес: ' + d.get('addr') : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
-    var done = function () {
-      cart = []; save(); renderCart();
-      $('#cart-thanks').hidden = false; $('#cart-empty').hidden = true;
+      (addr ? '\nАдрес: ' + addr : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
+    var fail = function () {
+      coBtn.classList.remove('busy');
+      coErr.innerHTML = 'Не удалось отправить заказ. Попробуйте ещё раз через минуту или напишите нам в <a href="https://wa.me/' + SHOP.PHONE + '" target="_blank" rel="noopener">WhatsApp</a>.';
+      coErr.hidden = false;
     };
-    // no keys yet: hand the ready message to WhatsApp, as before
-    if (!SHOP.ORDER_EMAIL_KEY && !SHOP.ORDER_WA_KEY) {
-      window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! ' + msg), '_blank', 'noopener');
-      done(); return;
-    }
-    // keys set: the order goes straight to the seller's e-mail and WhatsApp, the customer stays here
-    var btn = $('button[type=submit]', co); btn.disabled = true; btn.classList.add('busy');
-    var jobs = [];
-    if (SHOP.ORDER_EMAIL_KEY) jobs.push(fetch('https://api.web3forms.com/submit', {
+    if (!SHOP.ORDER_EMAIL_KEY) return fail();
+    // the order goes straight to the seller's e-mail, the customer stays on the page
+    coBtn.classList.add('busy');
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({ access_key: SHOP.ORDER_EMAIL_KEY, subject: 'Заказ книг: ' + d.get('name') + ', ' + total + ' ₪', from_name: 'Сайт Юрия Моор-Мурадова',
         name: d.get('name'), phone: d.get('phone'), email: d.get('email') || undefined, message: msg })
-    }).then(function (r) { return r.json(); }).then(function (j) { if (!j.success) throw new Error(j.message); }));
-    if (SHOP.ORDER_WA_KEY) jobs.push(fetch('https://api.callmebot.com/whatsapp.php?phone=' + SHOP.PHONE + '&apikey=' + SHOP.ORDER_WA_KEY + '&text=' + encodeURIComponent(msg), { mode: 'no-cors' }));
-    Promise.allSettled(jobs).then(function (res) {
-      btn.disabled = false; btn.classList.remove('busy');
-      if (res.some(function (r) { return r.status === 'fulfilled'; })) done();
-      else { // both services failed: do not lose the order, fall back to WhatsApp
-        window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! ' + msg), '_blank', 'noopener'); done();
-      }
-    });
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.success) throw new Error(j.message);
+      coBtn.classList.remove('busy'); co.reset();
+      cart = []; save(); renderCart();
+      $('#cart-thanks').hidden = false; $('#cart-empty').hidden = true;
+    }).catch(fail);
   });
   renderCart();
   $$('[data-cart-count]').forEach(function (b) { b.classList.remove('pop'); });

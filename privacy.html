@@ -66,8 +66,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     <p>Когда вы нажимаете «Оформить заказ», сайт отправляет нам заказ, и в нём будут:</p>
     <ul>
       <li>список книг и форматов;</li>
-      <li>имя и телефон, чтобы связаться с вами;</li>
-      <li>адрес доставки, если вы заказали печатную книгу;</li>
+      <li>имя, фамилия и телефон, чтобы связаться с вами;</li>
+      <li>полный адрес доставки (улица, дом, квартира, город, индекс), если вы заказали печатную книгу;</li>
       <li>e-mail, если вы заказали цифровую копию.</li>
     </ul>
     <p>Передавать эти данные вы не обязаны по закону, но без них мы не сможем выполнить заказ. Так же мы получаем данные, если вы пишете нам в WhatsApp, по e-mail или звоните.</p>
@@ -78,7 +78,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     <h2>Кому данные могут быть переданы</h2>
     <ul>
       <li>Почте Израиля или курьерской службе: имя, телефон и адрес, чтобы доставить печатную книгу.</li>
-      <li>Сервисам, которые доставляют заказ продавцу: Web3Forms (на e-mail) и CallMeBot (в WhatsApp). Они передают сообщение и не используют его в других целях.</li>
+      <li>Сервису Web3Forms, который доставляет заказ продавцу на e-mail. Он передаёт сообщение и не использует его в других целях.</li>
       <li>WhatsApp (Meta) и почтовому сервису, через которые идёт дальнейшая переписка. Эти сервисы работают по своим правилам конфиденциальности и хранят данные, в том числе за пределами Израиля.</li>
       <li>Оплата через Bit или банковским переводом проходит в вашем банковском приложении. Данных карты или счёта мы не получаем.</li>
     </ul>
@@ -185,10 +185,15 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <p class="cart-sum"><span>Итого</span><b id="cart-sum"></b></p>
       <p class="cart-note" id="cart-note"></p>
       <form id="checkout" novalidate>
-        <label><span>Имя</span><input name="name" autocomplete="name" required></label>
-        <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" dir="ltr" required></label>
-        <label data-need="print"><span>Адрес доставки</span><input name="addr" autocomplete="street-address"></label>
+        <label><span>Имя и фамилия</span><input name="name" autocomplete="name" required minlength="3"></label>
+        <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required pattern="[0-9+()\- ]{9,}"></label>
+        <div class="co-addr" data-need="print">
+          <div class="co-row"><label><span>Улица</span><input name="street" autocomplete="address-line1" required></label><label><span>Дом №</span><input name="house" inputmode="numeric" required></label></div>
+          <div class="co-row"><label><span>Город</span><input name="city" autocomplete="address-level2" required></label><label><span>Квартира</span><input name="apt" placeholder="или «нет»" required></label></div>
+          <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5,7}" title="5 или 7 цифр"></label>
+        </div>
         <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <p class="cart-err" id="cart-err" role="alert" hidden></p>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
         <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>
       </form>

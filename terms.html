@@ -70,8 +70,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     </ul>
     <h2>Как оформить заказ</h2>
     <ol>
-      <li>Добавьте книги в корзину и заполните имя, телефон, а также адрес (для печатных книг) или e-mail (для цифровых копий).</li>
-      <li>Нажмите «Оформить заказ»: заказ придёт нам, а на экране появится подтверждение.</li>
+      <li>Добавьте книги в корзину и заполните все поля: имя и фамилию, телефон, а для печатных книг полный адрес (улица, дом, квартира, город, индекс); для цифровых копий e-mail. Пока не заполнены все поля, заказ отправить нельзя.</li>
+      <li>Нажмите «Оформить заказ»: заказ придёт нам на e-mail, а на экране появится подтверждение.</li>
       <li>Мы подтвердим заказ, сообщим итоговую сумму и реквизиты для оплаты.</li>
       <li>Заказ считается принятым после подтверждения и оплаты.</li>
     </ol>
@@ -182,10 +182,15 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <p class="cart-sum"><span>Итого</span><b id="cart-sum"></b></p>
       <p class="cart-note" id="cart-note"></p>
       <form id="checkout" novalidate>
-        <label><span>Имя</span><input name="name" autocomplete="name" required></label>
-        <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" dir="ltr" required></label>
-        <label data-need="print"><span>Адрес доставки</span><input name="addr" autocomplete="street-address"></label>
+        <label><span>Имя и фамилия</span><input name="name" autocomplete="name" required minlength="3"></label>
+        <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required pattern="[0-9+()\- ]{9,}"></label>
+        <div class="co-addr" data-need="print">
+          <div class="co-row"><label><span>Улица</span><input name="street" autocomplete="address-line1" required></label><label><span>Дом №</span><input name="house" inputmode="numeric" required></label></div>
+          <div class="co-row"><label><span>Город</span><input name="city" autocomplete="address-level2" required></label><label><span>Квартира</span><input name="apt" placeholder="или «нет»" required></label></div>
+          <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5,7}" title="5 или 7 цифр"></label>
+        </div>
         <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <p class="cart-err" id="cart-err" role="alert" hidden></p>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
         <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>
       </form>

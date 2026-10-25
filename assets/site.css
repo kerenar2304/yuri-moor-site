@@ -2091,3 +2091,14 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .cart-thanks b{display:block;margin-bottom:6px;font:700 18px/1.3 var(--fam)}
 .cart-thanks p{margin:0;font:400 15px/1.55 var(--fam)}
 #checkout .btn.busy{opacity:.6;pointer-events:none}
+
+/* checkout: full delivery address, button dimmed until the form is complete, send error */
+#checkout .co-addr{display:grid;gap:12px}
+#checkout .co-addr[hidden]{display:none}
+#checkout .co-row{display:grid;grid-template-columns:minmax(0,1fr) 116px;gap:12px}
+#checkout .co-zip{max-width:180px}
+#checkout input::placeholder{color:var(--mute);opacity:.7}
+#checkout .btn.off{opacity:.45}
+.cart-err{margin:0;padding:12px 14px;border-radius:10px;background:#fbe9e7;color:#8a2a1c;font:400 15px/1.5 var(--fam)}
+.cart-err a{color:inherit;text-decoration:underline}
+#checkout .co-row label,#checkout .co-row input,#checkout .co-zip input{min-width:0;width:100%;box-sizing:border-box}

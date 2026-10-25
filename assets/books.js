@@ -4,9 +4,7 @@ window.SHOP = {
   PDF_PRICE: 40,
   PHONE: '972547419393',
   PHONE_TXT: '054-741-93-93',
-  // orders are delivered without leaving the site once these keys are set (empty = the order opens in WhatsApp instead)
-  ORDER_EMAIL_KEY: '',     // Web3Forms access key, delivers to ksuwa22@gmail.com
-  ORDER_WA_KEY: ''         // CallMeBot apikey, delivers to the WhatsApp at PHONE
+  ORDER_EMAIL_KEY: ''      // Web3Forms access key: orders arrive by e-mail at ksuwa22@gmail.com
 };
 
 /* series: hebrew | detective | other. vol = number in the «Занимательный иврит» series.
