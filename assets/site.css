@@ -2086,3 +2086,8 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .cvz-flip{background:rgba(246,243,236,.92)}
 /* tabs: no leftover side margin from the first tab design, so the pill hugs its buttons */
 .tabs button{margin:0}
+/* cart: thank-you after an order */
+.cart-thanks{margin:8px 0 18px;padding:20px 22px;border-radius:14px;background:#e3f2fb;color:var(--dark)}
+.cart-thanks b{display:block;margin-bottom:6px;font:700 18px/1.3 var(--fam)}
+.cart-thanks p{margin:0;font:400 15px/1.55 var(--fam)}
+#checkout .btn.busy{opacity:.6;pointer-events:none}

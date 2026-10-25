@@ -347,6 +347,7 @@
   function add(id, fmt) {
     var c = cart.filter(function (x) { return x.id === id && x.fmt === fmt; })[0];
     if (c) c.q++; else cart.push({ id: id, fmt: fmt, q: 1 });
+    var th = $('#cart-thanks'); if (th) th.hidden = true;
     save(); renderCart(); toast('Добавлено в корзину ✓');
   }
   // price buttons on the catalog cards
@@ -382,11 +383,39 @@
   if (co) co.addEventListener('submit', function (e) {
     e.preventDefault();
     if (!co.checkValidity()) { co.reportValidity(); return; }
-    var d = new FormData(co), lines = cart.map(function (c) { var b = byId[c.id]; return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q; });
-    var msg = 'Здравствуйте, Юрий! Хочу заказать:\n' + lines.join('\n') + '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
+    var d = new FormData(co), total = 0, hasPrint = false;
+    var lines = cart.map(function (c) {
+      var b = byId[c.id], p = priceOf(c) * c.q; total += p; if (c.fmt !== 'pdf') hasPrint = true;
+      return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' = ' + p + ' ₪';
+    });
+    var msg = 'Новый заказ с сайта:\n' + lines.join('\n') + '\nИтого: ' + total + ' ₪' + (hasPrint ? ' + доставка' : '') +
+      '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
       (d.get('addr') ? '\nАдрес: ' + d.get('addr') : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
-    window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
-    cart = []; save(); renderCart(); closeCart(); toast('Спасибо! Заказ отправлен автору');
+    var done = function () {
+      cart = []; save(); renderCart();
+      $('#cart-thanks').hidden = false; $('#cart-empty').hidden = true;
+    };
+    // no keys yet: hand the ready message to WhatsApp, as before
+    if (!SHOP.ORDER_EMAIL_KEY && !SHOP.ORDER_WA_KEY) {
+      window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! ' + msg), '_blank', 'noopener');
+      done(); return;
+    }
+    // keys set: the order goes straight to the seller's e-mail and WhatsApp, the customer stays here
+    var btn = $('button[type=submit]', co); btn.disabled = true; btn.classList.add('busy');
+    var jobs = [];
+    if (SHOP.ORDER_EMAIL_KEY) jobs.push(fetch('https://api.web3forms.com/submit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ access_key: SHOP.ORDER_EMAIL_KEY, subject: 'Заказ книг: ' + d.get('name') + ', ' + total + ' ₪', from_name: 'Сайт Юрия Моор-Мурадова',
+        name: d.get('name'), phone: d.get('phone'), email: d.get('email') || undefined, message: msg })
+    }).then(function (r) { return r.json(); }).then(function (j) { if (!j.success) throw new Error(j.message); }));
+    if (SHOP.ORDER_WA_KEY) jobs.push(fetch('https://api.callmebot.com/whatsapp.php?phone=' + SHOP.PHONE + '&apikey=' + SHOP.ORDER_WA_KEY + '&text=' + encodeURIComponent(msg), { mode: 'no-cors' }));
+    Promise.allSettled(jobs).then(function (res) {
+      btn.disabled = false; btn.classList.remove('busy');
+      if (res.some(function (r) { return r.status === 'fulfilled'; })) done();
+      else { // both services failed: do not lose the order, fall back to WhatsApp
+        window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! ' + msg), '_blank', 'noopener'); done();
+      }
+    });
   });
   renderCart();
   $$('[data-cart-count]').forEach(function (b) { b.classList.remove('pop'); });

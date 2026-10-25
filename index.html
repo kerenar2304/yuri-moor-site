@@ -408,6 +408,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
   <div class="cart-in">
     <header><h2>Корзина</h2><button class="x" type="button" data-cart-close aria-label="Закрыть корзину">×</button></header>
     <ul class="cart-list" id="cart-list"></ul>
+    <div class="cart-thanks" id="cart-thanks" hidden><b>Спасибо, заказ принят!</b><p>Мы свяжемся с вами по телефону или в WhatsApp, подтвердим заказ и пришлём реквизиты для оплаты.</p></div>
     <p class="cart-empty" id="cart-empty">Пока пусто. Загляните на <a href="#books" data-cart-close>книжную полку</a>.</p>
     <div class="cart-foot" id="cart-foot" hidden>
       <p class="cart-sum"><span>Итого</span><b id="cart-sum"></b></p>
@@ -418,7 +419,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
         <label data-need="print"><span>Адрес доставки</span><input name="addr" autocomplete="street-address"></label>
         <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
-        <p class="cart-legal">Заказ уходит автору в WhatsApp. Оплата через Bit или банковским переводом, Юрий пришлёт реквизиты. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>
+        <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>
       </form>
     </div>
   </div>
