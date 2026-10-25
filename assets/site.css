@@ -2044,3 +2044,11 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 }
 /* while the loader is on screen the books wait; they start the moment it leaves */
 .ldr-on .js .hero .w,.ldr-on.js .hero .w{opacity:0;translate:0 calc(60*var(--k));transition:none}
+/* phone: one «Контакты» with its loupe, on one line (the doubled word only works side by side) */
+@media (max-width:700px){
+  .c2-track span b:last-of-type{display:none}
+  .c2-track span{flex-wrap:nowrap;align-items:center;column-gap:.16em;font-size:calc((100vw - 56px) / 5.3)}
+  .c2-loupe{width:.62em;height:.62em}
+}
+.c2-mail{text-align:center;justify-content:center;display:flex}
+.ldr-logo{width:min(46vw,220px)}
