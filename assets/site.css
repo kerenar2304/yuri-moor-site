@@ -1958,3 +1958,12 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .legal-he p{font-family:"Assistant",var(--fam)}
 .legal-cta{margin:16px 0 4px}
 .legal-cta .btn{color:var(--dark)}
+/* desktop: no signature in the hero */
+.sig-hero-img{display:none}
+/* phone hero: the whole frame fits one screen under the header; scale by the tighter of width and height */
+@media (max-width:700px){
+  .hero .stage-in{--m:min(calc((100vw - 16px) / 359), calc((100svh - 80px) / 776))}
+  .hero .stage{width:calc(359 * min(calc((100vw - 16px) / 359), calc((100svh - 80px) / 776)));margin-inline:auto}
+}
+/* shelf controls line up with the text on the left */
+.shelf-side .shelf-ctrl{justify-content:flex-start}
