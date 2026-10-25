@@ -180,7 +180,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
           <div class="co-row"><label><span>Город</span><input name="city" autocomplete="address-level2" required></label><label><span>Квартира</span><input name="apt" placeholder="или «нет»" required></label></div>
           <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5,7}" title="5 или 7 цифр"></label>
         </div>
-        <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label data-need="email"><span>E-mail</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
         <p class="cart-err" id="cart-err" role="alert" hidden></p>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
         <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>

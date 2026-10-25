@@ -2102,3 +2102,4 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .cart-err{margin:0;padding:12px 14px;border-radius:10px;background:#fbe9e7;color:#8a2a1c;font:400 15px/1.5 var(--fam)}
 .cart-err a{color:inherit;text-decoration:underline}
 #checkout .co-row label,#checkout .co-row input,#checkout .co-zip input{min-width:0;width:100%;box-sizing:border-box}
+#checkout .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}

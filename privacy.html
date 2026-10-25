@@ -68,7 +68,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <li>список книг и форматов;</li>
       <li>имя, фамилия и телефон, чтобы связаться с вами;</li>
       <li>полный адрес доставки (улица, дом, квартира, город, индекс), если вы заказали печатную книгу;</li>
-      <li>e-mail, если вы заказали цифровую копию.</li>
+      <li>e-mail, если вы заказали цифровую копию или хотите получить письмо с подтверждением заказа.</li>
     </ul>
     <p>Передавать эти данные вы не обязаны по закону, но без них мы не сможем выполнить заказ. Так же мы получаем данные, если вы пишете нам в WhatsApp, по e-mail или звоните.</p>
 
@@ -78,7 +78,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     <h2>Кому данные могут быть переданы</h2>
     <ul>
       <li>Почте Израиля или курьерской службе: имя, телефон и адрес, чтобы доставить печатную книгу.</li>
-      <li>Сервису Web3Forms, который доставляет заказ продавцу на e-mail. Он передаёт сообщение и не использует его в других целях.</li>
+      <li>Почтовому сервису Resend (а при сбое резервному сервису Web3Forms), который доставляет заказ продавцу и письмо с подтверждением вам. Эти сервисы передают сообщение и не используют его в других целях; их серверы могут находиться за пределами Израиля.</li>
       <li>WhatsApp (Meta) и почтовому сервису, через которые идёт дальнейшая переписка. Эти сервисы работают по своим правилам конфиденциальности и хранят данные, в том числе за пределами Израиля.</li>
       <li>Оплата через Bit или банковским переводом проходит в вашем банковском приложении. Данных карты или счёта мы не получаем.</li>
     </ul>
@@ -192,7 +192,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
           <div class="co-row"><label><span>Город</span><input name="city" autocomplete="address-level2" required></label><label><span>Квартира</span><input name="apt" placeholder="или «нет»" required></label></div>
           <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5,7}" title="5 или 7 цифр"></label>
         </div>
-        <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label data-need="email"><span>E-mail</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
         <p class="cart-err" id="cart-err" role="alert" hidden></p>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
         <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>

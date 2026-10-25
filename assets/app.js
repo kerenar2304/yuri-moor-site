@@ -341,7 +341,9 @@
     $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
     $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы. ' : '') + (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты.' : '');
     $$('#checkout [data-need]').forEach(function (l) {
-      var on = l.dataset.need === 'print' ? hasPrint : hasPdf; l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
+      // e-mail is always offered (for the confirmation letter) and required only for a digital copy
+      if (l.dataset.need === 'email') { $('input', l).required = hasPdf; $('span', l).textContent = hasPdf ? 'E-mail для цифровой копии' : 'E-mail для подтверждения (необязательно)'; return; }
+      var on = hasPrint; l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
     });
   }
   function add(id, fmt) {
@@ -401,19 +403,31 @@
       coErr.innerHTML = 'Не удалось отправить заказ. Попробуйте ещё раз через минуту или напишите нам в <a href="https://wa.me/' + SHOP.PHONE + '" target="_blank" rel="noopener">WhatsApp</a>.';
       coErr.hidden = false;
     };
-    if (!SHOP.ORDER_EMAIL_KEY) return fail();
-    // the order goes straight to the seller's e-mail, the customer stays on the page
-    coBtn.classList.add('busy');
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ access_key: SHOP.ORDER_EMAIL_KEY, subject: 'Заказ книг: ' + d.get('name') + ', ' + total + ' ₪', from_name: 'Сайт Юрия Моор-Мурадова',
-        name: d.get('name'), phone: d.get('phone'), email: d.get('email') || undefined, message: msg })
-    }).then(function (r) { return r.json(); }).then(function (j) {
-      if (!j.success) throw new Error(j.message);
+    var done = function () {
       coBtn.classList.remove('busy'); co.reset();
       cart = []; save(); renderCart();
       $('#cart-thanks').hidden = false; $('#cart-empty').hidden = true;
-    }).catch(fail);
+    };
+    // Web3Forms: the backup route, used only where the site runs without its own server (GitHub Pages)
+    var viaForms = function () {
+      if (!SHOP.ORDER_EMAIL_KEY) return fail();
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ access_key: SHOP.ORDER_EMAIL_KEY, subject: 'Заказ книг: ' + d.get('name') + ', ' + total + ' ₪', from_name: 'Сайт Юрия Моор-Мурадова',
+          name: d.get('name'), phone: d.get('phone'), email: d.get('email') || undefined, message: msg })
+      }).then(function (r) { return r.json(); }).then(function (j) { if (!j.success) throw new Error(j.message); done(); }).catch(fail);
+    };
+    if (d.get('website')) return done(); // spam trap
+    // the order goes to /api/order (Cloudflare + Resend): to the seller, and a confirmation to the customer
+    coBtn.classList.add('busy');
+    var order = { items: cart.map(function (c) { var b = byId[c.id]; return { title: b.ru || b.title, fmt: c.fmt === 'pdf' ? 'pdf' : 'print', q: c.q }; }) };
+    ['name', 'phone', 'email', 'street', 'house', 'apt', 'city', 'zip', 'website'].forEach(function (k) { order[k] = d.get(k) || ''; });
+    fetch('api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) })
+      .then(function (r) {
+        if (r.ok) return done();
+        if (r.status === 422) return fail();
+        viaForms(); // no server function here (404/405), Resend not set up yet (503) or down (502)
+      }, viaForms);
   });
   renderCart();
   $$('[data-cart-count]').forEach(function (b) { b.classList.remove('pop'); });

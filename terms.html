@@ -70,8 +70,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     </ul>
     <h2>Как оформить заказ</h2>
     <ol>
-      <li>Добавьте книги в корзину и заполните все поля: имя и фамилию, телефон, а для печатных книг полный адрес (улица, дом, квартира, город, индекс); для цифровых копий e-mail. Пока не заполнены все поля, заказ отправить нельзя.</li>
-      <li>Нажмите «Оформить заказ»: заказ придёт нам на e-mail, а на экране появится подтверждение.</li>
+      <li>Добавьте книги в корзину и заполните все поля: имя и фамилию, телефон, а для печатных книг полный адрес (улица, дом, квартира, город, индекс); для цифровых копий e-mail (для печатных книг e-mail можно указать по желанию, чтобы получить подтверждение). Пока не заполнены все поля, заказ отправить нельзя.</li>
+      <li>Нажмите «Оформить заказ»: заказ придёт нам, а на экране (и на ваш e-mail, если вы его указали) появится подтверждение.</li>
       <li>Мы подтвердим заказ, сообщим итоговую сумму и реквизиты для оплаты.</li>
       <li>Заказ считается принятым после подтверждения и оплаты.</li>
     </ol>
@@ -189,7 +189,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
           <div class="co-row"><label><span>Город</span><input name="city" autocomplete="address-level2" required></label><label><span>Квартира</span><input name="apt" placeholder="или «нет»" required></label></div>
           <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5,7}" title="5 или 7 цифр"></label>
         </div>
-        <label data-need="pdf"><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label data-need="email"><span>E-mail</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
         <p class="cart-err" id="cart-err" role="alert" hidden></p>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
         <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>
