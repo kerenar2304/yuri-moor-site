@@ -1967,3 +1967,5 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 }
 /* shelf controls line up with the text on the left */
 .shelf-side .shelf-ctrl{justify-content:flex-start}
+/* phone hero: the photo runs past the bottom of the frame, so its cut edge and the book stack under Yuri stay hidden */
+@media (max-width:700px){.hero .hero-yuri{top:auto;bottom:calc(-46 * var(--m))}}
