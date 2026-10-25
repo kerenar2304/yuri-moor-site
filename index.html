@@ -72,6 +72,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
   if (calm) return setTimeout(done, 200);
   var t0 = 0;
   function frame(t) {
+    if (finished) return;
     if (!t0) t0 = t;
     var k = Math.min(1, (t - t0) / T), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
     var f = e * (P.length - 1), i = Math.min(P.length - 2, Math.floor(f)), u = f - i, s = u * u * (3 - 2 * u);

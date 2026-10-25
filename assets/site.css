@@ -2033,3 +2033,14 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
   #press .hpress-grid{order:2}
   #press .hpress-head .btn{order:3;align-self:flex-start;margin-top:26px}
 }
+/* hero books arrive one by one, quick and in order: left to right on desktop, bottom to top on phones */
+.js .w{transition:opacity .5s var(--ease),translate .6s var(--ease)}
+.js .hero.in .w1{transition-delay:0s}.js .hero.in .w2{transition-delay:.08s}.js .hero.in .w3{transition-delay:.16s}
+.js .hero.in .w4{transition-delay:.24s}.js .hero.in .w5{transition-delay:.32s}.js .hero.in .w6{transition-delay:.4s}
+.js .hero.in .w7{transition-delay:.48s}.js .hero.in .w8{transition-delay:.56s}.js .hero.in .w9{transition-delay:.64s}
+@media (max-width:700px){
+  .js .hero.in .w9{transition-delay:0s}.js .hero.in .w1{transition-delay:.08s}.js .hero.in .w3{transition-delay:.16s}
+  .js .hero.in .w7{transition-delay:.24s}.js .hero.in .w2{transition-delay:.32s}.js .hero.in .w8{transition-delay:.4s}
+}
+/* while the loader is on screen the books wait; they start the moment it leaves */
+.ldr-on .js .hero .w,.ldr-on.js .hero .w{opacity:0;translate:0 calc(60*var(--k));transition:none}
