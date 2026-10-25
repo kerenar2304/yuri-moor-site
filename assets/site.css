@@ -2121,3 +2121,13 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 #shelf.dragging .bk{transition:none}
 .shelf-hint .hint-touch{display:none}
 @media (max-width:700px){.shelf-hint .hint-hover{display:none}.shelf-hint .hint-touch{display:inline}}
+/* short phone screens: the six hero books close up evenly so the last one still peeks in at the bottom, as on tall phones */
+@media (max-width:700px) and (min-aspect-ratio:10/19){
+  .hero .wave{--top:calc(300 * var(--m));--step:calc((min(calc(776 * var(--m)), calc(100svh - 80px)) - 83 * var(--m) - var(--top)) / 5)}
+  .hero .wave .w8{top:var(--top)}
+  .hero .wave .w2{top:calc(var(--top) + var(--step))}
+  .hero .wave .w7{top:calc(var(--top) + 2 * var(--step))}
+  .hero .wave .w3{top:calc(var(--top) + 3 * var(--step))}
+  .hero .wave .w1{top:calc(var(--top) + 4 * var(--step))}
+  .hero .wave .w9{top:calc(var(--top) + 5 * var(--step))}
+}
