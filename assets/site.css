@@ -2052,3 +2052,13 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 }
 .c2-mail{text-align:center;justify-content:center;display:flex}
 .ldr-logo{width:min(46vw,220px)}
+/* the cart's order button looks like every other button: own width, not stretched */
+
+#checkout .btn{width:auto;align-self:flex-start;justify-self:start}
+@media (max-width:700px){#checkout .btn{width:auto}}
+/* desktop: the photo spans the text column from its top edge to its bottom edge, standing on the bottom */
+@media (min-width:901px){
+  #about .about-grid{align-items:stretch}
+  #about .about-ph{position:relative;align-self:stretch;width:100%;max-width:none;min-height:420px}
+  #about .about-ph img{position:absolute;left:50%;bottom:0;top:0;height:100%;width:auto;max-width:100%;translate:-50% 0;object-fit:contain;object-position:center bottom;aspect-ratio:auto}
+}
