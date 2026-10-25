@@ -1,10 +1,93 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Страница не найдена | Юрий Моор-Мурадов</title><meta name="robots" content="noindex"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/legal.css">
-<style>main{text-align:center}svg{width:140px;margin:0 auto 20px;display:block;fill:none;stroke:var(--dark);stroke-width:6;stroke-linecap:round}svg path{stroke:var(--sky);stroke-width:16}</style></head>
-<body><header><a href="/">Юрий Моор-Мурадов</a></header>
-<main>
-<svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="85" cy="85" r="70"/><path d="M137 137 190 190"/></svg>
-<h1>Улик не обнаружено</h1>
-<p>Следствие зашло в тупик: такой страницы нет. Как говорят на иврите, <b lang="he" dir="rtl">אין דבר</b>, ничего страшного.</p>
-<a class="back" href="/">← Вернуться к книжной полке</a>
-</main></body></html>
+<!doctype html>
+<html lang="ru" data-font="bebas">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Страница не найдена | Юрий Моор-Мурадов</title>
+<meta name="robots" content="noindex">
+<!-- served for any missing address, so every path here is absolute -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#8FCDEB">
+<link rel="stylesheet" href="/assets/site.css?v=202610251552">
+<style>
+/* «Дело № 404»: a loupe sweeps a blurred 404 and only what is under the glass comes into focus */
+@property --lx{syntax:"<percentage>";inherits:true;initial-value:8%}
+body{margin:0;background:var(--light);color:var(--dark);font-family:var(--fam)}
+.e-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-right));max-width:1200px;margin:0 auto}
+.e-top img{width:120px;height:auto;display:block}
+.e-top a.e-home{font-weight:600;color:var(--dark);text-decoration:none;border-bottom:1.5px solid var(--line)}
+.e-top a.e-home:hover{border-color:var(--dark)}
+.e-main{max-width:1200px;margin:0 auto;padding:clamp(20px,4vw,48px) max(16px,env(safe-area-inset-right)) 56px max(16px,env(safe-area-inset-left))}
+.e-case{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;
+  border-radius:28px;overflow:hidden;padding:clamp(28px,5vw,64px);
+  background:radial-gradient(40% 55% at 70% 40%,rgba(255,255,255,.55),rgba(255,255,255,0) 72%),linear-gradient(160deg,#a9dcf2 0%,var(--sky) 45%,#5fa9d3 100%)}
+.e-kicker{margin:0 0 10px;font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dark);opacity:.75}
+html[data-font=bebas] .e-case h1,.e-case h1{margin:0;font-size:clamp(44px,7vw,92px);line-height:.95;color:var(--dark)}
+.e-lead{margin:18px 0 0;max-width:34em;font-size:clamp(17px,1.6vw,19px);line-height:1.6}
+.e-word{margin:22px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:center;max-width:30em;
+  background:rgba(246,243,236,.72);border-radius:18px;padding:14px 18px}
+.e-word b{grid-row:span 2;font:700 clamp(30px,4vw,40px)/1 "Assistant",var(--fam);color:var(--dark)}
+.e-word span{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.e-word p{margin:0;font-size:16px;line-height:1.45}
+.e-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.e-more{margin:18px 0 0;font-size:15px}
+.e-more a{color:var(--dark);font-weight:600}
+/* the evidence board */
+.e-scan{position:relative;container-type:inline-size;aspect-ratio:1/1;max-width:460px;width:100%;justify-self:center}
+.e-num{position:absolute;inset:0;display:grid;place-items:center;margin:0;font:400 46cqw/1 "Bebas Neue","Oswald",sans-serif;color:var(--dark);letter-spacing:.02em;user-select:none}
+.e-num.blur{filter:blur(1.6cqw);opacity:.32}
+.e-num.sharp{clip-path:circle(15cqw at calc(var(--lx) + 22.5cqw) 41.2cqw)}
+.e-loupe{position:absolute;top:22cqw;left:var(--lx);width:60cqw;height:auto;mix-blend-mode:multiply;pointer-events:none;transform-origin:37.5% 32%}
+.e-scan{--lx:8%;animation:e-search 9s ease-in-out infinite}
+@keyframes e-search{0%{--lx:4%}25%{--lx:30%}50%{--lx:14%}75%{--lx:36%}100%{--lx:4%}}
+.e-stamp{position:absolute;right:2cqw;bottom:6cqw;transform:rotate(-9deg);border:3px solid var(--dark);border-radius:10px;padding:.3em .6em;
+  font:400 6.4cqw/1 "Bebas Neue","Oswald",sans-serif;letter-spacing:.06em;color:var(--dark);background:rgba(246,243,236,.55)}
+.e-foot{max-width:1200px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-right)) 32px max(16px,env(safe-area-inset-left));font-size:14px;color:var(--mute)}
+.e-foot a{color:var(--dark)}
+@media (max-width:800px){
+  .e-case{grid-template-columns:1fr}
+  .e-scan{order:-1;max-width:230px;margin:-8px auto -14px}
+  .e-case{gap:12px}
+}
+@media (prefers-reduced-motion:reduce){.e-scan{animation:none;--lx:22%}}
+</style>
+</head>
+<body>
+<header class="e-top">
+  <a href="/" aria-label="Юрий Моор-Мурадов, на главную"><img src="/assets/yura-media.png" alt="Yura Media" width="360" height="228"></a>
+  <a class="e-home" href="/">На главную</a>
+</header>
+
+<main class="e-main" id="main">
+  <section class="e-case" aria-labelledby="e-h">
+    <div>
+      <p class="e-kicker">Ошибка 404 · дело № 404</p>
+      <h1 id="e-h">Улик не обнаружено</h1>
+      <p class="e-lead">Мы осмотрели каждую полку и каждую строчку. Такой страницы на сайте нет. Возможно, адрес набран с ошибкой. А возможно, страница просто ушла учить иврит.</p>
+      <div class="e-word">
+        <b lang="he" dir="rtl">אָבוּד</b>
+        <span>Слово дня · авуд</span>
+        <p>«Потерянный». Как эта страница. Но вы не потерялись: расследование продолжается здесь.</p>
+      </div>
+      <div class="e-acts">
+        <a class="btn solid" href="/#books">К книжной полке <span aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="/">На главную <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="e-more">Или загляните в <a href="/articles">«Слово под лупой»</a> и <a href="/press">публикации</a>.</p>
+    </div>
+    <div class="e-scan" aria-hidden="true">
+      <p class="e-num blur">404</p>
+      <p class="e-num sharp">404</p>
+      <img class="e-loupe" src="/assets/loupe.webp" alt="" width="720" height="720">
+      <span class="e-stamp">Страница не найдена</span>
+    </div>
+  </section>
+</main>
+
+<footer class="e-foot">
+  Если вы пришли по ссылке с нашего сайта и попали сюда, напишите нам в <a href="https://wa.me/972547419393" target="_blank" rel="noopener">WhatsApp</a>, и мы починим. · © 2026 Юрий Моор-Мурадов · издательство Yura Media
+</footer>
+</body>
+</html>
