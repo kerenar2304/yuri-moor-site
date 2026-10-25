@@ -4,7 +4,10 @@ window.SHOP = {
   PDF_PRICE: 40,
   PHONE: '972547419393',
   PHONE_TXT: '054-741-93-93',
-  ORDER_EMAIL_KEY: ''      // Web3Forms access key: orders arrive by e-mail at ksuwa22@gmail.com
+  AUTHOR_PHONE: '972547923229',   // messages for Yuri himself (he answers when he can; orders go to PHONE)
+  AUTHOR_PHONE_TXT: '054-792-32-29',
+  ORDER_EMAIL_KEY: '',     // Web3Forms access key (backup route for orders)
+  TURNSTILE_SITEKEY: ''    // Cloudflare Turnstile site key: empty = no bot check on the checkout
 };
 
 /* series: hebrew | detective | other. vol = number in the «Занимательный иврит» series.
@@ -48,12 +51,27 @@ window.BOOKS = [
           'Лёгкий язык, прозрачная интрига, неожиданный финал, галерея характеров, добрая улыбка: всё как в добротном детективе.'] },
   { id:'nhd', series:'detective', title:'Нет худа без добра', sub:'Рассказы', cover:'nhd', spine:'nhd', pages:4, pdf:true, tone:'#4b5a3a',
     text:['Сборник рассказов. [[Описание книги от автора]]'] },
-  { id:'heb', series:'other', title:'החקירה הראשונה של הבלש הפרטי', ru:'Первое расследование частного детектива', sub:'Книга на иврите', cover:'heb', spine:'heb', pages:4, pdf:true, rtl:true, tone:'#2b2d36',
+  { id:'heb', series:'detective', title:'החקירה הראשונה של הבלש הפרטי', ru:'Первое расследование частного детектива', sub:'Книга на иврите', cover:'heb', spine:'heb', pages:4, pdf:true, rtl:true, tone:'#2b2d36',
     text:['Первая книга автора на иврите: сборник увлекательных детективных рассказов. В каждом загадка, которую главный герой по законам жанра неизменно разгадывает.',
           'Отличный повод читать на иврите с удовольствием, а не по обязанности.'] },
   { id:'razg', series:'other', title:'Разговорник русский-иврит', sub:'Иерусалим, 2024', cover:'razg', spine:'razg', pages:4, pdf:true, wide:true, tone:'#d0232a',
     text:['Карманный разговорник издательства Yuramedia: от «שלום» и «בוקר טוב» до первых настоящих разговоров. Для новых репатриантов, туристов и всех, кто начинает.'] }
 ];
+
+/* page count of the print edition (from the print files) and the address of each book page: /<slug> */
+var BOOK_EXTRA = { isr: [356, 'izrail-dlya-nachinayushchikh'], z1: [360, 'zanimatelnyj-ivrit-1'], z2: [360, 'zanimatelnyj-ivrit-2'], z3: [360, 'zanimatelnyj-ivrit-3'],
+  z4: [360, 'zanimatelnyj-ivrit-4'], z5: [360, 'zanimatelnyj-ivrit-5'], z6: [360, 'zanimatelnyj-ivrit-6'], z7: [360, 'zanimatelnyj-ivrit-7'], z8: [357, 'zanimatelnyj-ivrit-8'],
+  prig: [360, 'priglashenie-k-ogrableniyu'], debut: [360, 'debyut-chastnogo-detektiva'], shp: [360, 'shpiony-popadayutsya-na-melochakh'], nhd: [360, 'net-khuda-bez-dobra'],
+  heb: [356, 'pervoe-rassledovanie-chastnogo-detektiva'], razg: [119, 'razgovornik-russkij-ivrit'] };
+BOOKS.forEach(function (b) { var x = BOOK_EXTRA[b.id]; if (x) { b.np = x[0]; b.slug = x[1]; } });
+
+/* address of each saved text (columns and posts): /<slug> */
+window.TEXT_SLUG = { ponaslyshke: 'ivrit-ponaslyshke', glup: 'vse-ottenki-chelovecheskoj-gluposti', un: 'krazha-na-assamblee-oon', knesset: 'vinovnik-nobelevskoj-premii',
+  eu: 'naiven-li-evropejskij-soyuz', buratino: 'odnokorennaya-organizatsiya', love: 'yazyk-kak-pervaya-lyubov', 'fb-dyuzhina': 'dyuzhina-vechor-i-trisar',
+  'fb-nenavist': 'besplatnaya-nenavist', 'fb-likhora': 'likhora', 'fb-idish': 'idish-v-ivrite', 'fb-nit': 'krasnaya-nit-v-ivrite', 'fb-kolesnitsa': 'kolesnitsa-izrailya',
+  'fb-kantselyarit': 'ot-odnoj-furazhnoj-korovy' };
+window.bookHref = function (id) { var b = BOOKS.filter(function (x) { return x.id === id; })[0]; return b && b.slug ? b.slug : 'book.html?id=' + id; };
+window.textHref = function (id) { return TEXT_SLUG[id] || 'article.html?id=' + id; };
 
 /* «Слово под лупой»: word stories from the books (the lens on the home page and the articles page) */
 window.WORDS = [

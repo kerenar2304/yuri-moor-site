@@ -6,21 +6,24 @@
   var SERIES = { hebrew: 'Занимательный иврит', detective: 'Детективы', other: 'Израиль' };
   var label = function (b) { return b.vol ? 'Занимательный иврит · часть ' + b.vol : b.rtl ? 'Книга на иврите' : b.wide ? 'Разговорник' : b.isNew ? 'Новая книга' : (SERIES[b.series] || 'Книга'); };
   var cover = function (b, cls) {
-    return b.cover ? '<img class="' + cls + '" src="assets/covers/' + b.cover + '.webp" alt="Обложка: ' + esc(b.title) + '">'
+    return b.cover ? '<img class="' + cls + '" src="assets/covers/' + (/mini/.test(cls) ? 'thumb/' : '') + b.cover + '.webp"' + (/mini/.test(cls) ? ' loading="lazy"' : '') + ' alt="Обложка: ' + esc(b.title) + '">'
       : '<span class="' + cls + ' pg-nocover" style="--tone:' + b.tone + '"><b>' + esc(b.title) + '</b><i>Юрий Моор-Мурадов</i></span>';
   };
 
   /* ---------- book page ---------- */
   var root = $('#book-root');
   if (root) {
-    var id = new URLSearchParams(location.search).get('id'), b = byId[id] || BOOKS[0];
-    document.title = b.title + ' | Юрий Моор-Мурадов';
+    // the static page for each book carries its id; the old book.html?id= links still work, an unknown id goes to 404
+    var id = root.dataset.id || new URLSearchParams(location.search).get('id'), b = byId[id];
+    if (!b) { location.replace('404'); return; }
+    if (!root.dataset.id && b.slug && !/[?&]build=1/.test(location.search)) { location.replace(b.slug); return; }
+    if (!root.dataset.id) document.title = b.title + ' | Юрий Моор-Мурадов'; // a built page already has its own title
     var pdfPrice = SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' ₪' : '[[цена]]';
-    var wa = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте, Юрий! Вопрос о книге «' + (b.ru || b.title) + '»: ');
+    var wa = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! Вопрос о книге «' + (b.ru || b.title) + '»: ');
     var same = BOOKS.filter(function (x) { return x.id !== b.id && x.series === b.series; }).slice(0, 6);
     if (same.length < 3) same = same.concat(BOOKS.filter(function (x) { return x.id !== b.id && x.series !== b.series; }).slice(0, 6 - same.length));
     root.innerHTML =
-      '<a class="pg-back" href="index.html#books">← Все книги</a>' +
+      '<a class="pg-back" href="./#books">← Все книги</a>' +
       '<article class="pg-book">' +
         '<div class="pg-cover' + (b.wide ? ' wide' : '') + '">' + cover(b, 'pg-cv') +
           (b.cover ? '<img class="pg-cv pg-back-cv" src="assets/covers/' + b.cover + '-back.webp" alt="Оборот: ' + esc(b.title) + '" hidden>' +
@@ -30,6 +33,7 @@
           '<p class="pg-label">' + esc(label(b)) + '</p>' +
           '<h1' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(b.title) + '</h1>' +
           ((b.ru || b.or || b.sub) ? '<p class="pg-sub">' + esc(b.ru ? b.ru + (b.sub ? ' · ' + b.sub : '') : b.or ? 'или ' + b.or : b.sub) + '</p>' : '') +
+          (b.np ? '<p class="pg-meta">Мягкая обложка · ' + b.np + ' стр.</p>' : '') +
           '<div class="pg-text">' + b.text.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
           '<div class="pg-fmts">' +
             '<div class="pg-fmt main"><span>Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка почтой</small>' +
@@ -39,12 +43,12 @@
           '</div>' +
           '<p class="pg-actions">' + (b.pages ? '<button type="button" class="pg-link" data-read-page>Читать отрывок</button>' : '') +
             '<a class="pg-link" href="' + wa + '" target="_blank" rel="noopener">Вопрос о книге в WhatsApp</a></p>' +
-          '<p class="pg-pay">Оплата через Bit или банковским переводом. Заказ оформляется в WhatsApp.</p>' +
+          '<p class="pg-pay">Оплата через Bit или банковским переводом. Заказ через корзину на сайте, вопросы в WhatsApp. Печатную книгу можно забрать самовывозом в Беэр-Якове.</p>' +
         '</div>' +
       '</article>' +
       '<section class="pg-more" aria-labelledby="more-h"><h2 id="more-h">Ещё книги</h2><div class="pg-more-grid">' +
         same.map(function (x) {
-          return '<a class="pg-mini" href="book.html?id=' + x.id + '">' + cover(x, 'pg-mini-cv') + '<b' + (x.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(x.title) + '</b><span>' + esc(label(x)) + '</span></a>';
+          return '<a class="pg-mini" href="' + bookHref(x.id) + '">' + cover(x, 'pg-mini-cv') + '<b' + (x.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(x.title) + '</b><span>' + esc(label(x)) + '</span></a>';
         }).join('') + '</div></section>';
     // front / back of the cover
     root.querySelectorAll('.pg-flip [data-side]').forEach(function (btn) {
@@ -87,8 +91,11 @@
   /* ---------- single column page: article.html?id=… ---------- */
   var txt = $('#text-root');
   if (txt && window.TEXTS) {
-    var a = TEXTS[new URLSearchParams(location.search).get('id')] || TEXTS.ponaslyshke, bk = byId[a.book];
-    document.title = a.t + ' | Юрий Моор-Мурадов';
+    var tid = txt.dataset.id || new URLSearchParams(location.search).get('id'), a = TEXTS[tid];
+    if (!a) { location.replace('404'); return; }
+    if (!txt.dataset.id && TEXT_SLUG[tid] && !/[?&]build=1/.test(location.search)) { location.replace(TEXT_SLUG[tid]); return; }
+    var bk = byId[a.book];
+    if (!txt.dataset.id) document.title = a.t + ' | Юрий Моор-Мурадов';
     txt.innerHTML =
       '<article class="tx">' +
         '<header class="tx-head"><p class="tx-kind">' + esc(a.kind || (a.col ? 'Колонка «' + a.col + '»' : 'Статья')) + ' · ' + esc(a.o) + ' · ' + esc(a.d) + '</p>' +
@@ -103,7 +110,7 @@
           a.he.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></aside>' : '') +
         '<p class="tx-src">' + (a.src ? (a.o === 'Facebook' ? 'Пост на странице автора в Facebook, ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Открыть в Facebook ↗</a>'
           : 'Впервые опубликовано: ' + esc(a.o) + ', ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Оригинал публикации ↗</a>') : esc(a.note || '')) + '</p>' +
-        (bk ? '<a class="tx-book" href="book.html?id=' + bk.id + '">' + (bk.cover ? '<img src="assets/covers/' + bk.cover + '.webp" alt="">' : '') +
+        (bk ? '<a class="tx-book" href="' + bookHref(bk.id) + '">' + (bk.cover ? '<img src="assets/covers/' + bk.cover + '.webp" alt="">' : '') +
           '<span><small>Колонка вошла в книгу</small><b>' + esc(bk.title) + '</b><em>' + esc(bk.or || '') + '</em><i>О книге →</i></span></a>' : '') +
       '</article>';
   }
@@ -140,11 +147,11 @@
         '<b class="pub-t">' + esc(p.t) + '</b>' + (p.d ? '<span class="pub-d">' + esc(p.d) + '</span>' : '') + '</span></a>';
     };
     var pubs = [{ k: 'Эфир', o: 'RTN', t: VIDEO.t, d: VIDEO.d, u: 'https://www.youtube.com/watch?v=' + VIDEO.id,
-      media: '<img src="https://i.ytimg.com/vi/' + VIDEO.id + '/maxresdefault.jpg" alt="" loading="lazy"><i class="pub-play" aria-hidden="true"></i>' }]
+      media: '<img src="https://i.ytimg.com/vi/' + VIDEO.id + '/hqdefault.jpg" alt="" loading="lazy"><i class="pub-play" aria-hidden="true"></i>' }]
       .concat(PRESS.map(function (p) {
         // a saved copy exists: open it on the site; the original stays linked from that page
         var s = p.id && window.TEXTS && TEXTS[p.id];
-        if (s) { p.u = 'article.html?id=' + p.id; p.local = true; p.d = s.d; }
+        if (s) { p.u = textHref(p.id); p.local = true; p.d = s.d; }
         if (s && !p.t) p.t = s.t;
         if (s && !p.img && s.img) p.img = s.img;
         p.media = p.img ? '<img src="assets/press/' + p.img + '.webp" alt="" loading="lazy">'
@@ -180,7 +187,7 @@
         '<p class="art-tr">' + esc(w.tr) + '</p>' +
         '<h3>' + esc(w.ru) + '</h3>' +
         '<p class="art-story">' + esc(w.story) + '</p>' +
-        (bk ? '<a class="art-src" href="book.html?id=' + bk.id + '">' + esc(w.src) + ' →</a>' : '<span class="art-src">' + esc(w.src) + '</span>') +
+        (bk ? '<a class="art-src" href="' + bookHref(bk.id) + '">' + esc(w.src) + ' →</a>' : '<span class="art-src">' + esc(w.src) + '</span>') +
       '</article>';
     }).join('') + '</div>';
   }

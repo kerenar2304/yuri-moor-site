@@ -3,24 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>(function(d){d.classList.add('js');var q=new URLSearchParams(location.search);if(q.has('static'))d.classList.add('static');
-addEventListener('error',function(){d.classList.add('r-fail')});
-})(document.documentElement)</script>
+<script src="assets/boot.js?v=202610251511"></script>
 <title>Политика конфиденциальности | Юрий Моор-Мурадов</title>
-<meta name="description" content="Какие данные получает сайт Юрия Моор-Мурадова при заказе книг и как они используются.">
+<meta name="description" content="Какие данные мы получаем при заказе книги, зачем, кому передаём и как их удалить.">
 <meta name="robots" content="noindex, nofollow"><!-- PREVIEW ONLY: remove at launch -->
-<link rel="canonical" href="https://DOMAIN/">
+<link rel="canonical" href="https://DOMAIN/privacy">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <meta name="theme-color" content="#8FCDEB">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Юрий Моор-Мурадов">
-<meta property="og:title" content="Юрий Моор-Мурадов | Иврит, который читается как детектив">
-<meta property="og:description" content="Серия «Занимательный иврит», «Израиль для начинающих» и детективные повести. Печатные и электронные книги.">
-<meta property="og:image" content="https://DOMAIN/assets/og.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Karantina:wght@700&family=Oswald:wght@200..700&family=Source+Sans+3:wght@200..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=202610251353">
+<meta property="og:title" content="Политика конфиденциальности | Юрий Моор-Мурадов">
+<meta property="og:description" content="Какие данные мы получаем при заказе книги, зачем, кому передаём и как их удалить.">
+<meta property="og:url" content="https://DOMAIN/privacy">
+<meta property="og:image" content="https://DOMAIN/assets/og-wide.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/site.css?v=202610251511">
 </head>
 <body>
 <a class="skip" href="#main">Перейти к содержанию</a>
@@ -28,30 +30,30 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 <!-- ============ HEADER ============ -->
 <header class="hdr" id="hdr">
   <div class="wrap bar">
-    <a class="mark" href="index.html#top" aria-label="Юрий Моор-Мурадов, на главную"><img src="assets/yura-media.png" alt="" width="360" height="228"><span class="sr">Юрий Моор-Мурадов</span></a>
+    <a class="mark" href="./#top" aria-label="Юрий Моор-Мурадов, на главную"><img src="assets/yura-media.png" alt="" width="360" height="228"><span class="sr">Юрий Моор-Мурадов</span></a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="index.html#books">Книги</a><a href="articles.html">Слово под лупой</a><a href="press.html">Публикации</a><a href="index.html#detective">Детективы</a><a href="index.html#about">Об авторе</a><a href="index.html#contact">Контакты</a>
+      <a href="./#books">Книги</a><a href="articles">Слово под лупой</a><a href="press">Публикации</a><a href="./#detective">Детективы</a><a href="./#about">Об авторе</a><a href="./#contact">Контакты</a>
     </nav>
     <div class="hdr-act">
       <button class="cart-btn fav-btn" type="button" data-fav-open aria-label="Избранное"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg><b class="cart-n" data-fav-count hidden>0</b></button>
       <button class="cart-btn" type="button" data-cart-open aria-label="Корзина"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg><b class="cart-n" data-cart-count hidden>0</b></button>
-      <a class="btn solid sm hide-ph" href="index.html#books">Выбрать книгу <span aria-hidden="true">→</span></a>
+      <a class="btn solid sm hide-ph" href="./#books">Выбрать книгу <span aria-hidden="true">→</span></a>
       <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Меню"><span></span><span></span></button>
     </div>
   </div>
 </header>
 <div class="drawer on-dark" id="drawer" hidden>
-  <nav aria-label="Мобильное меню"><a href="index.html#books">Книги</a><a href="articles.html">Слово под лупой</a><a href="press.html">Публикации</a><a href="index.html#detective">Детективы</a><a href="index.html#about">Об авторе</a><a href="index.html#letters">Письма читателей</a><a href="index.html#contact">Контакты</a></nav>
+  <nav aria-label="Мобильное меню"><a href="./#books">Книги</a><a href="articles">Слово под лупой</a><a href="press">Публикации</a><a href="./#detective">Детективы</a><a href="./#about">Об авторе</a><a href="./#letters">Письма читателей</a><a href="./#contact">Контакты</a></nav>
   <a class="btn solid" href="https://wa.me/972547419393" target="_blank" rel="noopener">Написать в WhatsApp</a>
 </div>
 
 <main id="main" tabindex="-1" class="pg">
 <div class="pg-wrap">
-  <a class="pg-back" href="index.html">← На главную</a>
+  <a class="pg-back" href="./">← На главную</a>
   <article class="legal">
     <p class="legal-kind">Правовая информация</p>
     <h1>Политика конфиденциальности</h1>
-    <p class="legal-date">Последнее обновление: 24 октября 2026 года</p>
+    <p class="legal-date">Последнее обновление: 25 октября 2026 года</p>
 
     <p>Здесь просто и честно описано, какие сведения о вас мы получаем, зачем и что с ними происходит. Политика составлена в соответствии с израильским Законом о защите частной жизни, 5741-1981, с учётом поправки № 13.</p>
 
@@ -68,36 +70,40 @@ addEventListener('error',function(){d.classList.add('r-fail')});
       <li>список книг и форматов;</li>
       <li>имя, фамилия и телефон, чтобы связаться с вами;</li>
       <li>полный адрес доставки (улица, дом, квартира, город, индекс), если вы заказали печатную книгу;</li>
-      <li>e-mail, если вы заказали цифровую копию или хотите получить письмо с подтверждением заказа.</li>
+      <li>e-mail, если вы заказали цифровую копию: на него придут подтверждение заказа и сама книга.</li>
     </ul>
-    <p>Передавать эти данные вы не обязаны по закону, но без них мы не сможем выполнить заказ. Так же мы получаем данные, если вы пишете нам в WhatsApp, по e-mail или звоните.</p>
+    <p>Передавать эти данные вы не обязаны по закону, но без них мы не сможем выполнить заказ. Также мы получаем данные, если вы пишете нам в WhatsApp, по e-mail или звоните.</p>
+    <p>Если вы пишете или звоните Юрию Моор-Мурадову напрямую (<span dir="ltr">054-792-32-29</span>, yuramedia@gmail.com), ваше сообщение получает он лично. Заказами и их данными он не занимается.</p>
 
     <h2>Зачем мы используем данные</h2>
-    <p>Только чтобы выполнить ваш заказ: подтвердить его, сообщить реквизиты для оплаты, отправить книгу почтой или цифровую копию на e-mail, и ответить на ваши вопросы. Мы не продаём данные, не используем их для рекламы и не отправляем рассылок без вашего отдельного согласия.</p>
+    <p>Только чтобы выполнить ваш заказ: подтвердить его, сообщить реквизиты для оплаты, отправить книгу почтой или цифровую копию на e-mail, договориться о самовывозе и ответить на ваши вопросы. Мы не продаём данные, не используем их для рекламы и не отправляем рассылок без вашего отдельного согласия.</p>
 
     <h2>Кому данные могут быть переданы</h2>
     <ul>
-      <li>Почте Израиля или курьерской службе: имя, телефон и адрес, чтобы доставить печатную книгу.</li>
-      <li>Почтовому сервису Resend (а при сбое резервному сервису Web3Forms), который доставляет заказ продавцу и письмо с подтверждением вам. Эти сервисы передают сообщение и не используют его в других целях; их серверы могут находиться за пределами Израиля.</li>
-      <li>WhatsApp (Meta) и почтовому сервису, через которые идёт дальнейшая переписка. Эти сервисы работают по своим правилам конфиденциальности и хранят данные, в том числе за пределами Израиля.</li>
+      <li>Почте Израиля: имя, телефон и адрес, чтобы доставить печатную книгу.</li>
+      <li>Почтовому сервису Resend (Resend Inc., США), который доставляет заказ продавцу, а при заказе цифровой копии письмо с подтверждением вам. При сбое заказ идёт через резервный сервис Web3Forms (серверы за пределами Израиля). Эти сервисы только передают сообщение и не используют его в других целях.</li>
+      <li>Google (Gmail, США): в этой почте продавец получает и хранит заказы.</li>
+      <li>WhatsApp (Meta Platforms, США), если переписка идёт там.</li>
+      <li>Cloudflare (Cloudflare Inc., США): хостинг сайта и проверка от ботов (Cloudflare Turnstile) при оформлении заказа. Для проверки Cloudflare получает технические данные браузера и IP-адрес.</li>
       <li>Оплата через Bit или банковским переводом проходит в вашем банковском приложении. Данных карты или счёта мы не получаем.</li>
     </ul>
+    <p><b>Передача за пределы Израиля.</b> Перечисленные сервисы находятся за пределами Израиля. Оформляя заказ, вы соглашаетесь на передачу данных заказа этим сервисам для его выполнения (правило 2(1) Правил о защите частной жизни (передача информации в базы данных за рубежом), 5761-2001).</p>
 
     <h2>Сторонние сервисы на сайте</h2>
     <ul>
-      <li>Сайт размещён на GitHub Pages (GitHub, США). Как и любой хостинг, он технически получает IP-адрес посетителя при загрузке страниц.</li>
-      <li>Шрифты загружаются с Google Fonts, а превью видео в разделе «Публикации» с YouTube (Google). При этом ваш браузер обращается к серверам Google.</li>
+      <li>Шрифты хранятся на самом сайте, внешние шрифтовые сервисы не используются.</li>
+      <li>Превью видео в разделе «Публикации» загружается с YouTube (Google, США), и при этом ваш браузер обращается к серверам Google.</li>
       <li>Ссылки на Facebook, YouTube и сайты изданий ведут на сторонние сайты со своими правилами.</li>
     </ul>
 
     <h2>Сколько хранятся данные</h2>
-    <p>Данные заказа хранятся столько, сколько нужно, чтобы выполнить заказ, ответить на возможные вопросы и выполнить требования закона об учёте. Переписка хранится в WhatsApp и почте, пока мы её не удалим.</p>
+    <p>Квитанции и учётные записи мы храним 7 лет, как требует налоговое законодательство. Остальные данные заказа хранятся, пока они нужны, чтобы выполнить заказ и ответить на вопросы по нему. Переписка хранится в WhatsApp и почте, пока мы её не удалим.</p>
 
     <h2>Ваши права</h2>
-    <p>Вы вправе узнать, какие ваши данные у нас есть, попросить исправить или удалить их. Напишите: <a href="mailto:ksuwa22@gmail.com">ksuwa22@gmail.com</a>. Если вы считаете, что ваши права нарушены, вы можете обратиться в Управление по защите частной жизни (הרשות להגנת הפרטיות).</p>
+    <p>Вы вправе узнать, какие ваши данные у нас есть, попросить исправить или удалить их. Напишите: <a href="mailto:ksuwa22@gmail.com">ksuwa22@gmail.com</a>. Мы ответим в течение 30 дней. Если вы считаете, что ваши права нарушены, вы можете обратиться в Управление по защите частной жизни (<bdi lang="he">הרשות להגנת הפרטיות</bdi>).</p>
 
     <h2>Безопасность</h2>
-    <p>Сайт работает по защищённому протоколу HTTPS. Данные заказов мы храним только в WhatsApp и почте, защищённых паролем, и не передаём посторонним.</p>
+    <p>Сайт работает по защищённому протоколу HTTPS. Данные заказов мы храним только в почте и WhatsApp, защищённых паролем, и не передаём посторонним.</p>
 
     <h2>Изменения</h2>
     <p>Если политика изменится, мы обновим эту страницу и дату вверху.</p>
@@ -110,27 +116,30 @@ addEventListener('error',function(){d.classList.add('r-fail')});
   <div class="wrap">
     <div class="ftr-top">
       <div class="ftr-brand">
-        <a class="ftr-logo" href="index.html" aria-label="Юрий Моор-Мурадов, на главную"><img src="assets/yura-media.png" alt="Yura Media" width="360" height="228"></a>
+        <a class="ftr-logo" href="./" aria-label="Юрий Моор-Мурадов, на главную"><img src="assets/yura-media.png" alt="Yura Media" width="360" height="228"></a>
         <p class="ftr-name">Юрий Моор-Мурадов <span lang="he" dir="rtl">יורי מור</span></p>
         <p class="ftr-about">Писатель, публицист, переводчик. Автор серии «Занимательный иврит» и детективных повестей.</p>
       </div>
       <nav class="ftr-col" aria-label="Карта сайта">
         <h2>Сайт</h2>
-        <a href="index.html">Главная</a><a href="index.html#books">Книги</a><a href="articles.html">Слово под лупой</a><a href="press.html">Публикации</a><a href="index.html#detective">Детективы</a><a href="index.html#about">Об авторе</a><a href="index.html#contact">Контакты</a>
+        <a href="./">Главная</a><a href="./#books">Книги</a><a href="articles">Слово под лупой</a><a href="press">Публикации</a><a href="./#detective">Детективы</a><a href="./#about">Об авторе</a><a href="./#contact">Контакты</a>
       </nav>
       <nav class="ftr-col" aria-label="Книги">
         <h2>Книги</h2>
-        <a href="index.html#books">Занимательный иврит</a><a href="index.html#detective">Детективы</a><a href="book.html?id=isr">Израиль для начинающих</a><a href="book.html?id=razg">Разговорник русский-иврит</a><a href="book.html?id=heb">На иврите</a>
+        <a href="./#books">Занимательный иврит</a><a href="./#detective">Детективы</a><a href="izrail-dlya-nachinayushchikh">Израиль для начинающих</a><a href="razgovornik-russkij-ivrit">Разговорник русский-иврит</a><a href="pervoe-rassledovanie-chastnogo-detektiva">На иврите</a>
       </nav>
       <div class="ftr-col">
         <h2>Связь</h2>
-        <a href="https://wa.me/972547419393" target="_blank" rel="noopener">WhatsApp</a><a href="tel:+972547923229">054-792-32-29</a><a href="mailto:yuramedia@gmail.com">yuramedia@gmail.com</a><a href="https://www.facebook.com/yuri.moor" target="_blank" rel="noopener">Facebook</a>
+        <p class="ftr-sub">Заказы и вопросы о книгах</p>
+        <a href="https://wa.me/972547419393" target="_blank" rel="noopener">WhatsApp <span dir="ltr">054-741-93-93</span></a>
+        <p class="ftr-sub">Написать автору</p>
+        <a href="tel:+972547923229" dir="ltr">054-792-32-29</a><a href="mailto:yuramedia@gmail.com">yuramedia@gmail.com</a><a href="https://www.facebook.com/yuri.moor" target="_blank" rel="noopener">Facebook</a>
         <p class="ftr-pay">Оплата через Bit или банковским переводом.</p>
       </div>
     </div>
     <div class="ftr-bottom">
-      <span>© 2026 Юрий Моор-Мурадов · издательство Yura Media</span>
-      <nav aria-label="Правовая информация"><a href="accessibility.html">Доступность</a><a href="privacy.html">Конфиденциальность</a><a href="terms.html">Условия покупки</a></nav>
+      <span>© 2026 Юрий Моор-Мурадов · издательство Yura Media<br>Продавец: Керен Арлихман, <span lang="he" dir="rtl">עוסק פטור</span> · <a href="terms">условия и реквизиты</a></span>
+      <nav aria-label="Правовая информация"><a href="terms#cancel">Отмена сделки</a><a href="accessibility">Доступность</a><a href="privacy">Конфиденциальность</a><a href="terms">Условия покупки</a></nav>
     </div>
     <a class="credit" href="https://kerenarlih.co.il" target="_blank" rel="noopener" lang="he" dir="rtl"><span>עיצוב ופיתוח האתר:</span><img src="assets/credit-logo-dark.svg" alt="קרן ארליכמן" width="150" height="42"></a>
   </div>
@@ -138,7 +147,7 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 
 <!-- mobile sticky bar -->
 <div class="mbar" aria-label="Быстрые действия">
-  <a href="index.html#books">Книги</a>
+  <a href="./#books">Книги</a>
   <button type="button" data-cart-open>Корзина <b data-cart-count hidden>0</b></button>
   <a href="https://wa.me/972547419393" target="_blank" rel="noopener">WhatsApp</a>
 </div>
@@ -180,23 +189,24 @@ addEventListener('error',function(){d.classList.add('r-fail')});
     <header><h2>Корзина</h2><button class="x" type="button" data-cart-close aria-label="Закрыть корзину">×</button></header>
     <ul class="cart-list" id="cart-list"></ul>
     <div class="cart-thanks" id="cart-thanks" hidden><b>Спасибо, заказ принят!</b><p>Мы свяжемся с вами по телефону или в WhatsApp, подтвердим заказ и пришлём реквизиты для оплаты.</p></div>
-    <p class="cart-empty" id="cart-empty">Пока пусто. Загляните на <a href="index.html#books" data-cart-close>книжную полку</a>.</p>
+    <p class="cart-empty" id="cart-empty">Пока пусто. Загляните на <a href="./#books" data-cart-close>книжную полку</a>.</p>
     <div class="cart-foot" id="cart-foot" hidden>
       <p class="cart-sum"><span>Итого</span><b id="cart-sum"></b></p>
       <p class="cart-note" id="cart-note"></p>
       <form id="checkout" novalidate>
         <label><span>Имя и фамилия</span><input name="name" autocomplete="name" required minlength="3"></label>
-        <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required pattern="[0-9+()\- ]{9,}"></label>
+        <label><span>Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required pattern="[\d\s+\-\(\)]{9,}" title="Например: 050-123-45-67"></label>
         <div class="co-addr" data-need="print">
           <div class="co-row"><label><span>Улица</span><input name="street" autocomplete="address-line1" required></label><label><span>Дом №</span><input name="house" inputmode="numeric" required></label></div>
           <div class="co-row"><label><span>Город</span><input name="city" autocomplete="address-level2" required></label><label><span>Квартира</span><input name="apt" placeholder="или «нет»" required></label></div>
-          <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5,7}" title="5 или 7 цифр"></label>
+          <label class="co-zip"><span>Почтовый индекс</span><input name="zip" autocomplete="postal-code" inputmode="numeric" dir="ltr" required pattern="[0-9]{5}|[0-9]{7}" title="5 или 7 цифр"></label>
         </div>
-        <label data-need="email"><span>E-mail</span><input name="email" type="email" autocomplete="email" dir="ltr"></label>
+        <label data-need="email" hidden><span>E-mail для цифровой копии</span><input name="email" type="email" autocomplete="email" dir="ltr" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Например: name@mail.com"></label>
         <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <p class="cart-priv">Данные нужны только для выполнения заказа. Передавать их вы не обязаны, но без них мы не сможем отправить книгу. Заказ получает продавец Керен Арлихман через почтовый сервис Resend (США).</p>
         <p class="cart-err" id="cart-err" role="alert" hidden></p>
         <button class="btn solid" type="submit">Оформить заказ <span aria-hidden="true">›</span></button>
-        <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms.html">условиями покупки</a> и <a href="privacy.html">политикой конфиденциальности</a>.</p>
+        <p class="cart-legal">Заказ придёт нам, и мы свяжемся с вами для подтверждения. Оплата через Bit или банковским переводом. Оформляя заказ, вы соглашаетесь с <a href="terms">условиями покупки</a> и <a href="privacy">политикой конфиденциальности</a>.</p>
       </form>
     </div>
   </div>
@@ -204,8 +214,8 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 <div class="scrim" id="scrim" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="assets/books.js?v=202610251353"></script>
-<script src="assets/app.js?v=202610251353" defer></script>
-<script src="assets/pages.js?v=202610251353" defer></script>
+<script src="assets/books.js?v=202610251511"></script>
+<script src="assets/app.js?v=202610251511" defer></script>
+<script src="assets/pages.js?v=202610251511" defer></script>
 </body>
 </html>

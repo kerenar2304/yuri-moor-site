@@ -11,7 +11,7 @@
 
   /* ---------- covers ---------- */
   function coverHTML(b, lazy) {
-    if (b.cover) return '<img src="assets/covers/' + b.cover + '.webp" alt="Обложка: ' + esc(b.ru || b.title) + '"' + (lazy ? ' loading="lazy"' : '') + ' decoding="async">';
+    if (b.cover) return '<img src="assets/covers/thumb/' + b.cover + '.webp" srcset="assets/covers/thumb/' + b.cover + '.webp 480w, assets/covers/' + b.cover + '.webp 830w" sizes="(max-width:700px) 45vw, 320px" width="480" height="679" alt="Обложка: ' + esc(b.ru || b.title) + '"' + (lazy ? ' loading="lazy"' : '') + ' decoding="async">';
     var isHeb = b.series === 'hebrew';
     return '<div class="cv" role="img" aria-label="' + esc(b.title) + '"><small>Юрий Моор-Мурадов</small><b>' + esc(b.title) + '</b>' +
       (isHeb ? '<i>Занимательный</i><strong>ИВРИТ ' + b.vol + '</strong>' : '<i>' + esc(b.sub || '') + '</i>') +
@@ -205,7 +205,7 @@
       var meta = b.vol ? 'Часть ' + b.vol : (b.isNew ? 'Новинка' : b.series === 'detective' ? 'Детектив' : b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : 'Книга');
       return '<article class="card r' + (b.wide ? ' wide' : '') + (fav.indexOf(b.id) > -1 ? ' faved' : '') + '" data-id="' + b.id + '" data-series="' + b.series + '" style="--tone:' + b.tone + '">' +
         '<div class="card-stage">' +
-        '<a class="card-cv" href="book.html?id=' + b.id + '" aria-label="' + esc((b.ru || b.title) + ', подробнее') + '">' +
+        '<a class="card-cv" href="' + bookHref(b.id) + '" aria-label="' + esc((b.ru || b.title) + ', подробнее') + '">' +
           '<span class="cvi">' + coverHTML(b, true) +
             '<span class="cvb" aria-hidden="true"><b>' + esc(b.title) + '</b><span>' + esc(b.text[0]) + '</span><i>Юрий Моор-Мурадов</i></span>' +
           '</span></a>' +
@@ -213,7 +213,7 @@
           '<button type="button" data-fav="' + b.id + '" aria-pressed="' + (fav.indexOf(b.id) > -1) + '" aria-label="В избранное: ' + esc(b.title) + '">' + ICON_HEART + '<em>В избранное</em></button>' +
           '<button type="button" data-flip aria-pressed="false" aria-label="Обратная сторона обложки">' + ICON_GLASSES + '<em>Оборот книги</em></button>' +
         '</div></div>' +
-        '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="book.html?id=' + b.id + '">' + esc(b.title) + '</a></h3>' +
+        '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="' + bookHref(b.id) + '">' + esc(b.title) + '</a></h3>' +
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
         '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>Цифровая копия ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
         '</article>';
@@ -233,9 +233,12 @@
   }
   $$('[data-fav-open]').forEach(function (b) { b.addEventListener('click', function () {
     if (!fav.length) { toast('Нажмите ♥ на обложке, чтобы отложить книгу'); return; }
+    // inner pages have no catalog: go to the home page catalog with the favourites shown
+    if (!grid) { location.href = './?fav=1#books'; return; }
     filter('fav'); var s = $('#books'); if (s) s.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   }); });
   favUI();
+  if (grid && fav.length && /[?&]fav=1/.test(location.search)) filter('fav');
   var qb = null, qbCard = null, qbDim = document.createElement('div'); qbDim.className = 'qb-dim'; document.body.appendChild(qbDim);
   function qbClose() {
     if (!qb) return; var card = qbCard, el = qb; qb = null;
@@ -256,7 +259,7 @@
         (b.pdf ? '<div class="qb-f"><span>' + ICON_PDF + 'Цифровая копия</span><b>' + pdfPrice + '</b><small>на e-mail</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|pdf">' + ICON_CART + 'В корзину</button></div>' : '') +
       '</div>' +
-      '<a class="qb-more" href="book.html?id=' + b.id + '">Подробнее о книге</a>';
+      '<a class="qb-more" href="' + bookHref(b.id) + '">Подробнее о книге</a>';
     // one centred window (a bottom sheet on phones)
     var sheet = true; if (sheet) el.classList.add('sheet');
     (sheet ? document.body : $('.card-stage', card)).appendChild(el); qb = el; qbCard = card; card.classList.add('qb-on'); qbDim.classList.add('on');
@@ -307,7 +310,7 @@
     $('input[name=fmt][value=print]', dlg).checked = true;
     $('#bd-pdfprice').innerHTML = b.pdf ? (SHOP.PDF_PRICE ? SHOP.PDF_PRICE + ' ₪, на e-mail' : '<span class="ph">[[цена]]</span>') : 'скоро';
     var rd = $('#bd-read'); rd.hidden = !b.pages;
-    $('#bd-wa').href = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте, Юрий! Вопрос о книге «' + (b.ru || b.title) + '»: ');
+    $('#bd-wa').href = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! Вопрос о книге «' + (b.ru || b.title) + '»: ');
     dlg.showModal();
     document.documentElement.classList.add('lock');
   }
@@ -345,7 +348,9 @@
   /* ---------- cart ---------- */
   var KEY = 'ymm-cart', cart = [];
   try { cart = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { cart = []; }
-  cart = cart.filter(function (c) { return byId[c.id]; });
+  // whatever was stored, keep only known books, a known format and a sane quantity
+  cart = (Array.isArray(cart) ? cart : []).filter(function (c) { return c && byId[c.id]; })
+    .map(function (c) { return { id: c.id, fmt: c.fmt === 'pdf' ? 'pdf' : 'print', q: Math.max(1, Math.min(50, parseInt(c.q, 10) || 1)) }; });
   function save() { try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (e) {} }
   function priceOf(c) { return c.fmt === 'pdf' ? SHOP.PDF_PRICE : SHOP.PRICE; }
   function toast(t) { var el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove('on'); }, 1800); }
@@ -363,12 +368,13 @@
     var sum = 0, unknown = false, hasPrint = false, hasPdf = false;
     cart.forEach(function (c) { var p = priceOf(c); if (p) sum += p * c.q; else unknown = true; if (c.fmt === 'pdf') hasPdf = true; else hasPrint = true; });
     $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
-    $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы. ' : '') + (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты.' : '');
+    $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы, или заберите книгу сами в Беэр-Якове. ' : '') +
+      (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты. После отправки файла отменить покупку цифровой копии нельзя, до отправки можно бесплатно.' : '');
+    // the address is asked only for printed books, the e-mail only for a digital copy
     $$('#checkout [data-need]').forEach(function (l) {
-      // e-mail is always offered (for the confirmation letter) and required only for a digital copy
-      if (l.dataset.need === 'email') { $('input', l).required = hasPdf; $('span', l).textContent = hasPdf ? 'E-mail для цифровой копии' : 'E-mail для подтверждения (необязательно)'; return; }
-      var on = hasPrint; l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
+      var on = l.dataset.need === 'email' ? hasPdf : hasPrint; l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
     });
+    coCheck();
   }
   function add(id, fmt) {
     var c = cart.filter(function (x) { return x.id === id && x.fmt === fmt; })[0];
@@ -410,8 +416,17 @@
   var coBtn = co && $('button[type=submit]', co), coErr = $('#cart-err');
   function coCheck() { if (coBtn) coBtn.classList.toggle('off', !co.checkValidity()); }
   if (co) { co.addEventListener('input', coCheck); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
+  // Cloudflare Turnstile (bot check) runs only once its site key is set in SHOP
+  if (co && SHOP.TURNSTILE_SITEKEY) {
+    var ts = document.createElement('div'); ts.className = 'cf-turnstile'; ts.dataset.sitekey = SHOP.TURNSTILE_SITEKEY; ts.dataset.language = 'ru';
+    coBtn.parentNode.insertBefore(ts, coBtn);
+    var tsj = document.createElement('script'); tsj.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'; tsj.async = true; tsj.defer = true; document.head.appendChild(tsj);
+  }
+  var FIELD_RU = { name: 'имя и фамилия', phone: 'телефон', email: 'e-mail', street: 'улица', house: 'дом', apt: 'квартира', city: 'город', zip: 'индекс', items: 'корзина', turnstile: 'проверка «я не робот»' };
   if (co) co.addEventListener('submit', function (e) {
-    e.preventDefault(); coErr.hidden = true;
+    e.preventDefault();
+    if (coBtn.classList.contains('busy')) return; // one order per click, even with a double Enter
+    coErr.hidden = true; $$('[aria-invalid]', co).forEach(function (i) { i.removeAttribute('aria-invalid'); });
     if (!co.checkValidity()) { co.reportValidity(); return; }
     var d = new FormData(co), total = 0, hasPrint = false;
     var lines = cart.map(function (c) {
@@ -422,10 +437,17 @@
     var msg = 'Новый заказ с сайта:\n' + lines.join('\n') + '\nИтого: ' + total + ' ₪' + (hasPrint ? ' + доставка' : '') +
       '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
       (addr ? '\nАдрес: ' + addr : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
-    var fail = function () {
+    var fail = function (fields) {
       coBtn.classList.remove('busy');
-      coErr.innerHTML = 'Не удалось отправить заказ. Попробуйте ещё раз через минуту или напишите нам в <a href="https://wa.me/' + SHOP.PHONE + '" target="_blank" rel="noopener">WhatsApp</a>.';
+      if (fields && fields.length) { // the server named what is wrong: say it and mark those fields
+        fields.forEach(function (k) { var i = co.querySelector('[name="' + k + '"]'); if (i) i.setAttribute('aria-invalid', 'true'); });
+        coErr.textContent = 'Проверьте, пожалуйста: ' + fields.map(function (k) { return FIELD_RU[k] || k; }).join(', ') + '.';
+        var first = co.querySelector('[aria-invalid="true"]'); if (first) first.focus();
+      } else {
+        coErr.innerHTML = 'Не удалось отправить заказ. Попробуйте ещё раз через минуту или напишите нам в <a href="https://wa.me/' + SHOP.PHONE + '" target="_blank" rel="noopener">WhatsApp</a>.';
+      }
       coErr.hidden = false;
+      if (window.turnstile) try { turnstile.reset(); } catch (er) {}
     };
     var done = function () {
       coBtn.classList.remove('busy'); co.reset();
@@ -442,29 +464,22 @@
       }).then(function (r) { return r.json(); }).then(function (j) { if (!j.success) throw new Error(j.message); done(); }).catch(fail);
     };
     if (d.get('website')) return done(); // spam trap
-    // the order goes to /api/order (Cloudflare + Resend): to the seller, and a confirmation to the customer
+    // the order goes to /api/order (Cloudflare + Resend): to the seller, plus a confirmation for a digital copy.
+    // Only book ids travel; the server takes titles and prices from its own catalog.
     coBtn.classList.add('busy');
-    var order = { items: cart.map(function (c) { var b = byId[c.id]; return { title: b.ru || b.title, fmt: c.fmt === 'pdf' ? 'pdf' : 'print', q: c.q }; }) };
+    var order = { items: cart.map(function (c) { return { id: c.id, fmt: c.fmt, q: c.q }; }), turnstile: d.get('cf-turnstile-response') || '' };
     ['name', 'phone', 'email', 'street', 'house', 'apt', 'city', 'zip', 'website'].forEach(function (k) { order[k] = d.get(k) || ''; });
     fetch('api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) })
       .then(function (r) {
         if (r.ok) return done();
-        if (r.status === 422) return fail();
+        if (r.status === 422) return r.json().then(function (j) { fail(j.fields); }, function () { fail(); });
+        if (r.status === 429 || r.status === 403) return fail(); // too many tries or a failed bot check: no backup route
         viaForms(); // no server function here (404/405), Resend not set up yet (503) or down (502)
       }, viaForms);
   });
   renderCart();
   $$('[data-cart-count]').forEach(function (b) { b.classList.remove('pop'); });
 
-  /* contact form: no backend yet, goes to WhatsApp */
-  var cf = $('#cform');
-  if (cf) cf.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (!cf.checkValidity()) { cf.reportValidity(); return; }
-    var d = new FormData(cf);
-    window.open('https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте, Юрий! ' + (d.get('msg') || '') + '\n\n' + d.get('name') + ', ' + d.get('phone')), '_blank', 'noopener');
-    $('.form-msg', cf).textContent = 'Спасибо! Юрий ответит вам лично.'; cf.reset();
-  });
 
 
   /* ---------- ticker pause ---------- */
@@ -486,7 +501,9 @@
   function menu(open) {
     burger.setAttribute('aria-expanded', String(open)); drawer.hidden = !open; document.documentElement.classList.toggle('lock', open);
     hdr.classList.toggle('solid', open || scrollY > 40);
+    if (open) { var first = $('a', drawer); if (first) first.focus(); } else if (document.activeElement && drawer.contains(document.activeElement)) burger.focus();
   }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && !drawer.hidden) menu(false); });
   if (burger) burger.addEventListener('click', function () { menu(burger.getAttribute('aria-expanded') !== 'true'); });
   if (drawer) drawer.addEventListener('click', function (e) { if (e.target.closest('a')) menu(false); });
 
