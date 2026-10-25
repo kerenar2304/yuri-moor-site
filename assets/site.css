@@ -2025,3 +2025,11 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 /* phone lens banner: the heading spans the full width so it centres; the loupe photo loses the box-shaped shadow */
 @media (max-width:700px){.lens-banner .lb-txt h2{max-width:none;width:100%;margin-inline:auto}}
 .loupe-photo{filter:none}
+/* phone: «Все публикации» comes after the cards you just looked at */
+@media (max-width:700px){
+  #press .wrap{display:flex;flex-direction:column}
+  #press .hpress-head{display:contents}
+  #press .hpress-head h2{order:1;margin-bottom:calc(28*var(--u))}
+  #press .hpress-grid{order:2}
+  #press .hpress-head .btn{order:3;align-self:flex-start;margin-top:26px}
+}
