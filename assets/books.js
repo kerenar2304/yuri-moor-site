@@ -2,8 +2,8 @@
 window.SHOP = {
   PRICE: 50,
   PDF_PRICE: 40,
-  PHONE: '972547923229',
-  PHONE_TXT: '054-792-32-29'
+  PHONE: '972547419393',
+  PHONE_TXT: '054-741-93-93'
 };
 
 /* series: hebrew | detective | other. vol = number in the «Занимательный иврит» series.

@@ -2022,3 +2022,6 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .ldr-arc{opacity:0;transform:translateY(8px);transition:opacity .6s ease .15s,transform .6s ease .15s}
 .ldr.found .ldr-words-blur{opacity:0}
 .ldr.found .ldr-arc{opacity:1;transform:none}
+/* phone lens banner: the heading spans the full width so it centres; the loupe photo loses the box-shaped shadow */
+@media (max-width:700px){.lens-banner .lb-txt h2{max-width:none;width:100%;margin-inline:auto}}
+.loupe-photo{filter:none}
