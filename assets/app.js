@@ -19,7 +19,10 @@
   }
   // one spine design for every book: author, a clear title, the volume number for the series
   // one spine design for every book: the title, and its place on the shelf under a thin rule
+  // the real spine, cut from the print cover (1800px tall); the drawn spine is only a fallback
+  var SPINE_W = { debut: 166, heb: 179, isr: 165, nhd: 166, prig: 221, razg: 252, shp: 166, z1: 166, z2: 179, z3: 166, z4: 166, z5: 166, z6: 165, z7: 165, z8: 166 };
   function spineHTML(b, num) {
+    if (b.spine && SPINE_W[b.spine]) return '<img src="assets/covers/' + b.spine + '-spine.webp" alt="" decoding="async">';
     return '<span class="sp"' + (b.rtl ? ' lang="he"' : '') + '><b>' + esc(b.title) + '</b><i>' + (num || b.vol || '') + '</i></span>';
   }
   function boxHTML(b, num) {
@@ -52,7 +55,8 @@
       return bks.map(function (bk, j) {
         var wide = bk.classList.contains('wide');
         var h = wide ? H * .49 : H * HF[j % HF.length];
-        var d = wide ? H * .055 : h * .11 * DF[j % DF.length];
+        var sw = SPINE_W[(byId[ORDER[j]] || {}).spine];
+        var d = sw ? h * sw / 1800 : wide ? H * .055 : h * .11 * DF[j % DF.length]; // a real spine sets the real thickness
         return { h: h, d: d, w: wide ? h * 1.55 : h * .705, lean: LEAN[j] || 0 };
       });
     }

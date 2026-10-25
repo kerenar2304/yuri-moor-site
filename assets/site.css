@@ -2131,3 +2131,5 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
   .hero .wave .w1{top:calc(var(--top) + 4 * var(--step))}
   .hero .wave .w9{top:calc(var(--top) + 5 * var(--step))}
 }
+/* phone hero: the book stack peeks in from the right edge, about a quarter of each cover stays outside the frame */
+@media (max-width:700px){.hero .wave .w{left:calc(282 * var(--m))}}
