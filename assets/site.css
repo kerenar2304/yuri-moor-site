@@ -2062,3 +2062,7 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
   #about .about-ph{position:relative;align-self:stretch;width:100%;max-width:none;min-height:420px}
   #about .about-ph img{position:absolute;left:50%;bottom:0;top:0;height:100%;width:auto;max-width:100%;translate:-50% 0;object-fit:contain;object-position:center bottom;aspect-ratio:auto}
 }
+/* book page: front / back of the cover */
+.pg-cover{display:flex;flex-direction:column;align-items:center;gap:18px}
+.pg-flip{margin:0}
+.pg-back-cv[hidden],.pg-cover>.pg-cv[hidden]{display:none}

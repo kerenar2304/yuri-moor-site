@@ -22,7 +22,10 @@
     root.innerHTML =
       '<a class="pg-back" href="index.html#books">← Все книги</a>' +
       '<article class="pg-book">' +
-        '<div class="pg-cover' + (b.wide ? ' wide' : '') + '">' + cover(b, 'pg-cv') + '</div>' +
+        '<div class="pg-cover' + (b.wide ? ' wide' : '') + '">' + cover(b, 'pg-cv') +
+          (b.cover ? '<img class="pg-cv pg-back-cv" src="assets/covers/' + b.cover + '-back.webp" alt="Оборот: ' + esc(b.title) + '" hidden>' +
+            '<div class="tabs pg-flip" role="tablist" aria-label="Сторона обложки"><button type="button" data-side="front" aria-selected="true">Обложка</button><button type="button" data-side="back" aria-selected="false">Оборот</button></div>' : '') +
+        '</div>' +
         '<div class="pg-info">' +
           '<p class="pg-label">' + esc(label(b)) + '</p>' +
           '<h1' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(b.title) + '</h1>' +
@@ -43,6 +46,15 @@
         same.map(function (x) {
           return '<a class="pg-mini" href="book.html?id=' + x.id + '">' + cover(x, 'pg-mini-cv') + '<b' + (x.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(x.title) + '</b><span>' + esc(label(x)) + '</span></a>';
         }).join('') + '</div></section>';
+    // front / back of the cover
+    root.querySelectorAll('.pg-flip [data-side]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var back = btn.dataset.side === 'back';
+        root.querySelector('.pg-cover > .pg-cv:not(.pg-back-cv)').hidden = back;
+        root.querySelector('.pg-back-cv').hidden = !back;
+        root.querySelectorAll('.pg-flip [data-side]').forEach(function (x) { x.setAttribute('aria-selected', x === btn); });
+      });
+    });
     var rd = $('[data-read-page]', root);
     if (rd) rd.addEventListener('click', function () { if (window.YM) YM.read(b.id); });
   }
