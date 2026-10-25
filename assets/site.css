@@ -2005,3 +2005,20 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
   .lens-banner .lb-txt{order:2}
   .lens-banner .lb-books{order:3;margin-top:18px}
 }
+/* phone: buttons keep their own size like everywhere else (only the cart's order button stays full width) */
+@media (max-width:700px){
+  .btn{width:auto}
+  #checkout .btn{width:100%}
+  .lens-banner .lb-txt{text-align:center}
+  .lens-banner .lb-txt .btn{margin-inline:auto}
+  .lens-banner .lb-txt p{margin-inline:auto}
+}
+/* LOADER: the logo's own loupe searches, finds «Yura Media», then «Publishing house» appears and the logo stands complete */
+.ldr-on body{overflow:hidden}
+.ldr{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:var(--light);transition:opacity .7s ease,visibility .7s}
+.ldr.out{opacity:0;visibility:hidden}
+.ldr-logo{width:min(78vw,440px);height:auto;overflow:visible}
+.ldr-words-blur{opacity:.35;transition:opacity .5s ease}
+.ldr-arc{opacity:0;transform:translateY(8px);transition:opacity .6s ease .15s,transform .6s ease .15s}
+.ldr.found .ldr-words-blur{opacity:0}
+.ldr.found .ldr-arc{opacity:1;transform:none}

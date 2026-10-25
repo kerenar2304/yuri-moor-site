@@ -29,6 +29,59 @@ addEventListener('error',function(){d.classList.add('r-fail')});
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
+<!-- ============ LOADER: the Yura Media loupe searches, finds its words and becomes the logo (once per visit) ============ -->
+<div class="ldr" id="ldr" aria-hidden="true">
+  <!-- every layer is cut from the logo file itself (ring centre 119.5,125.5 · outer r 86 · inner r 68), so the last frame is the logo exactly -->
+  <svg class="ldr-logo" viewBox="0 0 360 228">
+    <defs>
+      <filter id="ldr-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2"/></filter>
+      <clipPath id="ldr-in"><circle cx="119.5" cy="125.5" r="68"/></clipPath>
+      <clipPath id="ldr-glass"><circle id="ldr-glass-c" cx="-60" cy="140" r="68"/></clipPath>
+      <mask id="ldr-ring" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="228">
+        <circle cx="119.5" cy="125.5" r="88" fill="#fff"/><polygon points="178,128 360,128 360,228 178,228" fill="#fff"/>
+        <circle cx="119.5" cy="125.5" r="68.5" fill="#000"/>
+      </mask>
+      <mask id="ldr-arc" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="228">
+        <rect width="360" height="108" fill="#fff"/><circle cx="119.5" cy="125.5" r="88" fill="#000"/>
+      </mask>
+    </defs>
+    <g class="ldr-words-blur"><image href="assets/yura-media.png" width="360" height="228" clip-path="url(#ldr-in)" filter="url(#ldr-blur)"/></g>
+    <g clip-path="url(#ldr-glass)"><image href="assets/yura-media.png" width="360" height="228" clip-path="url(#ldr-in)"/></g>
+    <g id="ldr-lens" transform="translate(-180 15)"><image href="assets/yura-media.png" width="360" height="228" mask="url(#ldr-ring)"/></g>
+    <g class="ldr-arc"><image href="assets/yura-media.png" width="360" height="228" mask="url(#ldr-arc)"/></g>
+  </svg>
+</div>
+<script>
+(function () {
+  var L = document.getElementById('ldr');
+  var seen = false; try { seen = sessionStorage.getItem('ymm-ldr') === '1'; sessionStorage.setItem('ymm-ldr', '1'); } catch (e) {}
+  if (seen) { L.remove(); return; }
+  document.documentElement.classList.add('ldr-on');
+  var lens = document.getElementById('ldr-lens'), glass = document.getElementById('ldr-glass-c');
+  var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var CX = 119.5, CY = 125.5;
+  // where the glass centre wanders, in logo units: in from the left, over the letters, a pass too far, then home
+  var P = [[-70, 150], [60, 100], [168, 150], [95, 158], [158, 98], [CX, CY]], T = 2000, finished = false;
+  function place(x, y) { lens.setAttribute('transform', 'translate(' + (x - CX).toFixed(1) + ' ' + (y - CY).toFixed(1) + ')'); glass.setAttribute('cx', x.toFixed(1)); glass.setAttribute('cy', y.toFixed(1)); }
+  function done() {
+    if (finished) return; finished = true;
+    place(CX, CY); L.classList.add('found');
+    setTimeout(function () { L.classList.add('out'); document.documentElement.classList.remove('ldr-on'); }, calm ? 600 : 1300);
+    setTimeout(function () { L.remove(); }, calm ? 1200 : 2000);
+  }
+  if (calm) return setTimeout(done, 200);
+  var t0 = 0;
+  function frame(t) {
+    if (!t0) t0 = t;
+    var k = Math.min(1, (t - t0) / T), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+    var f = e * (P.length - 1), i = Math.min(P.length - 2, Math.floor(f)), u = f - i, s = u * u * (3 - 2 * u);
+    place(P[i][0] + (P[i + 1][0] - P[i][0]) * s, P[i][1] + (P[i + 1][1] - P[i][1]) * s);
+    if (k < 1) requestAnimationFrame(frame); else done();
+  }
+  requestAnimationFrame(frame);
+  setTimeout(done, 4200); // never hold the visitor
+})();
+</script>
 <a class="skip" href="#main">Перейти к содержанию</a>
 
 <!-- ============ HEADER ============ -->
