@@ -2084,3 +2084,5 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 .cvz .x::before,.cvz .x::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:2.5px;margin:-1.25px 0 0 -10px;border-radius:2px;background:currentColor;transform:rotate(45deg)}
 .cvz .x::after{transform:rotate(-45deg)}
 .cvz-flip{background:rgba(246,243,236,.92)}
+/* tabs: no leftover side margin from the first tab design, so the pill hugs its buttons */
+.tabs button{margin:0}
