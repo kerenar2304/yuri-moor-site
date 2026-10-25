@@ -2133,3 +2133,6 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 }
 /* phone hero: the book stack peeks in from the right edge, about a quarter of each cover stays outside the frame */
 @media (max-width:700px){.hero .wave .w{left:calc(282 * var(--m))}}
+/* phone menu: everything fits on short screens too (links scale with the screen height), and the panel scrolls if it still runs over */
+.drawer{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-top:calc(var(--hdr-h) + min(32px, 3svh));padding-bottom:max(24px, env(safe-area-inset-bottom));gap:min(32px, 3svh)}
+html[data-font=bebas] .drawer nav a,.drawer nav a{font-size:min(var(--t2), 4.8svh);padding-block:min(8px, .9svh)}
