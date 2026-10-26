@@ -50,7 +50,8 @@ export async function onRequestPost({ request, env }) {
 
   // bot check (Cloudflare Turnstile), when its secret is set
   if (env.TURNSTILE_SECRET) {
-    const form = new FormData(); form.append('secret', String(env.TURNSTILE_SECRET).trim()); // a stray space or line break from pasting must not break it form.append('response', String(d.turnstile || ''));
+    // trim: a stray space or line break from pasting the secret must not break the check
+    const form = new FormData(); form.append('secret', String(env.TURNSTILE_SECRET).trim()); form.append('response', String(d.turnstile || ''));
     const ip = request.headers.get('cf-connecting-ip'); if (ip) form.append('remoteip', ip);
     const v = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form }).then(r => r.json()).catch(() => ({}));
     // Cloudflare's own reason codes (e.g. invalid-input-secret, timeout-or-duplicate) say what went wrong without exposing anything
