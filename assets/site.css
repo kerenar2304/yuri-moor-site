@@ -2165,3 +2165,52 @@ html[data-font=bebas] .drawer nav a,.drawer nav a{font-size:min(var(--t2), 4.8sv
 @font-face { font-family: 'Oswald'; font-style: normal; font-weight: 200 700; font-display: swap; src: url(fonts/gf/oswald-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: 'Source Sans 3'; font-style: normal; font-weight: 200 900; font-display: swap; src: url(fonts/gf/source-sans-3-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 @font-face { font-family: 'Source Sans 3'; font-style: normal; font-weight: 200 900; font-display: swap; src: url(fonts/gf/source-sans-3-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* ================= TYPE SCALE: five sizes for the whole site =================
+   H1 · heading (h2) · subheading (h3, titles of cards, prices) · body (running text, links, buttons) · note (labels, dates, captions, legal small print).
+   Decorative type is left alone on purpose: the stickers and marquee in Contacts, the giant e-mail, the loader, the 404 numerals,
+   drawn spines and placeholder covers, count badges, and the phone hero (a composed frame scaled as one piece). */
+:root{
+  --fs-h1:clamp(40px,5vw,72px);
+  --fs-h2:clamp(30px,3vw,44px);
+  --fs-h3:clamp(20px,1.6vw,24px);
+  --fs-body:clamp(17px,1.25vw,18px);
+  --fs-note:14px;
+}
+/* H1 */
+html body h1,html[data-font=bebas] body h1,
+html[data-font=bebas] .pg-info h1,html[data-font=bebas] .legal h1,html[data-font=bebas] .tx-head h1,html[data-font=bebas] .art-hero h1,
+html[data-font=bebas] .hero-h1,.hero .hero-h1{font-size:var(--fs-h1)!important;line-height:1.04!important}
+/* heading */
+html body h2:not(.sr),html[data-font=bebas] body h2:not(.sr),html[data-font=bebas] main .legal h2,
+.bookdlg .bd-info h2,html[data-font=bebas] .bookdlg .bd-info h2,.lb-txt h2,html[data-font=bebas] .lb-txt h2{font-size:var(--fs-h2)!important;line-height:1.08!important}
+/* subheading */
+html body h3,html[data-font=bebas] body h3,html[data-font=bebas] .card-t,.card-t,
+.shelf-cap .sc-title,html[data-font=bebas] .shelf-cap .sc-title,.about-name,.hero-name,html[data-font=bebas] .hero-name,
+.price,.fmt .price,html[data-font=bebas] .fmt .price,.pg-fmt b,.art-he,.tx-words h2{font-size:var(--fs-h3)!important;line-height:1.15!important}
+/* body */
+html body main p,html body main li,html body main blockquote,html body main dd,html body main dt,
+.lead,.hero .lead,.btn,.hero-cta,.tabs button,.pg-link,.pg-text p,.tx-body p,.art-story,.legal p,.legal li,
+.pub-t,b.pub-t,.pg-mini b,.shelf-hint,.nav a,.drawer-foot a,.ftr-name,.ftr-about,.ftr-col a,
+.cart-in,.ci b,#checkout input,#checkout label span,.cart-thanks p,.cart-err,.e-lead,.e-word p{font-size:var(--fs-body)!important}
+/* note */
+small,html body main small,.kicker,.pg-label,.legal-kind,.legal-date,.pub-kind,.pub-d,.art-tr,.art-src,.tx-kind,.tx-by,.tx-src,.pg-pay,.pg-meta,
+.pg-back,.pg-mini span,.tag,.card-tags .tag,.card-buy-btn,.card-acts em,.sc-meta,.sc-count,figcaption,.ftr-col h2,html[data-font=bebas] .ftr-col h2,
+.ftr-pay,.ftr-sub,.ftr-bottom,.ftr-bottom a,.ftr-bottom span,.credit span,.cart-legal,#checkout .cart-priv,.cart-note,.ci small,
+.e-kicker,.e-more,.e-foot,.e-word span,.hint-touch,.hint-hover,.lb-col-t{font-size:var(--fs-note)!important}
+/* the phone hero is one composed frame: its type scales with the frame, not with the page scale */
+@media (max-width:700px){
+  html[data-font=bebas] .hero .hero-h1,.hero .hero-h1{font-size:calc(40 * var(--m))!important;line-height:1.06!important}
+  html[data-font=bebas] .hero .hero-name,.hero .hero-name{font-size:calc(22 * var(--m))!important}
+  .hero .lead{font-size:calc(15 * var(--m))!important}
+  .hero .hero-cta{font-size:calc(15 * var(--m))!important}
+}
+/* type scale, second pass: the remaining one-offs mapped onto the five sizes */
+html[data-font=bebas] body .ftr-col h2,html body .ftr-col h2{font-size:var(--fs-note)!important;line-height:1.3!important}
+.card-pr b,.about-facts span,.ftr-name span{font-size:var(--fs-body)!important}
+.about-facts b,.about-qcard figcaption span,blockquote cite,.det-txt cite{font-size:var(--fs-note)!important}
+.tx-book b{font-size:var(--fs-h3)!important}
+.tx-book em{font-size:var(--fs-note)!important}
+.e-top a.e-home{font-size:var(--fs-body)!important}
+/* filter tabs are labels: note size, so the four of them stay compact on phones */
+.tabs button{font-size:var(--fs-note)!important}
