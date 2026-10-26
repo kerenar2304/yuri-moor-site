@@ -2300,3 +2300,10 @@ html[data-font=bebas] body .ftr-col h2,html body .ftr-col h2{font-size:var(--fs-
   #about .ab-book img{position:absolute;left:50%;top:50%;max-width:none;object-fit:fill;transform:translate(-50%,-50%) rotate(90deg)}
 }
 @media (prefers-reduced-motion:reduce){#about .ab-book{transition:none}}
+
+/* ================= decorative text the body size must not swell =================
+   the words under the loupe have to fit inside the glass, and the contact labels are labels: note size, each with air around it */
+html body .loupe-r .loupe-glass p{font-size:clamp(12px,1.05vw,15px)!important;line-height:1.22!important}
+@media (max-width:900px){html body .loupe-r .loupe-glass p{font-size:11.5px!important;width:74%}}
+html body .c2-panel .c2-meta p{font-size:var(--fs-note)!important;line-height:1.6!important;letter-spacing:.1em}
+@media (max-width:700px){html body .c2-panel .c2-meta{gap:22px;padding:18px 20px 4px}}
