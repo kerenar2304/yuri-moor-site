@@ -8,6 +8,8 @@
      TURNSTILE_SECRET  Turnstile secret key (encrypted); when set, every order must pass the bot check
      SITE_ORIGIN       optional, e.g. https://your-domain; when set, orders from other sites are refused */
 
+import { hasBookKey, seal } from '../_lib/books.js';
+
 const PRICE = { print: 50, pdf: 40 };
 const PHONE_TXT = '054-741-93-93';
 const MAX_BODY = 16 * 1024;
@@ -95,6 +97,17 @@ export async function onRequestPost({ request, env }) {
   const orderTable = '<table style="width:100%;border-collapse:collapse;border-top:1px solid #dde;border-bottom:1px solid #dde">' + table +
     '<tr><td style="padding:8px 0;font-weight:bold">Итого</td><td style="padding:8px 0;text-align:right;font-weight:bold;white-space:nowrap">' + esc(totalTxt) + '</td></tr></table>';
 
+  // for a digital copy: a signed one-click link that lets the seller send the book once the payment is in
+  let sendBtn = '', sendTxt = '';
+  if (hasPdf && hasBookKey(env)) {
+    const base = env.SITE_ORIGIN ? env.SITE_ORIGIN.split(',')[0].trim() : new URL(request.url).origin;
+    const ids = [...new Set(items.filter(i => i.fmt === 'pdf').map(i => i.id))];
+    const link = base + '/api/send-book?t=' + encodeURIComponent(await seal(env, { e: f.email, n: f.name, b: ids, t: Date.now() }));
+    sendTxt = '\n\nאחרי שהתשלום התקבל, לשליחת הספר ללקוח: ' + link;
+    sendBtn = '<p dir="rtl" style="margin:24px 0 0"><a href="' + esc(link) + '" style="display:inline-block;background:#0d2b52;color:#fff;' +
+      'text-decoration:none;font-weight:bold;padding:14px 26px;border-radius:26px">התשלום התקבל? שלחי את הספר ללקוח</a></p>';
+  }
+
   const send = body => fetch('https://api.resend.com/emails', {
     method: 'POST', headers: { Authorization: 'Bearer ' + env.RESEND_API_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
   });
@@ -104,10 +117,10 @@ export async function onRequestPost({ request, env }) {
     from: env.ORDER_FROM, to: [env.ORDER_TO], reply_to: f.email || undefined,
     subject: 'Заказ книг: ' + f.name + ', ' + total + ' ₪',
     text: 'Новый заказ с сайта:\n' + rows.map(r => '• ' + r.text).join('\n') + '\nИтого: ' + totalTxt +
-      '\n\nИмя: ' + f.name + '\nТелефон: ' + f.phone + (addr ? '\nАдрес: ' + addr : '') + (f.email ? '\nE-mail: ' + f.email : ''),
+      '\n\nИмя: ' + f.name + '\nТелефон: ' + f.phone + (addr ? '\nАдрес: ' + addr : '') + (f.email ? '\nE-mail: ' + f.email : '') + sendTxt,
     html: wrap('<h2 style="margin:0 0 12px">Новый заказ с сайта</h2>' + orderTable +
       '<p style="margin:16px 0 0"><b>Имя:</b> ' + esc(f.name) + '<br><b>Телефон:</b> <a href="tel:' + esc(f.phone.replace(/[^0-9+]/g, '')) + '">' + esc(f.phone) + '</a>' +
-      (addr ? '<br><b>Адрес:</b> ' + esc(addr) : '') + (f.email ? '<br><b>E-mail:</b> ' + esc(f.email) : '') + '</p>')
+      (addr ? '<br><b>Адрес:</b> ' + esc(addr) : '') + (f.email ? '<br><b>E-mail:</b> ' + esc(f.email) : '') + '</p>' + sendBtn)
   });
   if (!toSeller.ok) return json({ ok: false, error: 'send failed' }, 502);
 
