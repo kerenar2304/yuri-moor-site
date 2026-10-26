@@ -2214,3 +2214,36 @@ html[data-font=bebas] body .ftr-col h2,html body .ftr-col h2{font-size:var(--fs-
 .e-top a.e-home{font-size:var(--fs-body)!important}
 /* filter tabs are labels: note size, so the four of them stay compact on phones */
 .tabs button{font-size:var(--fs-note)!important}
+
+/* ================= ONE BUTTON for the whole site =================
+   One height, one padding, one arrow circle, one type. Primary: navy with a sky circle; on dark sections the exact mirror
+   (sky with a navy circle); secondary: an outline with a navy circle. The phone hero keeps its framed CTA. */
+:root{--btn-h:52px;--btn-ic:40px}
+.btn,.btn.sm,.btn.solid,.btn.ghost,.hero-cta,.hero .hero-cta,html[data-font=bebas] .btn{
+  height:var(--btn-h)!important;min-height:var(--btn-h)!important;padding:0 6px 0 24px!important;gap:14px!important;
+  font:600 var(--fs-body)/1 var(--fam)!important;letter-spacing:0!important;text-transform:none!important;
+  border-radius:999px!important;border-width:1.5px!important;border-style:solid!important;width:auto}
+.btn:not(:has(span[aria-hidden])),.hero-cta:not(:has(span[aria-hidden])){padding:0 24px!important}
+.btn span[aria-hidden],.hero-cta span[aria-hidden]{width:var(--btn-ic)!important;height:var(--btn-ic)!important;flex:none;border-radius:50%;
+  display:grid!important;place-items:center;font-size:20px!important;line-height:1!important;margin:0!important}
+/* primary on light */
+.btn.solid,.hero-cta{background:var(--dark)!important;border-color:var(--dark)!important;color:#fff!important}
+.btn.solid span[aria-hidden],.hero-cta span[aria-hidden]{background:var(--sky)!important;color:var(--dark)!important}
+.btn.solid:hover,.hero-cta:hover{background:var(--accent-ink)!important;border-color:var(--accent-ink)!important}
+/* primary on dark sections: the mirror */
+.on-dark .btn.solid,#detective .btn.solid{background:var(--sky)!important;border-color:var(--sky)!important;color:var(--dark)!important}
+.on-dark .btn.solid span[aria-hidden],#detective .btn.solid span[aria-hidden]{background:var(--dark)!important;color:#fff!important}
+.on-dark .btn.solid:hover,#detective .btn.solid:hover{background:#fff!important;border-color:#fff!important}
+/* secondary */
+.btn.ghost{background:transparent!important;border-color:color-mix(in srgb,var(--dark) 35%,transparent)!important;color:var(--dark)!important}
+.btn.ghost span[aria-hidden]{background:var(--dark)!important;color:#fff!important}
+.btn.ghost:hover{background:var(--dark)!important;border-color:var(--dark)!important;color:#fff!important}
+.btn.ghost:hover span[aria-hidden]{background:var(--sky)!important;color:var(--dark)!important}
+.btn.off{opacity:.45}
+/* the small buy chip on catalog cards: same shape, colour and type at chip size */
+.card-buy-btn{height:36px;border-radius:999px;background:var(--dark);color:#fff;font:600 var(--fs-note)/1 var(--fam)!important;padding:0 16px!important}
+/* phone hero: the CTA is part of the composed frame */
+@media (max-width:700px){
+  .hero .hero-cta{height:calc(54 * var(--m))!important;min-height:0!important;padding:0 calc(6 * var(--m)) 0 calc(22 * var(--m))!important;font-size:calc(15 * var(--m))!important}
+  .hero .hero-cta span[aria-hidden]{width:calc(42 * var(--m))!important;height:calc(42 * var(--m))!important}
+}
