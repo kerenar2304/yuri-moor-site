@@ -32,7 +32,7 @@ async function readOrder(env, token) {
   return { o, books };
 }
 
-const summary = (o, books) => '<div class="box"><b>לקוח:</b> ' + esc(o.n) + '<br><b>מייל:</b> ' + esc(o.e) +
+const summary = (o, books) => '<div class="box"><b>לקוח:</b> ' + esc(o.n) + '<br><b>מייל:</b> <!--email_off-->' + esc(o.e) + '<!--/email_off-->' +
   '<br><b>תאריך ההזמנה:</b> ' + new Date(o.t).toLocaleDateString('he-IL', { timeZone: 'Asia/Jerusalem' }) +
   '<ul>' + books.map(id => '<li>' + esc(BOOK_FILE[id]) + '</li>').join('') + '</ul></div>';
 
@@ -49,7 +49,8 @@ export async function onRequestGet({ request, env }) {
 export async function onRequestPost({ request, env }) {
   const self = new URL(request.url).origin;
   const origin = request.headers.get('origin');
-  if (origin && origin !== self) return page('<h1>לא ניתן לשלוח</h1>', 403);
+  // no-referrer makes browsers send Origin: null for this form, so only a real foreign origin is refused; the signed token is what authorises
+  if (origin && origin !== 'null' && origin !== self) return page('<h1>לא ניתן לשלוח</h1><p class="err">הבקשה הגיעה מאתר אחר.</p>', 403);
   let token = '';
   try { token = String((await request.formData()).get('t') || ''); } catch (e) {}
   const r = await readOrder(env, token);
