@@ -2281,3 +2281,10 @@ html[data-font=bebas] body .ftr-col h2,html body .ftr-col h2{font-size:var(--fs-
 #grid .card-buy-btn:hover{background:var(--accent-ink)!important}
 #grid .card-buy-btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
 #grid .card-pr small{white-space:normal!important;display:block}
+
+/* ================= ABOUT: "between the lines", the author's own quirks under the facts ================= */
+#about .about-sub{margin:28px 0 12px;font:600 var(--fs-note)/1 var(--fam);letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
+#about .about-quirks{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:12px;max-width:60ch}
+#about .about-quirks li{position:relative;padding-left:30px;font:400 var(--fs-body)/1.55 var(--fam);color:#1d3d63}
+#about .about-quirks li::before{content:"";position:absolute;left:2px;top:.42em;width:11px;height:11px;border:2px solid var(--blue);border-radius:50%}
+#about .about-quirks li::after{content:"";position:absolute;left:14px;top:calc(.42em + 14px);width:7px;height:2px;background:var(--blue);transform:rotate(45deg);transform-origin:left center}
