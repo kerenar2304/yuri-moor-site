@@ -53,7 +53,8 @@ export async function onRequestPost({ request, env }) {
     const form = new FormData(); form.append('secret', env.TURNSTILE_SECRET); form.append('response', String(d.turnstile || ''));
     const ip = request.headers.get('cf-connecting-ip'); if (ip) form.append('remoteip', ip);
     const v = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form }).then(r => r.json()).catch(() => ({}));
-    if (!v.success) return json({ ok: false, error: 'missing', fields: ['turnstile'] }, 422);
+    // Cloudflare's own reason codes (e.g. invalid-input-secret, timeout-or-duplicate) say what went wrong without exposing anything
+    if (!v.success) return json({ ok: false, error: 'missing', fields: ['turnstile'], codes: v['error-codes'] || [] }, 422);
   }
 
   // only known books, in a format that exists, with a sane quantity
