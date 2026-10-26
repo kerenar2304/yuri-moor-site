@@ -527,6 +527,37 @@
     var open = abMore.classList.toggle('open'); abBtn.setAttribute('aria-expanded', String(open));
     abBtn.firstChild.textContent = open ? 'Свернуть ' : 'Подробнее об авторе ';
   });
+  /* the author stays put while «Подробнее» opens: books slide in under his stack, one per free row, down to the bottom */
+  var abFig = $('#about .about-ph');
+  if (abFig && abMore && window.ResizeObserver) {
+    var STACK = ['razg', 'shp', 'debut', 'prig', 'z7', 'z6', 'z3', 'z5', 'isr', 'z1', 'z2', 'z4', 'z8', 'nhd', 'heb'];
+    var stack = document.createElement('div'); stack.className = 'about-stack'; stack.setAttribute('aria-hidden', 'true'); abFig.appendChild(stack);
+    var h0 = 0, wide = matchMedia('(min-width:901px)');
+    var fitStack = function () {
+      if (!wide.matches) { stack.textContent = ''; abFig.style.removeProperty('--ph-h'); h0 = 0; return; }
+      // closed and empty: the photo fills the column as before; that height is the photo's from now on
+      if (!abMore.classList.contains('open') && !stack.children.length) { abFig.style.removeProperty('--ph-h'); h0 = abFig.clientHeight; return; }
+      if (h0 < 100) return;                                    // not laid out yet
+      abFig.style.setProperty('--ph-h', h0 + 'px');
+      // the photo's own stack sits at 21.3%..60.8% of the picture width (yuri-books.webp is 1000x1433)
+      // (object-fit: contain, bottom-centred, so the drawn picture may be narrower than the img box)
+      var img = abFig.querySelector('img'), ir = img.getBoundingClientRect(), fr = abFig.getBoundingClientRect();
+      var iw = Math.min(ir.width, h0 * 1000 / 1433), w = iw * .395, t = Math.max(8, w * .14);
+      stack.style.cssText = 'left:' + (ir.left - fr.left + (ir.width - iw) / 2 + iw * .213) + 'px;top:' + h0 + 'px;width:' + w + 'px';
+      var n = Math.max(0, Math.floor((abFig.clientHeight - h0) / t));
+      while (stack.children.length > n) stack.lastChild.remove();
+      while (stack.children.length < n) {
+        var i = stack.children.length, b = document.createElement('div');
+        b.className = 'ab-book';
+        b.style.cssText = 'width:' + w + 'px;height:' + t + 'px;--dx:' + ((i % 3 - 1) * 4) + 'px;--rot:' + (i % 2 ? .5 : -.4) + 'deg';
+        b.innerHTML = '<img src="assets/covers/' + STACK[i % STACK.length] + '-spine.webp" alt="" decoding="async" style="width:' + t + 'px;height:' + w + 'px">';
+        stack.appendChild(b);
+        requestAnimationFrame(function (el) { return function () { el.classList.add('in'); }; }(b));
+      }
+    };
+    new ResizeObserver(fitStack).observe(abFig);
+    if (wide.addEventListener) wide.addEventListener('change', fitStack);
+  }
   /* ---------- contact stickers ---------- */
   var field = $('#c2-field');
   if (field) {

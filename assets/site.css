@@ -2288,3 +2288,15 @@ html[data-font=bebas] body .ftr-col h2,html body .ftr-col h2{font-size:var(--fs-
 #about .about-quirks li{position:relative;padding-left:30px;font:400 var(--fs-body)/1.55 var(--fam);color:#1d3d63}
 #about .about-quirks li::before{content:"";position:absolute;left:2px;top:.42em;width:11px;height:11px;border:2px solid var(--blue);border-radius:50%}
 #about .about-quirks li::after{content:"";position:absolute;left:14px;top:calc(.42em + 14px);width:7px;height:2px;background:var(--blue);transform:rotate(45deg);transform-origin:left center}
+
+/* ================= ABOUT: the book stack grows while «Подробнее» is open (desktop) ================= */
+.about-stack{display:none}
+@media (min-width:901px){
+  #about .about-ph img{bottom:auto;height:var(--ph-h,100%)}
+  #about .about-stack{display:block;position:absolute;pointer-events:none}
+  #about .ab-book{position:relative;overflow:hidden;border-radius:2px;box-shadow:0 1px 0 rgba(13,43,82,.18);opacity:0;transform:translateX(-28px);
+    transition:opacity .45s var(--ease),transform .45s var(--ease)}
+  #about .ab-book.in{opacity:1;transform:translateX(var(--dx)) rotate(var(--rot))}
+  #about .ab-book img{position:absolute;left:50%;top:50%;max-width:none;object-fit:fill;transform:translate(-50%,-50%) rotate(90deg)}
+}
+@media (prefers-reduced-motion:reduce){#about .ab-book{transition:none}}
