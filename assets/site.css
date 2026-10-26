@@ -2272,3 +2272,12 @@ html[data-font=bebas] body .ftr-col h2,html body .ftr-col h2{font-size:var(--fs-
 .shelf-cap .sc-meta,.ftr-name,.ftr-col a,.pg-info h1,.legal h1,.tx-head h1,.art-hero h1{overflow-wrap:anywhere}
 .shelf-cap .sc-meta{white-space:normal}
 @media (hover:none){.card-acts em{display:none}}
+/* catalog card: the buy control is a round cart icon on the price row (the label stays for screen readers) */
+#grid .card-foot{flex-wrap:nowrap!important;align-items:center;gap:10px}
+#grid .card-pr{flex:1 1 auto}
+#grid .card-buy-btn{width:44px!important;height:44px!important;min-width:44px;padding:0!important;margin-left:0;border-radius:50%!important;
+  display:grid!important;place-items:center;background:var(--dark)!important;color:#fff!important;flex:none}
+#grid .card-buy-btn svg{width:20px;height:20px;margin:0}
+#grid .card-buy-btn:hover{background:var(--accent-ink)!important}
+#grid .card-buy-btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+#grid .card-pr small{white-space:normal!important;display:block}

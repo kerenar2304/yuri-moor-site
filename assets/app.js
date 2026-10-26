@@ -215,7 +215,7 @@
         '</div></div>' +
         '<h3 class="card-t"' + (b.rtl ? ' dir="rtl" lang="he"' : '') + '><a href="' + bookHref(b.id) + '">' + esc(b.title) + '</a></h3>' +
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
-        '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>Цифровая копия ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + 'Купить</button></div>' +
+        '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>Цифровая копия ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + '</button></div>' +
         '</article>';
     }).join('');
   }
