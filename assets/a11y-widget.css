@@ -1,0 +1,407 @@
+/* ===== Haim's accessibility widget =====
+   The same control on every site. What changes from site to site is three
+   colours, and nothing else - set them in the site's own stylesheet, from
+   the values pick-color.mjs prints:
+
+   :root {
+     --a11y-accent: #e70f57;         the disc - the site's brand colour
+     --a11y-ink: #ffffff;            the mark on the disc
+     --a11y-accent-panel: #f62a62;   the same colour, legible on the panel
+   }
+
+   The look is Schooliner's, on every site: a solid brand-colour disc with a
+   white ring, and a deep navy glass panel that opens straight up from it. */
+
+/* The three site colours are read with a fallback, never declared here: a
+   declaration on .a11y-root would shadow the one the site sets on :root. */
+.a11y-root {
+  --a11y-panel-bg: rgba(20, 22, 44, 0.98);
+  --a11y-panel-ink: #ffffff;
+  --a11y-panel-soft: rgba(255, 255, 255, 0.66);
+  --a11y-z: 2147483000;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.a11y-root *,
+.a11y-root *::before,
+.a11y-root *::after {
+  box-sizing: border-box;
+}
+
+/* Themes style every <button> on the page (Elementor/Hello: a pink border,
+   transparent fill, nowrap, uppercase). The widget's own rules are scoped
+   under .a11y-root so they always win, and this clears what they don't set. */
+.a11y-root button {
+  min-height: 0;
+  line-height: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  text-decoration: none;
+  white-space: normal;
+  box-shadow: none;
+  user-select: none;
+}
+
+/* The button is the shape readers already know: a solid disc with the
+   standard mark and a ring inside it, in the bottom corner. Being original
+   about it would only cost them the time it takes to find it. */
+.a11y-root .a11y-btn {
+  position: fixed;
+  z-index: var(--a11y-z);
+  inset-block-end: 16px;
+  inset-inline-end: 22px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--a11y-accent, #e70f57);
+  color: var(--a11y-ink, #ffffff);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transition:
+    scale 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease;
+}
+.a11y-root.is-start .a11y-btn,
+.a11y-root.is-start .a11y-panel {
+  inset-inline-end: auto;
+  inset-inline-start: 22px;
+}
+.a11y-root .a11y-btn::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.a11y-root .a11y-btn:hover,
+.a11y-root .a11y-btn[aria-expanded="true"] {
+  scale: 1.06;
+}
+.a11y-root .a11y-btn:focus-visible {
+  outline: 3px solid var(--a11y-accent, #e70f57);
+  outline-offset: 3px;
+}
+/* a saved preference survived the last visit - say so at a glance */
+.a11y-root .a11y-btn__dot {
+  display: none;
+  position: absolute;
+  top: -2px;
+  inset-inline-end: -2px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid #111223;
+  border-radius: 50%;
+  background: #fff;
+}
+.a11y-root .a11y-btn.has-active .a11y-btn__dot {
+  display: block;
+}
+
+/* ---- the panel: opens straight up from the button ---- */
+.a11y-root .a11y-panel {
+  position: fixed;
+  z-index: calc(var(--a11y-z) + 1);
+  inset-block-end: 76px;
+  inset-inline-end: 22px;
+  width: min(340px, calc(100vw - 44px));
+  max-height: min(600px, calc(100vh - 110px));
+  overflow-y: auto;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1em;
+  background: var(--a11y-panel-bg);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  color: var(--a11y-panel-ink);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  text-align: start;
+  opacity: 0;
+  translate: 0 12px;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    translate 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.25s;
+}
+.a11y-root .a11y-panel.is-open {
+  opacity: 1;
+  translate: 0 0;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.a11y-root .a11y-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.a11y-root .a11y-panel__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--a11y-panel-ink);
+}
+.a11y-root .a11y-panel__title:focus {
+  outline: none;
+}
+/* the padding is the target and the negative margin gives the space back:
+   a 27px hit area on a 15px line, over the 24px WCAG 2.5.8 asks for */
+.a11y-root .a11y-close,
+.a11y-root .a11y-reset,
+.a11y-root .a11y-foot a {
+  margin: -6px -8px;
+  padding: 6px 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--a11y-panel-soft);
+  cursor: pointer;
+}
+.a11y-root .a11y-close:hover,
+.a11y-root .a11y-reset:hover:not(:disabled) {
+  color: var(--a11y-panel-ink);
+}
+.a11y-root .a11y-close:focus-visible,
+.a11y-root .a11y-reset:focus-visible,
+.a11y-root .a11y-foot a:focus-visible,
+.a11y-root .a11y-size__step:focus-visible,
+.a11y-root .a11y-row:focus-visible {
+  outline: 2px solid var(--a11y-accent-panel, #f62a62);
+  outline-offset: 2px;
+}
+
+.a11y-root .a11y-size {
+  margin: 0 0 14px;
+  padding: 0;
+  border: 0;
+}
+.a11y-root .a11y-size legend {
+  padding: 0 0 8px;
+  font-size: 13px;
+  color: var(--a11y-panel-soft);
+}
+.a11y-root .a11y-size__row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.a11y-root .a11y-size__step {
+  margin: 0;
+  padding: 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0.7em;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: var(--a11y-panel-ink);
+  cursor: pointer;
+}
+.a11y-root .a11y-size__step:hover {
+  border-color: var(--a11y-accent-panel, #f62a62);
+}
+.a11y-root .a11y-size__step.is-on {
+  border-color: var(--a11y-accent-panel, #f62a62);
+  background: color-mix(in srgb, var(--a11y-accent-panel, #f62a62) 24%, transparent);
+  font-weight: 700;
+}
+
+.a11y-root .a11y-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.a11y-root .a11y-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 0.7em;
+  background: rgba(255, 255, 255, 0.05);
+  font: inherit;
+  text-align: start;
+  color: var(--a11y-panel-ink);
+  cursor: pointer;
+}
+.a11y-root .a11y-row:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+.a11y-root .a11y-row.is-on {
+  border-color: var(--a11y-accent-panel, #f62a62);
+}
+.a11y-root .a11y-row__text {
+  flex: 1;
+  min-width: 0;
+}
+.a11y-root .a11y-row__text b {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+}
+.a11y-root .a11y-row__text i {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-style: normal;
+  line-height: 1.35em;
+  color: var(--a11y-panel-soft);
+}
+.a11y-root .a11y-row__switch {
+  flex: none;
+  position: relative;
+  width: 40px;
+  height: 23px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.25s ease;
+}
+.a11y-root .a11y-row__switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #fff;
+  transition: translate 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.a11y-root .a11y-row.is-on .a11y-row__switch {
+  background: var(--a11y-accent, #e70f57);
+}
+/* the knob travels towards the end edge - left in RTL, right in LTR */
+.a11y-root[dir="rtl"] .a11y-row.is-on .a11y-row__switch::after {
+  translate: -17px 0;
+}
+.a11y-root[dir="ltr"] .a11y-row.is-on .a11y-row__switch::after {
+  translate: 17px 0;
+}
+
+.a11y-root .a11y-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.a11y-root .a11y-reset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.a11y-root .a11y-foot a {
+  color: var(--a11y-accent-panel, #f62a62);
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .a11y-root .a11y-btn {
+    inset-block-end: 14px;
+    inset-inline-end: 14px;
+    width: 44px;
+    height: 44px;
+  }
+  .a11y-root.is-start .a11y-btn {
+    inset-inline-start: 14px;
+  }
+  .a11y-root .a11y-panel,
+  .a11y-root.is-start .a11y-panel {
+    inset-inline: 14px;
+    inset-block-end: 68px;
+    width: auto;
+  }
+}
+
+/* ================= what the preferences do =================
+   Global, and they have to beat page rules: the one place where !important
+   is the right tool rather than a shortcut. Every rule skips the widget, so
+   the control you are using never changes under your hand. */
+
+:root {
+  --a11y-text: 1;
+}
+
+/* `zoom` scales the rendered result, so vw type, px type, spacing and images
+   grow together - what browser zoom does, and what works on a vw type scale
+   where a root font-size would do nothing. */
+html.a11y-text body > :not(.a11y-root) {
+  zoom: var(--a11y-text);
+}
+
+/* Ground to black, ink to white - element by element, not a filter over the
+   page, which would flatten the photographs along with the text. */
+html.a11y-contrast body,
+html.a11y-contrast body > :not(.a11y-root),
+html.a11y-contrast body > :not(.a11y-root) *:not(img):not(video):not(svg):not(svg *):not(picture):not(canvas) {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  text-shadow: none !important;
+}
+html.a11y-contrast body > :not(.a11y-root) :is(a, button, input, select, textarea) {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+html.a11y-contrast .a11y-panel {
+  background: #000;
+  border-color: #fff;
+}
+
+html.a11y-links body > :not(.a11y-root) a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  outline: 1px dashed currentColor;
+  outline-offset: 3px;
+}
+
+/* WCAG 1.4.12 - room between letters, not a "dyslexia font" */
+html.a11y-spacing body > :not(.a11y-root) :is(p, li, td, th, dd, blockquote, label) {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+  line-height: 1.8 !important;
+}
+
+html.a11y-cursor,
+html.a11y-cursor * {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M6 3l24 13-10 3-4 11z' fill='%23fff' stroke='%23111' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E")
+      4 3,
+    auto !important;
+}
+
+/* WCAG 2.2.2, level A. Stopping means everything: a switch that leaves half
+   the page moving is one nobody trusts the second time. */
+html.a11y-motion body > :not(.a11y-root),
+html.a11y-motion body > :not(.a11y-root) *,
+html.a11y-motion body > :not(.a11y-root) *::before,
+html.a11y-motion body > :not(.a11y-root) *::after {
+  animation-play-state: paused !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+html.a11y-motion {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .a11y-root .a11y-btn,
+  .a11y-root .a11y-panel,
+  .a11y-root .a11y-row__switch,
+  .a11y-root .a11y-row__switch::after {
+    transition: none;
+  }
+}

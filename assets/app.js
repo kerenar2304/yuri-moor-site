@@ -494,6 +494,18 @@
     tp.textContent = p ? '▶' : 'II'; tp.setAttribute('aria-label', p ? 'Запустить бегущую строку' : 'Остановить бегущую строку');
   });
   if (reduce && tp) tp.click();
+  // the accessibility widget's "stop motion" switch (a class on <html>) also stops the JS shelf conveyor and the ticker,
+  // and switching it off restarts only what it stopped
+  var calmed = [];
+  function syncCalm() {
+    if (document.documentElement.classList.contains('a11y-motion')) {
+      [$('[data-pause]'), tp].forEach(function (b) { if (b && b.getAttribute('aria-pressed') !== 'true') { b.click(); calmed.push(b); } });
+    } else {
+      calmed.forEach(function (b) { if (b.getAttribute('aria-pressed') === 'true') b.click(); }); calmed = [];
+    }
+  }
+  new MutationObserver(syncCalm).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  syncCalm();
 
   /* ---------- header, drawer, mobile bar ---------- */
   var hdr = $('#hdr'), mbar = $('.mbar'), hero = $('.hero');
