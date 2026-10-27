@@ -430,7 +430,8 @@
     if (ph) ph.setCustomValidity((ph.value.match(/\d/g) || []).length >= 9 ? '' : 'phone');
     if (coBtn) coBtn.classList.toggle('off', !co.checkValidity());
   }
-  if (co) { co.addEventListener('input', function (e) { if (e.target.removeAttribute) e.target.removeAttribute('aria-invalid'); coCheck(); }); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
+  // a fixed field loses its mark; once no field is marked, the "please check" note goes too
+  if (co) { co.addEventListener('input', function (e) { if (e.target.removeAttribute) e.target.removeAttribute('aria-invalid'); if (coErr && !co.querySelector('[aria-invalid]') && /^Проверьте/.test(coErr.textContent)) coErr.hidden = true; coCheck(); }); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
   // Cloudflare Turnstile (bot check) runs only once its site key is set in SHOP
   if (co && SHOP.TURNSTILE_SITEKEY) {
     var ts = document.createElement('div'); ts.className = 'cf-turnstile'; ts.dataset.sitekey = SHOP.TURNSTILE_SITEKEY; ts.dataset.language = 'ru'; ts.dataset.theme = 'light';

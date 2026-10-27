@@ -48,10 +48,11 @@ export async function onRequestPost({ request, env }) {
   if (!d || typeof d !== 'object') return json({ ok: false, error: 'bad request' }, 400);
   if (d.website) return json({ ok: true });                       // honeypot: bots fill the hidden field, people do not
 
-  if (!env.RESEND_API_KEY || !env.ORDER_FROM || !env.ORDER_TO) return json({ ok: false, error: 'not configured' }, 503);
+  // no bot check secret (a preview, or the secret deleted by mistake) means no orders, not orders without the check
+  if (!env.RESEND_API_KEY || !env.ORDER_FROM || !env.ORDER_TO || !env.TURNSTILE_SECRET) return json({ ok: false, error: 'not configured' }, 503);
 
-  // bot check (Cloudflare Turnstile), when its secret is set
-  if (env.TURNSTILE_SECRET) {
+  // bot check (Cloudflare Turnstile)
+  {
     // trim: a stray space or line break from pasting the secret must not break the check
     const form = new FormData(); form.append('secret', String(env.TURNSTILE_SECRET).trim()); form.append('response', String(d.turnstile || ''));
     const ip = request.headers.get('cf-connecting-ip'); if (ip) form.append('remoteip', ip);

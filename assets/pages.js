@@ -6,7 +6,9 @@
   var SERIES = { hebrew: 'Занимательный иврит', detective: 'Детективы', other: 'Израиль' };
   var label = function (b) { return b.vol ? 'Занимательный иврит · часть ' + b.vol : b.rtl ? 'Книга на иврите' : b.wide ? 'Разговорник' : b.isNew ? 'Новая книга' : (SERIES[b.series] || 'Книга'); };
   var cover = function (b, cls) {
-    return b.cover ? '<img class="' + cls + '" src="assets/covers/' + (/mini/.test(cls) ? 'thumb/' : '') + b.cover + '.webp"' + (/mini/.test(cls) ? ' loading="lazy"' : '') + ' alt="Обложка: ' + esc(b.title) + '">'
+    // the file sizes go on the tag, so the page keeps its place while the cover loads; the main cover loads first
+    var mini = /mini/.test(cls), wh = mini ? (b.wide ? [480, 308] : [480, 678]) : (b.wide ? [720, 463] : [830, 1174]);
+    return b.cover ? '<img class="' + cls + '" src="assets/covers/' + (mini ? 'thumb/' : '') + b.cover + '.webp" width="' + wh[0] + '" height="' + wh[1] + '"' + (mini ? ' loading="lazy"' : ' fetchpriority="high"') + ' alt="Обложка: ' + esc(b.title) + '">'
       : '<span class="' + cls + ' pg-nocover" style="--tone:' + b.tone + '"><b>' + esc(b.title) + '</b><i>Юрий Моор-Мурадов</i></span>';
   };
 
