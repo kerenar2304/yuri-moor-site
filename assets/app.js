@@ -466,7 +466,8 @@
     var done = function () {
       coBtn.classList.remove('busy'); co.reset();
       cart = []; save(); renderCart();
-      $('#cart-thanks').hidden = false; $('#cart-empty').hidden = true;
+      var th = $('#cart-thanks'); th.hidden = false; $('#cart-empty').hidden = true;
+      th.tabIndex = -1; th.focus(); // the form is gone: move focus to the thanks so screen readers announce it
     };
     if (d.get('website')) return done(); // spam trap
     // the order goes to /api/order (Cloudflare + Resend): to the seller, plus a confirmation for a digital copy.
