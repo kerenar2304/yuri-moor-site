@@ -2320,6 +2320,18 @@ html body .c2-panel .c2-meta p{font-size:var(--fs-note)!important;line-height:1.
 :root{--a11y-accent:#0d2b52;--a11y-ink:#ffffff;--a11y-accent-panel:#6485b3}
 /* on a phone the button and its panel sit above the mobile bar (56px) so neither covers the other */
 @media (max-width:700px){
-  .a11y-root .a11y-btn{inset-block-end:calc(70px + env(safe-area-inset-bottom))}
-  .a11y-root .a11y-panel,.a11y-root.is-start .a11y-panel{inset-block-end:calc(124px + env(safe-area-inset-bottom));max-height:calc(100vh - 160px)}
+  html .a11y-root .a11y-btn{inset-block-end:calc(70px + env(safe-area-inset-bottom))}
+  html .a11y-root .a11y-panel,html .a11y-root.is-start .a11y-panel{inset-block-end:calc(124px + env(safe-area-inset-bottom));max-height:calc(100vh - 160px)}
 }
+/* high contrast paints every element black: the burger lines and the shelf dots are drawn with a background, so they turn white */
+html.a11y-contrast body .hdr .burger span,html.a11y-contrast body .sc-dots button.on{background-color:#fff!important}
+/* text size from the widget. Its own rule zooms whole page blocks, and on this site's viewport-based layout that pushes text
+   off the screen, so here only the text blocks grow and reflow inside their columns: up to 200% on a computer, 150% on a
+   phone. Headings grow at most 50% (they are large already); the hero, header and mobile bar keep their composition. */
+html.a11y-text body>:not(.a11y-root){zoom:1!important}
+html.a11y-text :is(p,li,dd,dt,td,th,label,blockquote,figcaption,legend,a.btn,button.btn):not(:is(p,li,dd,dt,td,th,label,blockquote,figcaption,legend,a.btn,button.btn) *):not(.a11y-root *):not(.hero *):not(.hdr *):not(.mbar *){zoom:min(var(--a11y-text),var(--a11y-cap,2))}
+html.a11y-text :is(h1,h2,h3,h4):not(.a11y-root *):not(.hero *):not(.hdr *):not(.mbar *){zoom:min(var(--a11y-text),1.5,var(--a11y-cap,2))}
+html.a11y-text :is(p,li,dd,dt,td,th,label,blockquote,figcaption,legend,a.btn,button.btn):not(:is(p,li,dd,dt,td,th,label,blockquote,figcaption,legend,a.btn,button.btn) *):not(.a11y-root *):not(.hero *):not(.hdr *):not(.mbar *),
+html.a11y-text :is(h1,h2,h3,h4):not(.a11y-root *):not(.hero *):not(.hdr *):not(.mbar *){min-width:0;max-width:100%!important;white-space:normal!important;overflow-wrap:break-word}
+html.a11y-text .about-txt{grid-template-columns:minmax(0,1fr)}
+@media (max-width:700px){html.a11y-text{--a11y-cap:1.5}}
