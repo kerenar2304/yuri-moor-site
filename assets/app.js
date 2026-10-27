@@ -450,15 +450,7 @@
       var names = []; bad.forEach(function (i) { i.setAttribute('aria-invalid', 'true'); var n = FIELD_RU[i.name] || i.name; if (names.indexOf(n) < 0) names.push(n); });
       coErr.textContent = 'Проверьте, пожалуйста: ' + names.join(', ') + '.'; coErr.hidden = false; bad[0].focus(); return;
     }
-    var d = new FormData(co), total = 0, hasPrint = false, pickup = d.get('delivery') === 'pickup';
-    var lines = cart.map(function (c) {
-      var b = byId[c.id], p = priceOf(c) * c.q; total += p; if (c.fmt !== 'pdf') hasPrint = true;
-      return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' = ' + p + ' ₪';
-    });
-    var addr = hasPrint && pickup ? 'самовывоз в Беэр-Якове' : hasPrint ? d.get('street') + ' ' + d.get('house') + ', кв. ' + d.get('apt') + ', ' + d.get('city') + ', ' + d.get('zip') : '';
-    var msg = 'Новый заказ с сайта:\n' + lines.join('\n') + '\nИтого: ' + total + ' ₪' + (hasPrint ? ' + доставка' : '') +
-      '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
-      (addr ? '\nАдрес: ' + addr : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
+    var d = new FormData(co);
     var fail = function (fields) {
       coBtn.classList.remove('busy');
       if (fields && fields.length) { // the server named what is wrong: say it and mark those fields
@@ -476,15 +468,6 @@
       cart = []; save(); renderCart();
       $('#cart-thanks').hidden = false; $('#cart-empty').hidden = true;
     };
-    // Web3Forms: the backup route, used only where the site runs without its own server (GitHub Pages)
-    var viaForms = function () {
-      if (!SHOP.ORDER_EMAIL_KEY) return fail();
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ access_key: SHOP.ORDER_EMAIL_KEY, subject: 'Заказ книг: ' + d.get('name') + ', ' + total + ' ₪', from_name: 'Сайт Юрия Моор-Мурадова',
-          name: d.get('name'), phone: d.get('phone'), email: d.get('email') || undefined, message: msg })
-      }).then(function (r) { return r.json(); }).then(function (j) { if (!j.success) throw new Error(j.message); done(); }).catch(fail);
-    };
     if (d.get('website')) return done(); // spam trap
     // the order goes to /api/order (Cloudflare + Resend): to the seller, plus a confirmation for a digital copy.
     // Only book ids travel; the server takes titles and prices from its own catalog.
@@ -495,9 +478,8 @@
       .then(function (r) {
         if (r.ok) return done();
         if (r.status === 422) return r.json().then(function (j) { fail(j.fields); }, function () { fail(); });
-        if (r.status === 429 || r.status === 403) return fail(); // too many tries or a failed bot check: no backup route
-        viaForms(); // no server function here (404/405), Resend not set up yet (503) or down (502)
-      }, viaForms);
+        fail(); // too many tries (429), a failed bot check (403), or mail down (502/503)
+      }, function () { fail(); });
   });
   renderCart();
   $$('[data-cart-count]').forEach(function (b) { b.classList.remove('pop'); });

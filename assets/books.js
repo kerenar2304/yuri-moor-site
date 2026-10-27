@@ -6,7 +6,6 @@ window.SHOP = {
   PHONE_TXT: '054-741-93-93',
   AUTHOR_PHONE: '972547923229',   // messages for Yuri himself (he answers when he can; orders go to PHONE)
   AUTHOR_PHONE_TXT: '054-792-32-29',
-  ORDER_EMAIL_KEY: '',     // Web3Forms access key (backup route for orders)
   TURNSTILE_SITEKEY: '0x4AAAAAAFlRkbH4IslsdMUK'    // Cloudflare Turnstile site key (public): the bot check on the checkout
 };
 
