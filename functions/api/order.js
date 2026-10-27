@@ -69,13 +69,14 @@ export async function onRequestPost({ request, env }) {
     street: clean(d.street, 80), house: clean(d.house, 12), apt: clean(d.apt, 12), city: clean(d.city, 60), zip: clean(d.zip, 10)
   };
   const hasPrint = items.some(i => i.fmt === 'print'), hasPdf = items.some(i => i.fmt === 'pdf');
+  const pickup = hasPrint && d.delivery === 'pickup';              // printed books collected in Beer Yaakov: no address
 
   // the same rules as the form: nothing is sent unless every required field is filled
   const missing = [];
   if (!items.length) missing.push('items');
   if (f.name.length < 3) missing.push('name');
-  if (!/^[0-9+()\- ]{9,}$/.test(f.phone)) missing.push('phone');
-  if (hasPrint) {
+  if (!/^[0-9+()\- ]{9,}$/.test(f.phone) || (f.phone.match(/[0-9]/g) || []).length < 9) missing.push('phone');
+  if (hasPrint && !pickup) {
     ['street', 'house', 'apt', 'city'].forEach(k => { if (!f[k]) missing.push(k); });
     if (!/^([0-9]{5}|[0-9]{7})$/.test(f.zip)) missing.push('zip');
   }
@@ -88,8 +89,8 @@ export async function onRequestPost({ request, env }) {
     const sum = PRICE[i.fmt] * i.q, title = CATALOG[i.id]; total += sum;
     return { title, fmt: i.fmt, q: i.q, sum, text: title + ' (' + (i.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + i.q + ' = ' + sum + ' ₪' };
   });
-  const totalTxt = total + ' ₪' + (hasPrint ? ' + доставка' : '');
-  const addr = hasPrint ? f.street + ' ' + f.house + ', кв. ' + f.apt + ', ' + f.city + ', ' + f.zip : '';
+  const totalTxt = total + ' ₪' + (hasPrint && !pickup ? ' + доставка' : '');
+  const addr = pickup ? 'самовывоз в Беэр-Якове' : hasPrint ? f.street + ' ' + f.house + ', кв. ' + f.apt + ', ' + f.city + ', ' + f.zip : '';
 
   const table = rows.map(r => '<tr><td style="padding:6px 0">' + esc(r.title) + ' <span style="color:#667">(' + (r.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + r.q +
     '</span></td><td style="padding:6px 0;text-align:right;white-space:nowrap">' + r.sum + ' ₪</td></tr>').join('');
@@ -97,15 +98,13 @@ export async function onRequestPost({ request, env }) {
   const orderTable = '<table style="width:100%;border-collapse:collapse;border-top:1px solid #dde;border-bottom:1px solid #dde">' + table +
     '<tr><td style="padding:8px 0;font-weight:bold">Итого</td><td style="padding:8px 0;text-align:right;font-weight:bold;white-space:nowrap">' + esc(totalTxt) + '</td></tr></table>';
 
-  // for a digital copy: a signed one-click link that lets the seller send the book once the payment is in
-  let sendBtn = '', sendTxt = '';
+  // for a digital copy: a signed one-click link that lets the seller send the book once the payment is in.
+  // It travels in an e-mail of its own, so answering the customer from the order e-mail never quotes it to them.
+  let sendLink = '';
   if (hasPdf && hasBookKey(env)) {
     const base = env.SITE_ORIGIN ? env.SITE_ORIGIN.split(',')[0].trim() : new URL(request.url).origin;
     const ids = [...new Set(items.filter(i => i.fmt === 'pdf').map(i => i.id))];
-    const link = base + '/api/send-book?t=' + encodeURIComponent(await seal(env, { e: f.email, n: f.name, b: ids, t: Date.now() }));
-    sendTxt = '\n\nאחרי שהתשלום התקבל, לשליחת הספר ללקוח: ' + link;
-    sendBtn = '<p dir="rtl" style="margin:24px 0 0"><a href="' + esc(link) + '" style="display:inline-block;background:#0d2b52;color:#fff;' +
-      'text-decoration:none;font-weight:bold;padding:14px 26px;border-radius:26px">התשלום התקבל? שלחי את הספר ללקוח</a></p>';
+    sendLink = base + '/api/send-book?t=' + encodeURIComponent(await seal(env, { e: f.email, n: f.name, b: ids, t: Date.now() }));
   }
 
   const send = body => fetch('https://api.resend.com/emails', {
@@ -117,12 +116,26 @@ export async function onRequestPost({ request, env }) {
     from: env.ORDER_FROM, to: [env.ORDER_TO], reply_to: f.email || undefined,
     subject: 'Заказ книг: ' + f.name + ', ' + total + ' ₪',
     text: 'Новый заказ с сайта:\n' + rows.map(r => '• ' + r.text).join('\n') + '\nИтого: ' + totalTxt +
-      '\n\nИмя: ' + f.name + '\nТелефон: ' + f.phone + (addr ? '\nАдрес: ' + addr : '') + (f.email ? '\nE-mail: ' + f.email : '') + sendTxt,
+      '\n\nИмя: ' + f.name + '\nТелефон: ' + f.phone + (addr ? (pickup ? '\nПолучение: ' : '\nАдрес: ') + addr : '') + (f.email ? '\nE-mail: ' + f.email : ''),
     html: wrap('<h2 style="margin:0 0 12px">Новый заказ с сайта</h2>' + orderTable +
       '<p style="margin:16px 0 0"><b>Имя:</b> ' + esc(f.name) + '<br><b>Телефон:</b> <a href="tel:' + esc(f.phone.replace(/[^0-9+]/g, '')) + '">' + esc(f.phone) + '</a>' +
-      (addr ? '<br><b>Адрес:</b> ' + esc(addr) : '') + (f.email ? '<br><b>E-mail:</b> ' + esc(f.email) : '') + '</p>' + sendBtn)
+      (addr ? (pickup ? '<br><b>Получение:</b> ' : '<br><b>Адрес:</b> ') + esc(addr) : '') + (f.email ? '<br><b>E-mail:</b> ' + esc(f.email) : '') + '</p>')
   });
   if (!toSeller.ok) return json({ ok: false, error: 'send failed' }, 502);
+
+  // 1b. the send-book button, to the seller only, with no customer address to reply to
+  if (sendLink) {
+    try {
+      await send({
+        from: env.ORDER_FROM, to: [env.ORDER_TO],
+        subject: 'שליחת ספר דיגיטלי: ' + f.name + ' (לא להעביר ללקוח)',
+        text: 'כשהתשלום של ' + f.name + ' יתקבל, לשליחת הספר: ' + sendLink + '\n\nאת המייל הזה לא מעבירים ולא עונים עליו ללקוח.',
+        html: wrap('<div dir="rtl"><p style="margin:0 0 12px">הזמנה של <b>' + esc(f.name) + '</b> כוללת ספר דיגיטלי. כשהתשלום יתקבל, לחצי:</p>' +
+          '<p style="margin:0 0 16px"><a href="' + esc(sendLink) + '" style="display:inline-block;background:#0d2b52;color:#fff;text-decoration:none;font-weight:bold;padding:14px 26px;border-radius:26px">התשלום התקבל? שלחי את הספר ללקוח</a></p>' +
+          '<p style="color:#667;font-size:13px;margin:0">את המייל הזה לא מעבירים ולא עונים עליו ללקוח: מי שמחזיק את הקישור יכול לשלוח את הספר.</p></div>')
+      });
+    } catch (e) {}
+  }
 
   // 2. for a digital copy only: a confirmation to the customer, with the seller's details and the cancellation terms.
   //    The order is already in, so a failure here does not fail the request.

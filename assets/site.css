@@ -2307,3 +2307,11 @@ html body .loupe-r .loupe-glass p{font-size:clamp(12px,1.05vw,15px)!important;li
 @media (max-width:900px){html body .loupe-r .loupe-glass p{font-size:11.5px!important;width:74%}}
 html body .c2-panel .c2-meta p{font-size:var(--fs-note)!important;line-height:1.6!important;letter-spacing:.1em}
 @media (max-width:700px){html body .c2-panel .c2-meta{gap:22px;padding:18px 20px 4px}}
+
+/* ================= checkout: post or pickup for printed books ================= */
+#checkout .co-deliv{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 10px}
+#checkout .co-deliv legend{padding:0;margin-bottom:6px;font-size:var(--fs-body);opacity:.75;width:100%}
+#checkout .co-deliv label{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid rgba(13,43,82,.25);border-radius:22px;cursor:pointer;background:#fff}
+#checkout .co-deliv label:has(input:checked){border-color:var(--dark);box-shadow:inset 0 0 0 1px var(--dark)}
+#checkout .co-deliv input{width:18px;height:18px;margin:0;accent-color:var(--dark)}
+#checkout .co-deliv[hidden]{display:none}

@@ -370,9 +370,11 @@
     $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
     $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы, или заберите книгу сами в Беэр-Якове. ' : '') +
       (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты. После отправки файла отменить покупку цифровой копии нельзя, до отправки можно бесплатно.' : '');
-    // the address is asked only for printed books, the e-mail only for a digital copy
+    // the address is asked only for printed books sent by post, the e-mail only for a digital copy
+    var pickup = !!document.querySelector('#checkout [name=delivery][value=pickup]:checked');
     $$('#checkout [data-need]').forEach(function (l) {
-      var on = l.dataset.need === 'email' ? hasPdf : hasPrint; l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
+      var on = l.dataset.need === 'email' ? hasPdf : l.dataset.need === 'post' ? hasPrint && !pickup : hasPrint;
+      l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
     });
     coCheck();
   }
@@ -412,28 +414,48 @@
     var c = cart[+q.dataset.k]; c.q += +q.dataset.q; if (c.q < 1) cart.splice(+q.dataset.k, 1); save(); renderCart();
   });
   var co = $('#checkout');
+  // printed books: by post (address needed) or picked up in Beer Yaakov (no address)
+  if (co && !$('[name=delivery]', co)) {
+    var dv = document.createElement('fieldset'); dv.className = 'co-deliv'; dv.dataset.need = 'print';
+    dv.innerHTML = '<legend>Как получить печатную книгу</legend>' +
+      '<label><input type="radio" name="delivery" value="post" checked> Почтой</label>' +
+      '<label><input type="radio" name="delivery" value="pickup"> Самовывоз в Беэр-Якове</label>';
+    var addrBox = $('.co-addr', co); addrBox.dataset.need = 'post'; co.insertBefore(dv, addrBox);
+    dv.addEventListener('change', renderCart);
+  }
   // the button stays dimmed until every required field is filled in
   var coBtn = co && $('button[type=submit]', co), coErr = $('#cart-err');
-  function coCheck() { if (coBtn) coBtn.classList.toggle('off', !co.checkValidity()); }
-  if (co) { co.addEventListener('input', coCheck); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
+  function coCheck() {
+    var ph = co && $('[name=phone]', co);
+    if (ph) ph.setCustomValidity((ph.value.match(/\d/g) || []).length >= 9 ? '' : 'phone');
+    if (coBtn) coBtn.classList.toggle('off', !co.checkValidity());
+  }
+  if (co) { co.addEventListener('input', function (e) { if (e.target.removeAttribute) e.target.removeAttribute('aria-invalid'); coCheck(); }); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
   // Cloudflare Turnstile (bot check) runs only once its site key is set in SHOP
   if (co && SHOP.TURNSTILE_SITEKEY) {
     var ts = document.createElement('div'); ts.className = 'cf-turnstile'; ts.dataset.sitekey = SHOP.TURNSTILE_SITEKEY; ts.dataset.language = 'ru'; ts.dataset.theme = 'light';
     coBtn.parentNode.insertBefore(ts, coBtn);
     var tsj = document.createElement('script'); tsj.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'; tsj.async = true; tsj.defer = true; document.head.appendChild(tsj);
   }
-  var FIELD_RU = { name: 'имя и фамилия', phone: 'телефон', email: 'e-mail', street: 'улица', house: 'дом', apt: 'квартира', city: 'город', zip: 'индекс', items: 'корзина', turnstile: 'проверка «я не робот»' };
+  var FIELD_RU = { name: 'имя и фамилия', phone: 'телефон (не меньше 9 цифр)', delivery: 'способ получения', email: 'e-mail', street: 'улица', house: 'дом', apt: 'квартира', city: 'город', zip: 'индекс', items: 'корзина', turnstile: 'проверка «я не робот»' };
   if (co) co.addEventListener('submit', function (e) {
     e.preventDefault();
     if (coBtn.classList.contains('busy')) return; // one order per click, even with a double Enter
     coErr.hidden = true; $$('[aria-invalid]', co).forEach(function (i) { i.removeAttribute('aria-invalid'); });
-    if (!co.checkValidity()) { co.reportValidity(); return; }
-    var d = new FormData(co), total = 0, hasPrint = false;
+    // a phone needs at least 9 digits, not just 9 signs
+    var ph = $('[name=phone]', co); ph.setCustomValidity((ph.value.match(/\d/g) || []).length >= 9 ? '' : 'phone');
+    // say what is missing in Russian, next to the button, and mark those fields (no browser popup in another language)
+    var bad = $$('input', co).filter(function (i) { return i.name && i.name !== 'website' && !i.closest('[hidden]') && !i.checkValidity(); });
+    if (bad.length) {
+      var names = []; bad.forEach(function (i) { i.setAttribute('aria-invalid', 'true'); var n = FIELD_RU[i.name] || i.name; if (names.indexOf(n) < 0) names.push(n); });
+      coErr.textContent = 'Проверьте, пожалуйста: ' + names.join(', ') + '.'; coErr.hidden = false; bad[0].focus(); return;
+    }
+    var d = new FormData(co), total = 0, hasPrint = false, pickup = d.get('delivery') === 'pickup';
     var lines = cart.map(function (c) {
       var b = byId[c.id], p = priceOf(c) * c.q; total += p; if (c.fmt !== 'pdf') hasPrint = true;
       return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' = ' + p + ' ₪';
     });
-    var addr = hasPrint ? d.get('street') + ' ' + d.get('house') + ', кв. ' + d.get('apt') + ', ' + d.get('city') + ', ' + d.get('zip') : '';
+    var addr = hasPrint && pickup ? 'самовывоз в Беэр-Якове' : hasPrint ? d.get('street') + ' ' + d.get('house') + ', кв. ' + d.get('apt') + ', ' + d.get('city') + ', ' + d.get('zip') : '';
     var msg = 'Новый заказ с сайта:\n' + lines.join('\n') + '\nИтого: ' + total + ' ₪' + (hasPrint ? ' + доставка' : '') +
       '\n\nИмя: ' + d.get('name') + '\nТелефон: ' + d.get('phone') +
       (addr ? '\nАдрес: ' + addr : '') + (d.get('email') ? '\nE-mail: ' + d.get('email') : '');
@@ -468,7 +490,7 @@
     // Only book ids travel; the server takes titles and prices from its own catalog.
     coBtn.classList.add('busy');
     var order = { items: cart.map(function (c) { return { id: c.id, fmt: c.fmt, q: c.q }; }), turnstile: d.get('cf-turnstile-response') || '' };
-    ['name', 'phone', 'email', 'street', 'house', 'apt', 'city', 'zip', 'website'].forEach(function (k) { order[k] = d.get(k) || ''; });
+    ['name', 'phone', 'email', 'street', 'house', 'apt', 'city', 'zip', 'website', 'delivery'].forEach(function (k) { order[k] = d.get(k) || ''; });
     fetch('api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) })
       .then(function (r) {
         if (r.ok) return done();
