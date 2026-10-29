@@ -114,6 +114,12 @@
           : 'Впервые опубликовано: ' + esc(a.o) + ', ' + esc(a.d) + '. <a href="' + a.src + '" target="_blank" rel="noopener">Оригинал публикации ↗</a>') : esc(a.note || '')) + '</p>' +
         (bk ? '<a class="tx-book" href="' + bookHref(bk.id) + '">' + (bk.cover ? '<img src="assets/covers/' + bk.cover + '.webp" alt="">' : '') +
           '<span><small>Колонка вошла в книгу</small><b>' + esc(bk.title) + '</b><em>' + esc(bk.or || '') + '</em><i>О книге →</i></span></a>' : '') +
+        // Facebook posts are not in a book, so they point readers to the series instead
+        (!bk && a.o === 'Facebook' ? '<aside class="tx-more" aria-labelledby="tx-m"><h2 id="tx-m">Больше историй о словах иврита</h2>' +
+          '<p>Юрий Моор-Мурадов собрал их в книгах серии «Занимательный иврит». В каждую можно заглянуть до покупки.</p><div class="tx-more-row">' +
+          ['z1', 'z4', 'z8'].map(function (id) { var m = byId[id];
+            return '<a href="' + bookHref(id) + '"><img src="assets/covers/' + m.cover + '.webp" alt="" width="480" height="678" loading="lazy"><b>' + esc(m.title) + '</b><small>Часть ' + m.vol + '</small></a>'; }).join('') +
+          '</div><a class="tx-more-all" href="index#books">Все книги серии →</a></aside>' : '') +
       '</article>';
   }
 
