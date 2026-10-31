@@ -2358,3 +2358,16 @@ html.a11y-text .btn{white-space:normal!important;max-width:100%}
 /* the panel's Close and Reset reach a 44px target on a phone; the button steps aside while a dialog or the cart is open */
 @media (max-width:700px){html .a11y-root .a11y-close,html .a11y-root .a11y-reset{display:inline-flex;align-items:center;min-height:44px;padding:12px 10px;margin:-12px -10px}}
 html.lock .a11y-root .a11y-btn{visibility:hidden}
+/* cookie consent bar: calm, bottom of the screen, both choices equally visible */
+.ck{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:2147483100;width:min(640px,calc(100% - 32px));display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:16px;background:var(--dark);color:#fff;box-shadow:0 18px 40px -14px rgba(13,43,82,.55);font:400 15px/1.45 var(--fam)}
+.ck p{margin:0;flex:1}
+.ck a{color:var(--sky);font-weight:600}
+.ck-btns{display:flex;gap:10px;flex-shrink:0}
+.ck-b{min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid #fff;background:transparent;color:#fff;font:600 15px/1 var(--fam);cursor:pointer}
+.ck-b[data-ck=yes]{background:#fff;color:var(--dark)}
+.ck-b:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+@media (max-width:700px){.ck{flex-direction:column;align-items:stretch;gap:12px;bottom:calc(68px + env(safe-area-inset-bottom));padding:16px}.ck-btns>*{flex:1}}
+.legal-btn{display:inline-block;margin-top:4px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--dark);background:#fff;color:var(--dark);font:600 15px/1 var(--fam);cursor:pointer}
+.legal-btn:hover{background:var(--dark);color:#fff}
+/* long Russian words in legal titles (КОНФИДЕНЦИАЛЬНОСТИ) fit a narrow phone instead of breaking mid-word */
+@media (max-width:440px){html body .legal h1:not(.hero-h1){font-size:clamp(26px,8.2vw,40px)!important}}

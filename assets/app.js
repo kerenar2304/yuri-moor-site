@@ -9,6 +9,45 @@
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var SERIES = { hebrew: 'Занимательный иврит', detective: 'Детективы', other: 'Израиль и разговорник' };
 
+  /* ---------- cookie consent and the Meta pixel ----------
+     Nothing from Meta loads until the visitor presses «Принять»; «Отказаться» is remembered too.
+     track() is a no-op without consent, so the shop code can call it freely. */
+  var PIXEL = '29419263917660061', CKEY = 'yurimoor:consent';
+  var getConsent = function () { try { return localStorage.getItem(CKEY); } catch (e) { return null; } };
+  var setConsent = function (v) { try { if (v) localStorage.setItem(CKEY, v); else localStorage.removeItem(CKEY); } catch (e) {} };
+  function loadPixel() {
+    if (window.fbq) return;
+    var f = window.fbq = function () { f.callMethod ? f.callMethod.apply(f, arguments) : f.queue.push(arguments); };
+    if (!window._fbq) window._fbq = f; f.push = f; f.loaded = true; f.version = '2.0'; f.queue = [];
+    var s = document.createElement('script'); s.async = true; s.src = 'https://connect.facebook.net/en_US/fbevents.js'; document.head.appendChild(s);
+    fbq('init', PIXEL); fbq('track', 'PageView');
+  }
+  function track(ev, p) { if (window.fbq) fbq('track', ev, p || {}); }
+  function consentBar() {
+    var bar = document.createElement('div'); bar.className = 'ck'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Файлы cookie');
+    bar.innerHTML = '<p>Можно мы будем использовать cookie Meta (Facebook)? Это нужно, чтобы показывать рекламу книг тем, кто уже был на сайте. <a href="privacy#cookies">Подробнее</a></p>' +
+      '<div class="ck-btns"><button type="button" class="ck-b" data-ck="no">Отказаться</button><button type="button" class="ck-b" data-ck="yes">Принять</button></div>';
+    document.body.appendChild(bar); document.documentElement.classList.add('ck-open');
+    bar.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ck]'); if (!b) return;
+      setConsent(b.dataset.ck); bar.remove(); document.documentElement.classList.remove('ck-open');
+      if (b.dataset.ck === 'yes') { loadPixel(); trackPage(); }
+    });
+  }
+  // the book page counts as viewing that book
+  function trackPage() {
+    var br = $('#book-root'), id = br && (br.dataset.id || new URLSearchParams(location.search).get('id')), b = id && byId[id];
+    if (b) track('ViewContent', { content_ids: [b.id], content_type: 'product', content_name: b.title, value: SHOP.PRICE, currency: 'ILS' });
+  }
+  if (getConsent() === 'yes') { loadPixel(); trackPage(); } else if (getConsent() !== 'no') consentBar();
+  // «Изменить выбор про cookie» on the privacy page: forget the choice, drop Meta's cookie and ask again
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('[data-consent-reset]')) return;
+    setConsent(null);
+    ['', '; domain=.' + location.hostname.replace(/^www\./, '')].forEach(function (d) { document.cookie = '_fbp=; Max-Age=0; path=/' + d; });
+    location.reload();
+  });
+
   /* ---------- covers ---------- */
   function coverHTML(b, lazy) {
     if (b.cover) return '<img src="assets/covers/thumb/' + b.cover + '.webp" srcset="assets/covers/thumb/' + b.cover + '.webp 480w, assets/covers/' + b.cover + '.webp 830w" sizes="(max-width:700px) 45vw, 320px" width="480" height="679" alt="Обложка: ' + esc(b.ru || b.title) + '"' + (lazy ? ' loading="lazy"' : '') + ' decoding="async">';
@@ -383,6 +422,7 @@
     if (c) c.q++; else cart.push({ id: id, fmt: fmt, q: 1 });
     var th = $('#cart-thanks'); if (th) th.hidden = true;
     save(); renderCart(); toast('Добавлено в корзину ✓');
+    track('AddToCart', { content_ids: [id], content_type: 'product', value: fmt === 'pdf' ? SHOP.PDF_PRICE : SHOP.PRICE, currency: 'ILS' });
   }
   // price buttons on the catalog cards
   document.addEventListener('click', function (e) {
@@ -431,6 +471,8 @@
     if (coBtn) coBtn.classList.toggle('off', !co.checkValidity());
   }
   // a fixed field loses its mark; once no field is marked, the "please check" note goes too
+  // the first field touched in the order form counts as starting the checkout
+  if (co) co.addEventListener('focusin', function () { track('InitiateCheckout', { num_items: cart.reduce(function (n, c) { return n + c.q; }, 0), currency: 'ILS' }); }, { once: true });
   if (co) { co.addEventListener('input', function (e) { if (e.target.removeAttribute) e.target.removeAttribute('aria-invalid'); if (coErr && !co.querySelector('[aria-invalid]') && /^Проверьте/.test(coErr.textContent)) coErr.hidden = true; coCheck(); }); new MutationObserver(coCheck).observe(co, { attributes: true, subtree: true, attributeFilter: ['hidden'] }); coCheck(); }
   // Cloudflare Turnstile (bot check) runs only once its site key is set in SHOP
   if (co && SHOP.TURNSTILE_SITEKEY) {
@@ -475,10 +517,13 @@
     // Only book ids travel; the server takes titles and prices from its own catalog.
     coBtn.classList.add('busy');
     var order = { items: cart.map(function (c) { return { id: c.id, fmt: c.fmt, q: c.q }; }), turnstile: d.get('cf-turnstile-response') || '' };
+    // book prices only (postage is agreed later); sent to Meta just as ids and a sum, never the buyer's details
+    var bought = { content_ids: order.items.map(function (i) { return i.id; }), content_type: 'product', currency: 'ILS',
+      value: order.items.reduce(function (s, i) { return s + i.q * (i.fmt === 'pdf' ? SHOP.PDF_PRICE : SHOP.PRICE); }, 0) };
     ['name', 'phone', 'email', 'street', 'house', 'apt', 'city', 'zip', 'website', 'delivery'].forEach(function (k) { order[k] = d.get(k) || ''; });
     fetch('api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order) })
       .then(function (r) {
-        if (r.ok) return done();
+        if (r.ok) { track('Purchase', bought); return done(); }
         if (r.status === 422) return r.json().then(function (j) { fail(j.fields); }, function () { fail(); });
         fail(); // too many tries (429), a failed bot check (403), or mail down (502/503)
       }, function () { fail(); });
