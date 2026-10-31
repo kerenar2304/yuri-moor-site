@@ -239,10 +239,13 @@
       if (a.isNew) return -1; if (b.isNew) return 1;
       return (o[a.series] - o[b.series]) || ((a.vol || 0) - (b.vol || 0));
     });
-    grid.innerHTML = list.map(function (b) {
+    grid.innerHTML = list.map(function (b) { return cardHTML(b, true); }).join('');
+  }
+  // one catalog card; the book pages reuse it for «Ещё книги» (without the scroll reveal, which is set up before they render)
+  function cardHTML(b, reveal) {
       // cover and title open the book; the two price buttons put it straight into the cart
       var meta = b.vol ? 'Часть ' + b.vol : (b.isNew ? 'Новинка' : b.series === 'detective' ? 'Детектив' : b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : 'Книга');
-      return '<article class="card r' + (b.wide ? ' wide' : '') + (fav.indexOf(b.id) > -1 ? ' faved' : '') + '" data-id="' + b.id + '" data-series="' + b.series + '" style="--tone:' + b.tone + '">' +
+      return '<article class="card r' + (reveal ? '' : ' in') + (b.wide ? ' wide' : '') + (fav.indexOf(b.id) > -1 ? ' faved' : '') + '" data-id="' + b.id + '" data-series="' + b.series + '" style="--tone:' + b.tone + ';--r:' + (b.wide ? '1.5584' : '.7069') + '">' +
         '<div class="card-stage">' +
         '<a class="card-cv" href="' + bookHref(b.id) + '" aria-label="' + esc((b.ru || b.title) + ', подробнее') + '">' +
           '<span class="cvi">' + coverHTML(b, true) +
@@ -256,8 +259,8 @@
         '<p class="card-tags"><span class="tag">' + esc(b.rtl ? 'На иврите' : b.wide ? 'Разговорник' : (SERIES_TAG[b.series] || 'Книга')) + '</span>' + (b.vol || b.isNew ? '<span class="tag soft">' + esc(meta) + '</span>' : '') + '</p>' +
         '<div class="card-foot"><span class="card-pr"><b>' + SHOP.PRICE + ' ₪</b>' + (b.pdf ? '<small>Цифровая копия ' + SHOP.PDF_PRICE + ' ₪</small>' : '') + '</span><button type="button" class="card-buy-btn" data-qb="' + b.id + '" aria-label="Купить: ' + esc(b.title) + '">' + ICON_CART + '</button></div>' +
         '</article>';
-    }).join('');
   }
+  window.YMcard = function (b) { return cardHTML(b, false); };
   function filter(f) {
     $$('.tabs [role=tab]').forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.f === f)); });
     $$('.card', grid).forEach(function (c) { c.hidden = !(f === 'all' || c.dataset.series === f || (f === 'fav' && fav.indexOf(c.dataset.id) > -1)); });
@@ -304,7 +307,7 @@
     (sheet ? document.body : $('.card-stage', card)).appendChild(el); qb = el; qbCard = card; card.classList.add('qb-on'); qbDim.classList.add('on');
     requestAnimationFrame(function () { el.classList.add('on'); $('.qb-add', el).focus({ preventScroll: true }); });
   }
-  if (grid) document.addEventListener('click', function (e) {
+  document.addEventListener('click', function (e) {
     var q = e.target.closest('[data-qb]'), f = e.target.closest('[data-fav]'), fl = e.target.closest('[data-flip]'), card = e.target.closest('.card');
     if (q) { qbOpen(card, byId[q.dataset.qb]); return; }
     if (e.target.closest('[data-qb-close]')) { qbClose(); return; }
@@ -319,7 +322,7 @@
     }
     if (fl) { var flipped = card.classList.toggle('flip'); fl.setAttribute('aria-pressed', String(flipped)); return; }
     var rd = e.target.closest('[data-read]');
-    if (rd) { cur = byId[rd.dataset.read]; qbClose(); rp = 0; drawSpread(); reader.showModal(); }
+    if (rd && reader) { cur = byId[rd.dataset.read]; qbClose(); rp = 0; drawSpread(); reader.showModal(); }
   });
   grid && grid.addEventListener('mouseleave', function (e) { $$('.card.flip', grid).forEach(function (c) { c.classList.remove('flip'); $('[data-flip]', c).setAttribute('aria-pressed', 'false'); }); });
   qbDim.addEventListener('click', qbClose);

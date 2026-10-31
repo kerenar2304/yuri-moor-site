@@ -48,10 +48,13 @@
           '<p class="pg-pay">Оплата через Bit или банковским переводом. Заказ через корзину на сайте, вопросы в WhatsApp. Печатную книгу можно забрать самовывозом в Беэр-Якове.</p>' +
         '</div>' +
       '</article>' +
-      '<section class="pg-more" aria-labelledby="more-h"><h2 id="more-h">Ещё книги</h2><div class="pg-more-grid">' +
-        same.map(function (x) {
+      // the same cards as the catalog on the home page: cover, title, price, quick buy (book pages have no catalog, so the
+      // container takes its id and with it all of the catalog's card styles)
+      '<section class="pg-more" aria-labelledby="more-h"><h2 id="more-h">Ещё книги</h2>' + (window.YMcard
+        ? '<div class="grid" id="grid">' + same.slice(0, 5).map(YMcard).join('') + '</div>'
+        : '<div class="pg-more-grid">' + same.map(function (x) {
           return '<a class="pg-mini" href="' + bookHref(x.id) + '">' + cover(x, 'pg-mini-cv') + '<b' + (x.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(x.title) + '</b><span>' + esc(label(x)) + '</span></a>';
-        }).join('') + '</div></section>';
+        }).join('') + '</div>') + '</section>';
     // front / back of the cover
     root.querySelectorAll('.pg-flip [data-side]').forEach(function (btn) {
       btn.addEventListener('click', function () {

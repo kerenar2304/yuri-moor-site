@@ -2371,3 +2371,8 @@ html.lock .a11y-root .a11y-btn{visibility:hidden}
 .legal-btn:hover{background:var(--dark);color:#fff}
 /* long Russian words in legal titles (КОНФИДЕНЦИАЛЬНОСТИ) fit a narrow phone instead of breaking mid-word */
 @media (max-width:440px){html body .legal h1:not(.hero-h1){font-size:clamp(26px,8.2vw,40px)!important}}
+/* «Ещё книги» on a book page: catalog cards in one tidy row (5 / 3 / 2 across, no half-empty row) */
+html .pg-more #grid.grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+@media (max-width:820px){html .pg-more #grid.grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media (min-width:701px) and (max-width:820px){html .pg-more #grid .card:nth-child(n+4){display:none}}
+@media (max-width:700px){html .pg-more #grid.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}html .pg-more #grid .card:nth-child(n+5){display:none}}
