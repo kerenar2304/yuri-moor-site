@@ -432,18 +432,19 @@
     var btn = e.target.closest('[data-add]'); if (!btn) return;
     var p = btn.dataset.add.split('|'); add(p[0], p[1]);
     btn.classList.add('done'); setTimeout(function () { btn.classList.remove('done'); }, 1400);
-    // in the quick-buy sheet, show the next step right away instead of leaving the buyer to find the cart
-    var sh = btn.closest('.qb');
-    if (sh && !$('.qb-go', sh)) {
-      var go = document.createElement('button'); go.type = 'button'; go.className = 'qb-go'; go.setAttribute('data-go-cart', '');
-      go.innerHTML = 'Оформить заказ <span aria-hidden="true">→</span>';
-      $('.qb-fmts', sh).insertAdjacentElement('afterend', go); go.focus({ preventScroll: true });
-    }
+    // show the next step right away (quick-buy sheet or book page) instead of leaving the buyer to find the cart
+    var fm = btn.closest('.qb-fmts, .pg-fmts'); if (fm) goCart(fm);
   });
-  document.addEventListener('click', function (e) { if (e.target.closest('[data-go-cart]')) { qbClose(); openCart(); } });
+  function goCart(after) {
+    var box = after.parentNode; if ($('.qb-go', box)) return;
+    var go = document.createElement('button'); go.type = 'button'; go.className = 'qb-go'; go.setAttribute('data-go-cart', '');
+    go.innerHTML = 'Оформить заказ <span aria-hidden="true">→</span>';
+    after.insertAdjacentElement('afterend', go); go.focus({ preventScroll: true });
+  }
+  document.addEventListener('click', function (e) { if (e.target.closest('[data-go-cart]')) { qbClose(); if (dlg && dlg.open) dlg.close(); openCart(); } });
   var addBtn = $('#bd-add');
   if (addBtn) addBtn.addEventListener('click', function () {
-    var fmt = $('input[name=fmt]:checked', dlg).value; add(cur.id, fmt);
+    var fmt = $('input[name=fmt]:checked', dlg).value; add(cur.id, fmt); goCart(addBtn);
     addBtn.textContent = 'В корзине ✓'; setTimeout(function () { addBtn.textContent = 'В корзину'; }, 1500);
   });
   var cartEl = $('#cart'), scrim = $('#scrim'), lastFocus = null;
