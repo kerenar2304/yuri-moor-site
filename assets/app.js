@@ -410,13 +410,13 @@
     var sum = 0, unknown = false, hasPrint = false, hasPdf = false;
     cart.forEach(function (c) { var p = priceOf(c); if (p) sum += p * c.q; else unknown = true; if (c.fmt === 'pdf') hasPdf = true; else hasPrint = true; });
     $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
-    $('#cart-note').textContent = (hasPrint ? 'К печатным книгам добавляются почтовые расходы, или заберите книгу сами в Беэр-Якове. ' : '') +
+    $('#cart-note').textContent = 'Сейчас платить не нужно: мы свяжемся с вами, подтвердим заказ, и вы оплатите через Bit или банковским переводом. ' + (hasPrint ? 'К печатным книгам добавляются почтовые расходы, или заберите книгу сами в Беэр-Якове. ' : '') +
       (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты. После отправки файла отменить покупку цифровой копии нельзя, до отправки можно бесплатно.' : '');
     // the address is asked only for printed books sent by post, the e-mail only for a digital copy
     var pickup = !!document.querySelector('#checkout [name=delivery][value=pickup]:checked');
     $$('#checkout [data-need]').forEach(function (l) {
       var on = l.dataset.need === 'email' ? hasPdf : l.dataset.need === 'post' ? hasPrint && !pickup : hasPrint;
-      l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on; });
+      l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on && !i.hasAttribute('data-opt'); });
     });
     coCheck();
   }
@@ -432,7 +432,15 @@
     var btn = e.target.closest('[data-add]'); if (!btn) return;
     var p = btn.dataset.add.split('|'); add(p[0], p[1]);
     btn.classList.add('done'); setTimeout(function () { btn.classList.remove('done'); }, 1400);
+    // in the quick-buy sheet, show the next step right away instead of leaving the buyer to find the cart
+    var sh = btn.closest('.qb');
+    if (sh && !$('.qb-go', sh)) {
+      var go = document.createElement('button'); go.type = 'button'; go.className = 'qb-go'; go.setAttribute('data-go-cart', '');
+      go.innerHTML = 'Оформить заказ <span aria-hidden="true">→</span>';
+      $('.qb-fmts', sh).insertAdjacentElement('afterend', go); go.focus({ preventScroll: true });
+    }
   });
+  document.addEventListener('click', function (e) { if (e.target.closest('[data-go-cart]')) { qbClose(); openCart(); } });
   var addBtn = $('#bd-add');
   if (addBtn) addBtn.addEventListener('click', function () {
     var fmt = $('input[name=fmt]:checked', dlg).value; add(cur.id, fmt);
@@ -480,6 +488,7 @@
   // Cloudflare Turnstile (bot check) runs only once its site key is set in SHOP
   if (co && SHOP.TURNSTILE_SITEKEY) {
     var ts = document.createElement('div'); ts.className = 'cf-turnstile'; ts.dataset.sitekey = SHOP.TURNSTILE_SITEKEY; ts.dataset.language = 'ru'; ts.dataset.theme = 'light';
+    ts.dataset.appearance = 'interaction-only'; // shown only when Cloudflare really needs the buyer to click
     coBtn.parentNode.insertBefore(ts, coBtn);
     var tsj = document.createElement('script'); tsj.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'; tsj.async = true; tsj.defer = true; document.head.appendChild(tsj);
   }

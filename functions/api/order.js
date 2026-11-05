@@ -79,7 +79,7 @@ export async function onRequestPost({ request, env }) {
   if (!/^[0-9+()\- ]{9,}$/.test(f.phone) || (f.phone.match(/[0-9]/g) || []).length < 9) missing.push('phone');
   if (hasPrint && !pickup) {
     ['street', 'house', 'apt', 'city'].forEach(k => { if (!f[k]) missing.push(k); });
-    if (!/^([0-9]{5}|[0-9]{7})$/.test(f.zip)) missing.push('zip');
+    if (f.zip && !/^([0-9]{5}|[0-9]{7})$/.test(f.zip)) missing.push('zip');
   }
   if (hasPdf && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) missing.push('email');
   if (missing.length) return json({ ok: false, error: 'missing', fields: missing }, 422);
@@ -91,7 +91,7 @@ export async function onRequestPost({ request, env }) {
     return { title, fmt: i.fmt, q: i.q, sum, text: title + ' (' + (i.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + i.q + ' = ' + sum + ' ₪' };
   });
   const totalTxt = total + ' ₪' + (hasPrint && !pickup ? ' + доставка' : '');
-  const addr = pickup ? 'самовывоз в Беэр-Якове' : hasPrint ? f.street + ' ' + f.house + ', кв. ' + f.apt + ', ' + f.city + ', ' + f.zip : '';
+  const addr = pickup ? 'самовывоз в Беэр-Якове' : hasPrint ? f.street + ' ' + f.house + ', кв. ' + f.apt + ', ' + f.city + (f.zip ? ', ' + f.zip : '') : '';
 
   const table = rows.map(r => '<tr><td style="padding:6px 0">' + esc(r.title) + ' <span style="color:#667">(' + (r.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + r.q +
     '</span></td><td style="padding:6px 0;text-align:right;white-space:nowrap">' + r.sum + ' ₪</td></tr>').join('');

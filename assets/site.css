@@ -1055,6 +1055,10 @@ html[data-font=bebas] .qb h4[dir=rtl]{font-family:"Karantina",var(--fam);font-we
 .qb-f.main .qb-add:hover{background:#163d6e}
 .qb-add.done{background:var(--sky);border-color:var(--sky);color:var(--dark)}
 .qb-add:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.qb-go{all:unset;box-sizing:border-box;display:flex;justify-content:center;align-items:center;gap:8px;width:100%;margin-top:10px;padding:13px 18px;border-radius:999px;cursor:pointer;background:var(--dark);color:#fff;font:700 15px/1.2 var(--fam)}
+.qb-go:hover{background:#163d6e}
+.qb-go:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.co-zip small{font-weight:400;color:var(--mute)}
 .qb-more{margin-top:14px}
 @media (hover:none){.card-acts{opacity:1;transform:none;pointer-events:auto}.card-acts em{display:none}}
 @media (max-width:700px){.card-acts{gap:6px}.card-acts button{width:34px;height:34px}.card-acts svg{width:16px;height:16px}
