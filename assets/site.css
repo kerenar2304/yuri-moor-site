@@ -2162,7 +2162,7 @@ html[data-font=bebas] .drawer nav a,.drawer nav a{font-size:min(var(--t2), 4.8sv
 #checkout input:focus{border-color:var(--dark);outline:2px solid var(--accent);outline-offset:2px}
 #checkout input[aria-invalid=true]{border-color:#b3261e;box-shadow:0 0 0 1px #b3261e}
 #checkout .cart-priv{margin:0;font-size:13px;line-height:1.45;color:var(--mute)}
-#checkout .cf-turnstile{min-height:65px}
+#checkout .cf-turnstile:empty,#checkout .cf-turnstile:not(:has(iframe)){min-height:0}
 /* book dialog on short screens: the last link stays inside, the panel scrolls if it has to */
 @media (max-height:720px){.bookdlg .bd-info{overflow-y:auto;justify-content:flex-start;padding-bottom:28px}}
 /* bigger touch targets on phones: filter tabs, heart and quick-buy, quantity, back link */
