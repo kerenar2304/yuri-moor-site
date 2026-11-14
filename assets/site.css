@@ -2382,3 +2382,8 @@ html .pg-more #grid.grid{grid-template-columns:repeat(5,minmax(0,1fr))!important
 @media (max-width:820px){html .pg-more #grid.grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media (min-width:701px) and (max-width:820px){html .pg-more #grid .card:nth-child(n+4){display:none}}
 @media (max-width:700px){html .pg-more #grid.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}html .pg-more #grid .card:nth-child(n+5){display:none}}
+/* thanks screen: pay through WhatsApp in one tap */
+.cart-thanks .th-pay{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 12px}
+.cart-thanks .th-pay .btn{flex:1 1 180px}
+.cart-thanks .th-pay svg{width:1.25em;height:1.25em;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round}
+.cart-thanks .th-or{font-size:var(--t5)!important;color:var(--mute)}

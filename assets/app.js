@@ -229,6 +229,7 @@
   var ICON_BOOK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zm0 0v13"/></svg>';
   var ICON_PDF = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2"/><path d="M10.5 18.5h3"/></svg>';
   var ICON_CART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.3 11h10.2l2-8H6.4"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="16.5" cy="19.5" r="1.3"/></svg>';
+  var ICON_WA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path d="M9.2 8.6c.2 2.7 2.2 4.9 5 5.6l1-1.1-1.6-1-1 .6c-.9-.4-1.6-1.1-2-2l.6-1-1-1.6z"/></svg>';
   var ICON_HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg>';
   var ICON_GLASSES = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 14c1.2-1 2.8-1 4 0M3 14 4.5 7.5M21 14l-1.5-6.5"/></svg>';
   var SERIES_TAG = { hebrew: 'Иврит', detective: 'Детективы', other: 'Израиль' };
@@ -525,9 +526,22 @@
       if (window.turnstile) try { turnstile.reset(); } catch (er) {}
     };
     var done = function () {
+      // the order is already in the seller's mail; the thanks screen offers one tap to WhatsApp with the order and the chosen payment
+      var ship = cart.some(function (c) { return c.fmt !== 'pdf'; }) && d.get('delivery') !== 'pickup' ? (SHOP.SHIPPING || 0) : 0, sum = ship;
+      var lines = cart.map(function (c) { var b = byId[c.id], s = priceOf(c) * c.q; sum += s;
+        return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' - ' + s + ' ₪'; });
+      if (ship) lines.push('• Доставка почтой - ' + ship + ' ₪');
+      var waMsg = function (pay) {
+        return 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! Я оформил(а) заказ на сайте yurimoor.co.il:\n' + lines.join('\n') +
+          '\nИтого: ' + sum + ' ₪\nИмя: ' + (d.get('name') || '') + '\n\nХочу оплатить ' + pay + '.');
+      };
       coBtn.classList.remove('busy'); co.reset();
       cart = []; save(); renderCart();
       var th = $('#cart-thanks'); th.hidden = false; $('#cart-empty').hidden = true;
+      th.innerHTML = '<b>Спасибо, заказ принят!</b><p>Как вам удобнее оплатить? Нажмите, и откроется WhatsApp с готовым сообщением, его останется только отправить.</p>' +
+        '<div class="th-pay"><a class="btn solid sm" target="_blank" rel="noopener" href="' + esc(waMsg('через Bit')) + '">' + ICON_WA + 'Через Bit</a>' +
+        '<a class="btn ghost sm" target="_blank" rel="noopener" href="' + esc(waMsg('банковским переводом')) + '">' + ICON_WA + 'Банковским переводом</a></div>' +
+        '<p class="th-or">Или просто дождитесь: мы сами свяжемся с вами по телефону или в WhatsApp.</p>';
       th.tabIndex = -1; th.focus(); // the form is gone: move focus to the thanks so screen readers announce it
     };
     if (d.get('website')) return done(); // spam trap
