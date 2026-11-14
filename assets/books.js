@@ -2,6 +2,7 @@
 window.SHOP = {
   PRICE: 50,
   PDF_PRICE: 40,
+  SHIPPING: 25,                   // postage for printed books by post, per order (pickup in Beer Yaakov is free)
   PHONE: '972547419393',
   PHONE_TXT: '054-741-93-93',
   AUTHOR_PHONE: '972547923229',   // messages for Yuri himself (he answers when he can; orders go to PHONE)

@@ -296,7 +296,7 @@
       '<p class="qb-by">Юрий Моор-Мурадов</p>' +
       (b.pages ? '<button type="button" class="qb-link" data-read="' + b.id + '">Читать отрывок</button>' : '') +
       '<div class="qb-fmts' + (b.pdf ? '' : ' one') + '">' +
-        '<div class="qb-f main"><span>' + ICON_BOOK + 'Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка</small>' +
+        '<div class="qb-f main"><span>' + ICON_BOOK + 'Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка ' + SHOP.SHIPPING + ' ₪</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|print">' + ICON_CART + 'В корзину</button></div>' +
         (b.pdf ? '<div class="qb-f"><span>' + ICON_PDF + 'Цифровая копия</span><b>' + pdfPrice + '</b><small>на e-mail</small>' +
           '<button type="button" class="qb-add" data-add="' + b.id + '|pdf">' + ICON_CART + 'В корзину</button></div>' : '') +
@@ -409,11 +409,16 @@
     $('#cart-empty').hidden = !!cart.length; $('#cart-foot').hidden = !cart.length;
     var sum = 0, unknown = false, hasPrint = false, hasPdf = false;
     cart.forEach(function (c) { var p = priceOf(c); if (p) sum += p * c.q; else unknown = true; if (c.fmt === 'pdf') hasPdf = true; else hasPrint = true; });
-    $('#cart-sum').textContent = sum + ' ₪' + (unknown ? ' + цифровая копия' : '');
-    $('#cart-note').textContent = 'Сейчас платить не нужно: мы свяжемся с вами, подтвердим заказ, и вы оплатите через Bit или банковским переводом. ' + (hasPrint ? 'К печатным книгам добавляются почтовые расходы, или заберите книгу сами в Беэр-Якове. ' : '') +
-      (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты. После отправки файла отменить покупку цифровой копии нельзя, до отправки можно бесплатно.' : '');
     // the address is asked only for printed books sent by post, the e-mail only for a digital copy
     var pickup = !!document.querySelector('#checkout [name=delivery][value=pickup]:checked');
+    // printed books by post: one flat postage per order, shown as its own line above the total; pickup is free
+    var ship = hasPrint && !pickup ? (SHOP.SHIPPING || 0) : 0, shipEl = $('#cart-ship');
+    if (!shipEl) { shipEl = document.createElement('p'); shipEl.className = 'cart-ship'; shipEl.id = 'cart-ship'; $('.cart-sum').insertAdjacentElement('beforebegin', shipEl); }
+    shipEl.hidden = !hasPrint;
+    shipEl.innerHTML = '<span>' + (pickup ? 'Самовывоз в Беэр-Якове' : 'Доставка почтой') + '</span><b>' + (pickup ? 'бесплатно' : ship + ' ₪') + '</b>';
+    $('#cart-sum').textContent = (sum + ship) + ' ₪' + (unknown ? ' + цифровая копия' : '');
+    $('#cart-note').textContent = 'Сейчас платить не нужно: мы свяжемся с вами, подтвердим заказ, и вы оплатите через Bit или банковским переводом. ' +
+      (hasPdf ? 'Цифровая копия придёт на e-mail после оплаты. После отправки файла отменить покупку цифровой копии нельзя, до отправки можно бесплатно.' : '');
     $$('#checkout [data-need]').forEach(function (l) {
       var on = l.dataset.need === 'email' ? hasPdf : l.dataset.need === 'post' ? hasPrint && !pickup : hasPrint;
       l.hidden = !on; $$('input', l).forEach(function (i) { i.required = on && !i.hasAttribute('data-opt'); });
@@ -470,8 +475,8 @@
   if (co && !$('[name=delivery]', co)) {
     var dv = document.createElement('fieldset'); dv.className = 'co-deliv'; dv.dataset.need = 'print';
     dv.innerHTML = '<legend>Как получить печатную книгу</legend>' +
-      '<label><input type="radio" name="delivery" value="post" checked> Почтой</label>' +
-      '<label><input type="radio" name="delivery" value="pickup"> Самовывоз в Беэр-Якове</label>';
+      '<label><input type="radio" name="delivery" value="post" checked> Почтой, ' + SHOP.SHIPPING + ' ₪</label>' +
+      '<label><input type="radio" name="delivery" value="pickup"> Самовывоз в Беэр-Якове, бесплатно</label>';
     var addrBox = $('.co-addr', co); addrBox.dataset.need = 'post'; co.insertBefore(dv, addrBox);
     dv.addEventListener('change', renderCart);
   }
@@ -530,7 +535,7 @@
     // Only book ids travel; the server takes titles and prices from its own catalog.
     coBtn.classList.add('busy');
     var order = { items: cart.map(function (c) { return { id: c.id, fmt: c.fmt, q: c.q }; }), turnstile: d.get('cf-turnstile-response') || '' };
-    // book prices only (postage is agreed later); sent to Meta just as ids and a sum, never the buyer's details
+    // book prices only (without postage); sent to Meta just as ids and a sum, never the buyer's details
     var bought = { content_ids: order.items.map(function (i) { return i.id; }), content_type: 'product', currency: 'ILS',
       value: order.items.reduce(function (s, i) { return s + i.q * (i.fmt === 'pdf' ? SHOP.PDF_PRICE : SHOP.PRICE); }, 0) };
     ['name', 'phone', 'email', 'street', 'house', 'apt', 'city', 'zip', 'website', 'delivery'].forEach(function (k) { order[k] = d.get(k) || ''; });

@@ -11,6 +11,7 @@
 import { hasBookKey, seal } from '../_lib/books.js';
 
 const PRICE = { print: 50, pdf: 40 };
+const SHIPPING = 25;                                                // printed books by post, per order; pickup is free
 const PHONE_TXT = '054-741-93-93';
 const MAX_BODY = 16 * 1024;
 
@@ -90,11 +91,16 @@ export async function onRequestPost({ request, env }) {
     const sum = PRICE[i.fmt] * i.q, title = CATALOG[i.id]; total += sum;
     return { title, fmt: i.fmt, q: i.q, sum, text: title + ' (' + (i.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + i.q + ' = ' + sum + ' ₪' };
   });
-  const totalTxt = total + ' ₪' + (hasPrint && !pickup ? ' + доставка' : '');
+  // postage is its own line in the table and part of the total
+  if (hasPrint && !pickup) {
+    total += SHIPPING;
+    rows.push({ title: 'Доставка почтой', ship: true, sum: SHIPPING, text: 'Доставка почтой = ' + SHIPPING + ' ₪' });
+  }
+  const totalTxt = total + ' ₪';
   const addr = pickup ? 'самовывоз в Беэр-Якове' : hasPrint ? f.street + ' ' + f.house + ', кв. ' + f.apt + ', ' + f.city + (f.zip ? ', ' + f.zip : '') : '';
 
-  const table = rows.map(r => '<tr><td style="padding:6px 0">' + esc(r.title) + ' <span style="color:#667">(' + (r.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + r.q +
-    '</span></td><td style="padding:6px 0;text-align:right;white-space:nowrap">' + r.sum + ' ₪</td></tr>').join('');
+  const table = rows.map(r => '<tr><td style="padding:6px 0">' + esc(r.title) + (r.ship ? '' : ' <span style="color:#667">(' + (r.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + r.q + '</span>') +
+    '</td><td style="padding:6px 0;text-align:right;white-space:nowrap">' + r.sum + ' ₪</td></tr>').join('');
   const wrap = inner => '<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.55;color:#0d2b52;max-width:560px">' + inner + '</div>';
   const orderTable = '<table style="width:100%;border-collapse:collapse;border-top:1px solid #dde;border-bottom:1px solid #dde">' + table +
     '<tr><td style="padding:8px 0;font-weight:bold">Итого</td><td style="padding:8px 0;text-align:right;font-weight:bold;white-space:nowrap">' + esc(totalTxt) + '</td></tr></table>';

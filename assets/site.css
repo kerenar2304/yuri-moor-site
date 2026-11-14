@@ -442,6 +442,8 @@ dialog::backdrop{background:color-mix(in srgb,var(--dark) 80%,transparent);backd
 .qty button{width:32px;height:34px}
 .qty span{min-width:22px;text-align:center;font-size:var(--t5)}
 .cart-sum{display:flex;justify-content:space-between;font-family:var(--display);font-size:var(--t3)}
+.cart-ship{display:flex;justify-content:space-between;margin:0 0 .35em;color:var(--mute)}
+.cart-ship b{font-weight:600;color:var(--ink,inherit)}
 .cart-note{font-size:var(--t5);color:var(--mute)}
 #checkout{display:grid;gap:12px}
 #checkout input{background:var(--paper);border:1.5px solid var(--line);padding:11px 12px;outline:none}

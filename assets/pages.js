@@ -38,7 +38,7 @@
           (b.np ? '<p class="pg-meta">Мягкая обложка · ' + b.np + ' стр.</p>' : '') +
           '<div class="pg-text">' + b.text.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' +
           '<div class="pg-fmts">' +
-            '<div class="pg-fmt main"><span>Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка почтой</small>' +
+            '<div class="pg-fmt main"><span>Печатная книга</span><b>' + SHOP.PRICE + ' ₪</b><small>+ доставка почтой ' + SHOP.SHIPPING + ' ₪</small>' +
               '<button type="button" class="btn solid" data-add="' + b.id + '|print">В корзину <span aria-hidden="true">→</span></button></div>' +
             (b.pdf ? '<div class="pg-fmt"><span>Цифровая копия</span><b>' + pdfPrice + '</b><small>на e-mail после оплаты</small>' +
               '<button type="button" class="btn ghost" data-add="' + b.id + '|pdf">В корзину <span aria-hidden="true">→</span></button></div>' : '') +
