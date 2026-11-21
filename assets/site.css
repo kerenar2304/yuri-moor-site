@@ -1530,6 +1530,10 @@ html[data-font=bebas] .bookdlg .bd-info h2[dir=rtl]{font:700 clamp(28px,2.5vw,40
 .bookdlg .bd-buy .btn{min-height:46px}
 .bookdlg .bd-wa{margin-top:2px;font-size:13px}
 .bookdlg .bd-cover{min-height:0}
+/* the close button sits on the dark cover area: a light round button so it is always seen (it was dark on dark on phones) */
+.bookdlg .x{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:0;padding:0 0 3px;background:var(--light);color:var(--dark);box-shadow:0 8px 20px -8px rgba(0,0,0,.55);cursor:pointer}
+.bookdlg .x:hover{background:#fff}
+.bookdlg .x:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
 @media (max-width:700px){
   .bookdlg{max-height:calc(100svh - 16px)}
   .bookdlg .bd-cover{max-height:30svh}
