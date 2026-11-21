@@ -1769,6 +1769,14 @@ main.pg{padding:calc(var(--hdr-h) + 24px) 0 calc(60*var(--u));background:var(--l
 .pg-wrap{width:var(--wrap);margin:0 auto}
 .pg-back{display:inline-block;margin:0 0 18px;font:600 14px/1 var(--fam);color:var(--accent-ink);text-decoration:none}
 .pg-back:hover{color:var(--dark)}
+/* close X on the book page (added by app.js): same light round button as the book window, at the right end of the "all books" row */
+.pg-wrap{position:relative}
+.pg-x{position:absolute;top:-8px;right:0;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--dark);box-shadow:0 6px 18px -8px rgba(13,43,82,.45);display:grid;place-items:center}
+.pg-x::before,.pg-x::after{content:"";position:absolute;width:18px;height:2.5px;border-radius:2px;background:currentColor;transform:rotate(45deg)}
+.pg-x::after{transform:rotate(-45deg)}
+.pg-x:hover{background:var(--light)}
+.pg-x:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+@media (max-width:700px){.pg-x{right:12px;top:0}}
 /* book */
 .pg-book{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:calc(56*var(--u));align-items:center;padding:calc(48*var(--u));border-radius:32px;
   background:radial-gradient(80% 120% at 25% 10%,#e3f2fb 0%,#c3e3f4 55%,#a9d6ee 100%)}

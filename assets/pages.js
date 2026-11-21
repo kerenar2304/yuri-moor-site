@@ -26,6 +26,8 @@
     if (same.length < 3) same = same.concat(BOOKS.filter(function (x) { return x.id !== b.id && x.series !== b.series; }).slice(0, 6 - same.length));
     root.innerHTML =
       '<a class="pg-back" href="./#books">← Все книги</a>' +
+      // on a phone the page looks like a window, so buyers look for an X
+      '<a class="pg-x" href="./#books" aria-label="Закрыть и вернуться к книгам"></a>' +
       '<article class="pg-book">' +
         '<div class="pg-cover' + (b.wide ? ' wide' : '') + '">' + cover(b, 'pg-cv') +
           (b.cover ? '<img class="pg-cv pg-back-cv" src="assets/covers/' + b.cover + '-back.webp" alt="Оборот: ' + esc(b.title) + '" hidden>' +
@@ -55,6 +57,11 @@
         : '<div class="pg-more-grid">' + same.map(function (x) {
           return '<a class="pg-mini" href="' + bookHref(x.id) + '">' + cover(x, 'pg-mini-cv') + '<b' + (x.rtl ? ' dir="rtl" lang="he"' : '') + '>' + esc(x.title) + '</b><span>' + esc(label(x)) + '</span></a>';
         }).join('') + '</div>') + '</section>';
+    // the X always ends at the book list: back to the same scroll spot when the buyer came from the home page, otherwise to the catalog
+    root.querySelector(".pg-x").addEventListener("click", function (e) {
+      var fromSite = false; try { var r = document.referrer && new URL(document.referrer); fromSite = !!r && r.origin === location.origin && /^\/(index(\.html)?)?$/.test(r.pathname); } catch (er) {}
+      if (fromSite && history.length > 1) { e.preventDefault(); history.back(); }
+    });
     // front / back of the cover
     root.querySelectorAll('.pg-flip [data-side]').forEach(function (btn) {
       btn.addEventListener('click', function () {
