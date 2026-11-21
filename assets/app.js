@@ -513,24 +513,39 @@
       coErr.textContent = 'Проверьте, пожалуйста: ' + names.join(', ') + '.'; coErr.hidden = false; bad[0].focus(); return;
     }
     var d = new FormData(co);
+    // the order as text lines with the total: used by the WhatsApp buttons on the thanks screen and on a failed send
+    var ship = cart.some(function (c) { return c.fmt !== 'pdf'; }) && d.get('delivery') !== 'pickup' ? (SHOP.SHIPPING || 0) : 0, sum = ship;
+    var lines = cart.map(function (c) { var b = byId[c.id], s = priceOf(c) * c.q; sum += s;
+      return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' - ' + s + ' ₪'; });
+    if (ship) lines.push('• Доставка почтой - ' + ship + ' ₪');
     var fail = function (fields) {
       coBtn.classList.remove('busy');
-      if (fields && fields.length) { // the server named what is wrong: say it and mark those fields
+      if (!fields || !fields.length || fields.indexOf('turnstile') > -1) {
+        // the bot check failed (often inside the Facebook or Instagram browser) or the server is down:
+        // nothing for the buyer to fix, so the whole order goes to WhatsApp in one tap and is not lost
+        var hasPdf = cart.some(function (c) { return c.fmt === 'pdf'; }), hasPrint = cart.some(function (c) { return c.fmt !== 'pdf'; });
+        var who = ['Имя: ' + (d.get('name') || ''), 'Телефон: ' + (d.get('phone') || '')];
+        if (hasPrint) who.push(d.get('delivery') === 'pickup' ? 'Самовывоз в Беэр-Якове' :
+          'Адрес: ' + [d.get('city'), d.get('street'), d.get('house'), !/^\s*(нет|-|—)?\s*$/i.test(d.get('apt') || '') && 'кв. ' + d.get('apt'), d.get('zip')].filter(Boolean).join(', '));
+        if (hasPdf && d.get('email')) who.push('E-mail: ' + d.get('email'));
+        var wa = 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! Хочу заказать на сайте yurimoor.co.il:\n' + lines.join('\n') +
+          '\nИтого: ' + sum + ' ₪\n' + who.join('\n'));
+        coErr.innerHTML = 'Сайт не смог отправить заказ, извините. Нажмите кнопку: откроется WhatsApp с вашим заказом, его останется только отправить.' +
+          '<a class="btn solid sm cart-err-wa" target="_blank" rel="noopener" href="' + esc(wa) + '">' + ICON_WA + 'Отправить заказ в WhatsApp</a>';
+        coErr.hidden = false; $('.cart-err-wa', coErr).focus();
+        if (window.turnstile) try { turnstile.reset(); } catch (er) {}
+        return;
+      }
+      { // the server named what is wrong: say it and mark those fields
         fields.forEach(function (k) { var i = co.querySelector('[name="' + k + '"]'); if (i) i.setAttribute('aria-invalid', 'true'); });
         coErr.textContent = 'Проверьте, пожалуйста: ' + fields.map(function (k) { return FIELD_RU[k] || k; }).join(', ') + '.';
         var first = co.querySelector('[aria-invalid="true"]'); if (first) first.focus();
-      } else {
-        coErr.innerHTML = 'Не удалось отправить заказ. Попробуйте ещё раз через минуту или напишите нам в <a href="https://wa.me/' + SHOP.PHONE + '" target="_blank" rel="noopener">WhatsApp</a>.';
       }
       coErr.hidden = false;
       if (window.turnstile) try { turnstile.reset(); } catch (er) {}
     };
     var done = function () {
       // the order is already in the seller's mail; the thanks screen offers one tap to WhatsApp with the order and the chosen payment
-      var ship = cart.some(function (c) { return c.fmt !== 'pdf'; }) && d.get('delivery') !== 'pickup' ? (SHOP.SHIPPING || 0) : 0, sum = ship;
-      var lines = cart.map(function (c) { var b = byId[c.id], s = priceOf(c) * c.q; sum += s;
-        return '• ' + (b.ru || b.title) + ' (' + (c.fmt === 'pdf' ? 'цифровая копия' : 'печатная') + ') × ' + c.q + ' - ' + s + ' ₪'; });
-      if (ship) lines.push('• Доставка почтой - ' + ship + ' ₪');
       var waMsg = function (pay) {
         return 'https://wa.me/' + SHOP.PHONE + '?text=' + encodeURIComponent('Здравствуйте! Я оформил(а) заказ на сайте yurimoor.co.il:\n' + lines.join('\n') +
           '\nИтого: ' + sum + ' ₪\nИмя: ' + (d.get('name') || '') + '\n\nХочу оплатить ' + pay + '.');

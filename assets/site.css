@@ -2119,6 +2119,7 @@ html[data-font=bebas] .pg-info h1[dir=rtl]{font:700 clamp(40px,4vw,60px)/1 "Kara
 #checkout .btn.off{opacity:.45}
 .cart-err{margin:0;padding:12px 14px;border-radius:10px;background:#fbe9e7;color:#8a2a1c;font:400 15px/1.5 var(--fam)}
 .cart-err a{color:inherit;text-decoration:underline}
+.cart-err .cart-err-wa{display:flex;width:fit-content;margin-top:10px;color:#fff;text-decoration:none}
 #checkout .co-row label,#checkout .co-row input,#checkout .co-zip input{min-width:0;width:100%;box-sizing:border-box}
 #checkout .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 /* phone hero, v2: the frame always runs the full width (8px gutters); on short screens it gets shorter instead of narrower.
@@ -2372,6 +2373,8 @@ html.lock .a11y-root .a11y-btn{visibility:hidden}
 .ck-b{min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid #fff;background:transparent;color:#fff;font:600 15px/1 var(--fam);cursor:pointer}
 .ck-b[data-ck=yes]{background:#fff;color:var(--dark)}
 .ck-b:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+/* the cart and the menu cover the page: the consent bar waits until they close, so it never hides the order button */
+html.lock .ck{display:none}
 @media (max-width:700px){.ck{flex-direction:column;align-items:stretch;gap:12px;bottom:calc(68px + env(safe-area-inset-bottom));padding:16px}.ck-btns>*{flex:1}}
 .legal-btn{display:inline-block;margin-top:4px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--dark);background:#fff;color:var(--dark);font:600 15px/1 var(--fam);cursor:pointer}
 .legal-btn:hover{background:var(--dark);color:#fff}
